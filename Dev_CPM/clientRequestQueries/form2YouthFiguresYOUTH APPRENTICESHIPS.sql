@@ -1,0 +1,30 @@
+select 
+`y`.`nameofBusiness`,
+substring(`y`.`valueChain`, 3) as `ValueChain`, 
+`y`.`year`,
+`y`.`reportingPeriod`,
+`y`.`sexBusinessOwner`,
+`y`.`num_youthAttachedFemaleNew`,
+`y`.`num_youthAttachedFemaleOld`, 
+`y`.`num_youthAttachedMaleNew`,
+`y`.`num_youthAttachedMaleOld`,
+`y`.`num_youthAttachedTotalNew`, 
+`y`.`num_youthAttachedTotalOld`, 
+`y`.`fromDate`,
+`y`.`toDate`,
+`y`.`anticipatedOutcome`,
+`y`.`CompiledBy`,
+`y`.`ReviewedBy`, 
+`y`.`SubmittedBy`,
+`y`.`DateSubmission`,
+`y`.`updatedby`, 
+`y`.`apprenticeShip`,
+`y`.`reportingMonth`,
+REPLACE((DATEDIFF( `y`.`fromDate`,`y`.`toDate`)), '-', '') as DurationInDays,
+`Yj`.`dateOfEngagement` as `dateOfEngagement_Yj`,
+`Yj`.`nameOfJobHolder` as `nameOfJobHolder_Yj`,
+`Yj`.`sexOfJobHolder` as `sexOfJobHolder_Yj`, 
+`Yj`.`timeSpentOnJob` as `timeSpentOnJob_Yj` 
+from `tbl_youthapprentice` as `y` join 	tbl_apprenticeship_jobHolder as `Yj`
+on (`y`.`tbl_youthapprenticeId` = `Yj`.`apprenticeship_id`)
+order BY `y`.`tbl_youthapprenticeId` desc

@@ -1,0 +1,9 @@
+** xajax Error Log -  **
+----
+[WARNING] include(file_doesnt_exist.php) [<a href='function.include'>function.include</a>]: failed to open stream: No such file or directory
+error in line 14 of file C:\wamp\www\aBi_10032011\xajax_0.2.4\tests\errorHandlingTest.php
+----
+[WARNING] include() [<a href='function.include'>function.include</a>]: Failed opening 'file_doesnt_exist.php' for inclusion (include_path='.;C:\php5\pear')
+error in line 14 of file C:\wamp\www\aBi_10032011\xajax_0.2.4\tests\errorHandlingTest.php
+
+

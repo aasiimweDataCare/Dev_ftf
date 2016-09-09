@@ -1,0 +1,66 @@
+#dvLoading
+{
+   background:#fff url(../images/ajax_loader.gif) no-repeat center center;
+   height: 100%;
+   width: 100%;
+   /*height: 500px;
+   width: 500px;*/
+   position: fixed;
+   alignment-adjust: central;
+   z-index: 700;
+   left: 0;
+   top: 0;
+   opacity: .7;
+   /*left: 50%;
+   top: 50%;
+   margin: -25px 0 0 -25px;*/
+}
+
+#myLoader
+{
+   background:#fff   url(../images/ajax_loader.gif) no-repeat center center;
+   height: 100%;
+   width: 100%;
+   /*height: 500px;
+   width: 500px;*/
+   position: fixed;
+   alignment-adjust: central;
+   z-index: 700;
+   left: 0;
+   top: 0;
+   opacity: .5;
+   /*left: 50%;
+   top: 50%;
+   margin: -25px 0 0 -25px;*/
+}
+
+#searchLoader
+{
+   background:#9FDEE1   url(../images/ajax_loader.gif) no-repeat center center;
+   height: 100%;
+   width: 100%;
+   /*height: 500px;
+   width: 500px;*/
+   position: fixed;
+   alignment-adjust: central;
+   z-index: 700;
+   left: 0;
+   top: 0;
+  opacity: .5;
+   /*left: 50%;
+   top: 50%;
+   margin: -25px 0 0 -25px;*/
+}
+
+#dataFormLoader
+{
+	background:#9FDEE1   url(../images/ajax_loader.gif) no-repeat center center;
+	height: 100%;
+	width: 100%;
+	position: fixed;
+	alignment-adjust: central;
+	z-index: 700;
+	left: 0;
+	top: 0;
+	opacity: .5;
+}

@@ -1,0 +1,51 @@
+div.sdmenu {
+	width: 192px;
+	
+	font-size: 10px;
+	padding-bottom: 10px;
+	background: url(headline_bg.gif) no-repeat  right bottom;
+	color: #00296B;
+}
+div.sdmenu div {
+	background: url(headline_bg.gif) repeat-x;
+	overflow: hidden;
+}
+div.sdmenu div:first-child {
+	background: url(headline_bg.gif) repeat-x;
+}
+div.sdmenu div.collapsed {
+	height: 25px;
+}
+div.sdmenu div span {
+	display: block;
+	padding: 5px 25px;
+	font-weight: bold;
+	color: #171433;
+	background: url(expanded.gif) no-repeat 10px center;
+	cursor: default;
+	border-bottom: 1px solid #ddd;
+}
+div.sdmenu div.collapsed span {
+	background-image: url(collapsed.gif);
+}
+div.sdmenu div a {
+	padding: 5px 10px;
+	/*background: #e4d087;*/
+	background: #ffffff;
+	display: block;
+	border-bottom: 1px solid  #4e9ab9;
+	/*color: #CC6600;*/
+	color: #4e9ab9;
+	text-decoration: none;
+}
+div.sdmenu div a.current {
+	/*background-image: url(btn3.gif);
+	background : #e4d087;
+	background :#fdfcc8; */
+	background : #f8f5ec;
+}
+div.sdmenu div a:hover {
+	
+	color: #70bad9;
+	text-decoration: none;
+}

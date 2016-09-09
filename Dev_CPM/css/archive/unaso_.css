@@ -1,0 +1,78 @@
+/* CSS Document */
+ body{
+margin:0;
+font-size:11px;
+font-family:Tahoma;
+ 
+}
+
+.greenlinks{
+color:#18623d;
+text-decoration:none;
+}
+.greenlinks img{
+border:solid 2px #fff;
+}
+.redhdrs, .redhdrs a{
+color:#ff0000;
+font-weight:bold;
+font-size:11px;
+text-decoration:none;
+
+}
+
+.evenrow{
+	background-color: #E6E6E6;
+}
+.darklink{
+ text-decoration:none;
+ color:#18623d;
+ font-weight:bold;
+}
+
+.tabcontainer{
+color:#FFFFFF;
+font-weight:bold;
+clear: left;
+padding:1px !important;
+padding:8px;
+width:95%; /*width of 2nd level sub menus*/
+height:1.5em; /*height of 2nd level sub menus. Set to largest's sub menu's height to avoid jittering.*/
+}
+
+.tabcontainer2{
+color:#FFFFFF;
+clear: left;
+padding:1px !important;
+padding:8px;
+width:95%; /*width of 2nd level sub menus*/
+height:1.5em; /*height of 2nd level sub menus. Set to largest's sub menu's height to avoid jittering.*/
+}
+.tabcontainer3{
+color:#000000;
+clear: left;
+padding:1px !important;
+padding:8px;
+width:95%; /*width of 2nd level sub menus*/
+height:1.5em; /*height of 2nd level sub menus. Set to largest's sub menu's height to avoid jittering.*/
+}
+.tabcontainer a{
+color:#FFFFFF;
+text-decoration:none;
+font-weight:bold;
+}
+
+.tabcontent{
+display:none;
+}
+
+
+#.ttable{
+	color:#000000;
+	padding:5px;
+	#font-weight:bold;
+	#background :#ECE9D8;
+	#background-color: #E6E6E6;
+	right: auto;
+	clip: rect(auto,auto,auto,auto);	
+}
