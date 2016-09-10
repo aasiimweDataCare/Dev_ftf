@@ -547,29 +547,24 @@ $obj->call('xajax_view_enterpriseTechAdoption','','','','');
 return $obj;
 }//-----------------------------------------------------------End of function delete Training Form1-----------------------------------------
 
-function delete_labourSavingTech($formValues){
+function delete_labourSavingTech($id){
 $obj=new xajaxResponse();
-		//$obj->alert($formvalues[$unique_column]);
-		//$obj->alert(count($formvalues[$unique_column]));
+$sql="
+DELETE `l`.*,`ls`.* 
+FROM `tbl_laboursavingtech` as `l`
+INNER JOIN `tbl_laboursavingtech_jobholder` as `ls` 
+ON (`ls`.`labour_saving_tech_id`=`l`.`tbl_laboursavingtechId`)
+Where  `l`.`tbl_laboursavingtechId`='".$id."'
+";
+$obj->alert($sql);
+@mysql_query($sql)or die(mysql_error());
 
-if(count($formValues['tbl_laboursavingtechId'])>0){
-for($x=0;$x<count($formValues['tbl_laboursavingtechId']);$x++){
-	//$code=$formvalues[$unique_column][$x];
-	$sql="DELETE  l.* FROM `tbl_laboursavingtech` l  WHERE  l.`tbl_laboursavingtechId`='".$formValues['tbl_laboursavingtechId'][$x]."' ";
-	//$obj->alert($sql);
-if($sql<>''){
-
-@mysql_query($sql)or die(QueryManager::http("DEL-45"));
-//$obj->alert("Record successfully Deleted!");
-}
-}
-}
-
-$obj->assign('bodyDisplay','innerHTML',QueryManager::noteMsg("Labour Saving Technology Adoption Record successfully Deleted!"));
-$obj->call('xajax_view_labourSavingTech','','','','');
+$obj->assign('bodyDisplay','innerHTML',noteMsg("Labour Saving Technology Adoption totally deleted"));
+$obj->call('xajax_view_labourSavingTech','','','',1,20);
 return $obj;
-}//-----------------------------------------------------------End of function delete Training Form1-----------------------------------------
-//------------------Start of function delete_mediaPrograms-------------------
+}
+
+
 function delete_mediaPrograms($formValues){
 $obj=new xajaxResponse();
 

@@ -1280,75 +1280,143 @@ $cpma_year=($_SESSION['cpma_year']<>''?$_SESSION['cpma_year']:$cpma_year);
 $valueChain=($_SESSION['valueChain']<>''?$_SESSION['valueChain']:$valueChain);
 
 
-$data="<form action=\"".$_SERVER['PHP_SELF']."\" name='labourSavingTech' id='labourSavingTech' method='post'>";
-$data.="<table class='data-grid' width='100%' border='0' cellspacing='1' cellpadding='1'>
+$data="
+<form action=\"".$_SERVER['PHP_SELF']."\" name='labourSavingTech' id='labourSavingTech' method='post'>
+";
+$data.="
+	<table class='standard-report-grid' width='100%' border='0' cellspacing='1' cellpadding='1'>".labourSavingTechFilter();
+$data.="
+			<tr>
+				<th colspan='12'>
+				Commodity Production and Marketing Activity VALUE CHAIN DATA COLLECTION FORM/Labour Saving Technology
+				</th>
+			</tr>
+		";			
 
-
-
-<form action='".$_SERVER['PHP_SELF']."' name='labourSavingTechEdit' id='labourSavingTechEdit' method='post'>";
-$data.="<table class='standard-report-grid' width='100%' border='0' cellspacing='1' cellpadding='1'>".labourSavingTechFilter();
-
-$data.="<tr>
-	<th colspan='12'>
-	Commodity Production and Marketing Activity VALUE CHAIN DATA COLLECTION FORM/Labour Saving Technology
-	</th>
-</tr>";			
-
-				//===================data to be displayed=====================
-				$data.="<tr>
-    <th rowspan='2' class='first-cell-header'>#</th>
-    <th rowspan='2' >Name of Labour Saving technology</th>
-    <th rowspan='2' class='small-cell-header'>Value Chain</th>
-    <th rowspan='2' >Reporting Period</th>
-    <th rowspan='2' >Labour saving concept</th>
-    <th rowspan='2' >Person/Partner responsible for promoting adoption</th>
-    <th rowspan='2' class='small-cell-header'>Amount invested in Technology adoption (UGX)</th>
-    <th colspan='4' class='small-cell-header'>Jobs Created</th>
-	<th rowspan='2' class='largest-cell-header'>Action</th>
-  </tr>
-  <tr>
-    <th >Name of Job holder</th>
-    <th class='small-cell-header'>Sex</th>
-    <th >Date of engagement</th>
-    <th class='small-cell-header'>Time spent on job (Months)</th>
-  </tr>
-  </thead>
-  <tbody>";
+						//===================data to be displayed=====================
+		$data.="
+			<tr>
+				<th rowspan='2' class='first-cell-header'>#</th>
+				<th rowspan='2' >Name of Labour Saving technology</th>
+				<th rowspan='2' class='small-cell-header'>Value Chain</th>
+				<th rowspan='2' >Reporting Period</th>
+				<th rowspan='2' >Labour saving concept</th>
+				<th rowspan='2' >Person/Partner responsible for promoting adoption</th>
+				<th rowspan='2' class='small-cell-header'>Amount invested in Technology adoption (UGX)</th>
+				<th colspan='4' class='small-cell-header'>Jobs Created</th>
+				<th rowspan='2' class='largest-cell-header'>Action</th>
+			</tr>
+			<tr>
+				<th >Name of Job holder</th>
+				<th class='small-cell-header'>Sex</th>
+				<th >Date of engagement</th>
+				<th class='small-cell-header'>Time spent on job (Months)</th>
+			</tr>
+	</thead>
+	<tbody>
+		";
   
-  
-  
-	switch($cpma_year){
-			case'CPMA Year One':
-			$reportingYearToPeriod="and `l`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
-			and `l`.`reportingMonth` between ('2012-10-01') and ('2013-09-30')
-			and `l`.`year` in (2012,2013)";
-			break;
+	$table='tbl_laboursavingtech';
+	$name_column_submission_date='DateSubmission';
+	$name_column_rep_period='reportingPeriod';
+	$name_column_year='year';
+	$primary_key_column='tbl_laboursavingtechId';
+
+	//get expected end of reporting period date
+	$first_three_chars_rp=substr($reporting_period,0,3);
+	//$obj->alert($reporting_period);
+
+	switch($first_three_chars_rp){
+		case 'Oct':
+		$expected_end_date=''.trim(substr($reporting_period,-4)).'-03-31';
+		break;
+
+		case 'Apr':
+		$expected_end_date=''.trim(substr($reporting_period,-4)).'-04-30';
+		break;
+
+		default:
+		break;
+
+	}
+
+	//select records dates with issues
+		$statement_rec_with_issues="select * from ".$table." 
+		where ".$name_column_submission_date." > '".$expected_end_date."'
+		";
+
+		//$obj->alert($statement_rec_with_issues);
+
+		$query_rec_with_issues = Execute($statement_rec_with_issues) or die(mysql_error());
+			while ($row_rec_with_issues = FetchRecords($query_rec_with_issues)) {
+				//update  records with issues
+					$date_submission = $row_rec_with_issues[''.$name_column_submission_date.''];
+					$affected_rec = $row_rec_with_issues[''.$primary_key_column.''];
+
+					//Return statement from method to do the table clean-up
+					$stamentToCleanUp = $qmobj->cleanUpDateSubmissionValues(
+						$date_submission,
+						$reporting_period,
+						$table,
+						$name_column_submission_date,
+						$name_column_rep_period,
+						$name_column_year,
+						$primary_key_column,
+						$affected_rec
+					);
+
+					switch(true){
+						case(!empty($stamentToCleanUp) and ($stamentToCleanUp !=='')):
+						@Execute($stamentToCleanUp) or die(mysql_error());
+						break;
+
+						default:
+						break;
+					}
 			
-			case'CPMA Year Two':
-			$reportingYearToPeriod="and `l`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
-			and `l`.`reportingMonth` between ('2013-10-01') and ('2014-09-30')
+			}
+
+
+
+	
+
+
+  
+  
+	switch(trim($cpma_year)){
+
+			case trim('Project start up'):
+			$reportingYearToPeriod="and `l`.`reportingPeriod` in ('Apr - Sep') 
+			and `l`.`year` in (2013)";
+			break;
+
+			case trim('CPMA Year One'):
+			$reportingYearToPeriod="and `l`.`reportingPeriod` in ('Oct - Mar','Apr - Sep')
+			and `l`.`reportingMonth` between ('2013-10-01') and ('2014-09-30') 
 			and `l`.`year` in (2013,2014)";
 			break;
 			
-			case'CPMA Year Three':
+			case trim('CPMA Year Two'):
 			$reportingYearToPeriod="and `l`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
 			and `l`.`reportingMonth` between ('2014-10-01') and ('2015-09-30')
 			and `l`.`year` in (2014,2015)";
 			break;
 			
-			case'CPMA Year Four':
+			case trim('CPMA Year Three'):
 			$reportingYearToPeriod="and `l`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
 			and `l`.`reportingMonth` between ('2015-10-01') and ('2016-09-30')
+			and `l`.`DateSubmission` between ('2015-10-01') and ('2016-03-31')
 			and `l`.`year` in (2015,2016)";
 			break;
 			
-			case'CPMA Year Five':
+			case trim('CPMA Year Four'):
 			$reportingYearToPeriod="and `l`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
 			and `l`.`reportingMonth` between ('2016-10-01') and ('2017-09-30')
+			and `l`.`DateSubmission` between ('2016-10-01') and ('2017-03-31')
 			and `l`.`year` in (2016,2017)";
 			break;
 			
-			case'CPMA Year Six':
+			case trim('CPMA Year Five(Activity close out)'):
 			$reportingYearToPeriod="and `l`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
 			and `l`.`reportingMonth` between ('2017-10-01') and ('2018-09-30')
 			and `l`.`year` in (2017,2018)";
@@ -1358,8 +1426,8 @@ $data.="<tr>
 			break;
 		}
 		
-		switch($reporting_period){
-			case'Oct 2012 - Mar 2013':
+		switch(trim($reporting_period)){
+			case trim('Project start up'):
 			$reportingYearToPeriodCleaned="
 			and `l`.`reportingPeriod` = 'Oct - Mar' 
 			and `l`.`reportingMonth` between ('2012-10-01') and ('2013-03-31')
@@ -1367,7 +1435,7 @@ $data.="<tr>
 			";
 			break;
 			
-			case'Apr 2013 - Sep 2013':
+			case trim('Oct 2013 - Mar 2014'):
 			$reportingYearToPeriodCleaned="
 			and `l`.`reportingPeriod` = 'Apr - Sep' 
 			and `l`.`reportingMonth` between ('2013-04-01') and ('2013-09-30')
@@ -1375,7 +1443,7 @@ $data.="<tr>
 			";
 			break;
 			
-			case'Oct 2013 - Mar 2014':
+			case trim('Apr 2014 - Sep 2014'):
 			$reportingYearToPeriodCleaned="
 			and `l`.`reportingPeriod` = 'Oct - Mar' 
 			and `l`.`reportingMonth` between ('2013-10-01') and ('2014-03-31')
@@ -1383,7 +1451,7 @@ $data.="<tr>
 			";
 			break;
 			
-			case'Apr 2014 - Sep 2014':
+			case trim('Oct 2014 - Mar 2015'):
 			$reportingYearToPeriodCleaned="
 			and `l`.`reportingPeriod` = 'Apr - Sep' 
 			and `l`.`reportingMonth` between ('2014-04-01') and ('2014-09-30')
@@ -1391,7 +1459,7 @@ $data.="<tr>
 			";
 			break;
 			
-			case'Oct 2014 - Mar 2015':
+			case trim('Apr 2015 - Sep 2015'):
 			$reportingYearToPeriodCleaned="
 			and `l`.`reportingPeriod` = 'Oct - Mar' 
 			and `l`.`reportingMonth` between ('2014-10-01') and ('2015-03-31')
@@ -1407,7 +1475,7 @@ $data.="<tr>
 			";
 			break;
 			
-			case'Oct 2015 - Mar 2016':
+			case trim('Oct 2015 - Mar 2016'):
 			$reportingYearToPeriodCleaned="
 			and `l`.`reportingPeriod` = 'Oct - Mar' 
 			and `l`.`reportingMonth` between ('2015-10-01') and ('2016-03-31')
@@ -1415,7 +1483,7 @@ $data.="<tr>
 			";
 			break;
 			
-			case'Apr 2016 - Sep 2016':
+			case trim('Apr 2016 - Sep 2016'):
 			$reportingYearToPeriodCleaned="
 			and `l`.`reportingPeriod` = 'Apr - Sep' 
 			and `l`.`reportingMonth` between ('2016-04-01') and ('2016-09-30')
@@ -1423,7 +1491,7 @@ $data.="<tr>
 			";
 			break;
 			
-			case'Oct 2016 - Mar 2017':
+			case trim('Oct 2016 - Mar 2017'):
 			$reportingYearToPeriodCleaned="
 			and `l`.`reportingPeriod` = 'Oct - Mar' 
 			and `l`.`reportingMonth` between ('2016-10-01') and ('2017-03-31')
@@ -1431,7 +1499,7 @@ $data.="<tr>
 			";
 			break;
 			
-			case'Apr 2017 - Sep 2017':
+			case trim('Apr 2017 - Sep 2017'):
 			$reportingYearToPeriodCleaned="
 			and `l`.`reportingPeriod` = 'Apr - Sep' 
 			and `l`.`reportingMonth` between ('2017-04-01') and ('2017-09-30')
@@ -1439,7 +1507,7 @@ $data.="<tr>
 			";
 			break;
 			
-			case'Oct 2017 - Mar 2018':
+			case trim('Oct 2017 – Mar 2018'):
 			$reportingYearToPeriodCleaned="
 			and `l`.`reportingPeriod` = 'Oct - Mar' 
 			and `l`.`reportingMonth` between ('2017-10-01') and ('2018-03-31')
@@ -1447,15 +1515,12 @@ $data.="<tr>
 			";
 			break;
 			
-			case'Apr 2018 - Sep 2018':
+			case trim('Apr 2018 – May 2018'):
 			$reportingYearToPeriodCleaned="
 			and `l`.`reportingPeriod` = 'Apr - Sep' 
 			and `l`.`reportingMonth` between ('2018-04-01') and ('2018-09-30')
 			and `l`.`year` in (2018)
 			";
-			break;
-			
-			
 			break;
 			
 			default:
@@ -1464,77 +1529,71 @@ $data.="<tr>
 		
 		$query_string="select  `l`.*,
 		case
-		when `l`.`reportingPeriod` = 'Oct - Mar' 
-		and `l`.`reportingMonth` 
-		between ('2012-10-01') and ('2013-03-31') 
-		and `l`.`year` in (2012,2013) 
-		then 'Oct 2012 - Mar 2013'
-		
 		when `l`.`reportingPeriod` = 'Apr - Sep' 
 		and `l`.`reportingMonth` 
 		between ('2013-04-01') and ('2013-09-30') 
 		and `l`.`year` in (2013) 
-		then 'Apr 2013 - Sep 2013'
+		then 'Apr 2012 - Sep 2013'
 		
 		when `l`.`reportingPeriod` = 'Oct - Mar' 
 		and `l`.`reportingMonth` 
 		between ('2013-10-01') and ('2014-03-31') 
 		and `l`.`year` in (2013,2014) 
 		then 'Oct 2013 - Mar 2014'
-		
+
 		when `l`.`reportingPeriod` = 'Apr - Sep' 
 		and `l`.`reportingMonth` 
 		between ('2014-04-01') and ('2014-09-30') 
 		and `l`.`year` in (2014) 
 		then 'Apr 2014 - Sep 2014'
-		
+
 		when `l`.`reportingPeriod` = 'Oct - Mar' 
 		and `l`.`reportingMonth` 
 		between ('2014-10-01') and ('2015-03-31') 
 		and `l`.`year` in (2014,2015) 
 		then 'Oct 2014 - Mar 2015'
-		
+
 		when `l`.`reportingPeriod` = 'Apr - Sep' 
 		and `l`.`reportingMonth` 
 		between ('2015-04-01') and ('2015-09-30') 
 		and `l`.`year` in (2015) 
 		then 'Apr 2015 - Sep 2015'
-		
+
 		when `l`.`reportingPeriod` = 'Oct - Mar' 
 		and `l`.`reportingMonth` 
 		between ('2015-10-01') and ('2016-03-31') 
 		and `l`.`year` in (2015,2016) 
 		then 'Oct 2015 - Mar 2016'
-		
+
 		when `l`.`reportingPeriod` = 'Apr - Sep' 
 		and `l`.`reportingMonth` 
 		between ('2016-04-01') and ('2016-09-30') 
 		and `l`.`year` in (2016) 
 		then 'Apr 2016 - Sep 2016'
-		
+
 		when `l`.`reportingPeriod` = 'Oct - Mar' 
 		and `l`.`reportingMonth` 
 		between ('2016-10-01') and ('2017-03-31') 
 		and `l`.`year` in (2016,2017) 
 		then 'Oct 2016 - Mar 2017'
-		
+
 		when `l`.`reportingPeriod` = 'Apr - Sep' 
 		and `l`.`reportingMonth` 
 		between ('2017-04-01') and ('2017-09-30') 
 		and `l`.`year` in (2017) 
 		then 'Apr 2017 - Sep 2017'
-		
+
 		when `l`.`reportingPeriod` = 'Oct - Mar' 
 		and `l`.`reportingMonth` 
 		between ('2017-10-01') and ('2018-03-31') 
 		and `l`.`year` in (2017,2018) 
 		then 'Oct 2017 - Mar 2018'
-		
+
 		when `l`.`reportingPeriod` = 'Apr - Sep' 
 		and `l`.`reportingMonth` 
 		between ('2018-04-01') and ('2018-09-30') 
-		and `l`.`year` in (2017) 
-		then 'Apr 2018 - Sep 2018'
+		and `l`.`year` in (2018) 
+		then 'Apr 2018 - May 2018'
 		
 	else `l`.`reportingPeriod`
 	end 
