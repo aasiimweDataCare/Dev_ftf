@@ -549,6 +549,8 @@ return $obj;
 
 function delete_labourSavingTech($id){
 $obj=new xajaxResponse();
+
+@mysql_query('SET foreign_key_checks = 0')or die(mysql_error());
 $sql="
 DELETE `l`.*,`ls`.* 
 FROM `tbl_laboursavingtech` as `l`
@@ -556,91 +558,130 @@ INNER JOIN `tbl_laboursavingtech_jobholder` as `ls`
 ON (`ls`.`labour_saving_tech_id`=`l`.`tbl_laboursavingtechId`)
 Where  `l`.`tbl_laboursavingtechId`='".$id."'
 ";
-$obj->alert($sql);
 @mysql_query($sql)or die(mysql_error());
+@mysql_query('SET foreign_key_checks = 1')or die(mysql_error());
 
-$obj->assign('bodyDisplay','innerHTML',noteMsg("Labour Saving Technology Adoption totally deleted"));
+$obj->assign('bodyDisplay','innerHTML',errorMsg("Labour Saving Technology Adoption totally deleted"));
 $obj->call('xajax_view_labourSavingTech','','','',1,20);
 return $obj;
 }
 
 
-function delete_mediaPrograms($formValues){
+function delete_mediaPrograms($id){
 $obj=new xajaxResponse();
 
-if(count($formValues['tbl_mediaprogramsId'])>0){
-for($x=0;$x<count($formValues['tbl_mediaprogramsId']);$x++){
-	$sql="DELETE  m.* FROM `tbl_mediaprograms` m  WHERE  m.`tbl_mediaprogramsId`='".$formValues['tbl_mediaprogramsId'][$x]."'";
-	//$obj->alert($sql);
-if($sql<>''){
+@mysql_query('SET foreign_key_checks = 0')or die(mysql_error());
+$sql="
+DELETE `m`.*,`mj`.* 
+FROM `tbl_mediaprograms` as `m`
+INNER JOIN `tbl_mediaprogram_jobholder` as `mj` 
+ON (`mj`.`media_program_id` = `m`.`tbl_mediaprogramsId`)
+Where  `m`.`tbl_mediaprogramsId`='".$id."'
+";
+@mysql_query($sql)or die(mysql_error());
+@mysql_query('SET foreign_key_checks = 1')or die(mysql_error());
 
-@mysql_query($sql)or die(QueryManager::http("DEL-164"));
-}
-}
-}
-
-$obj->assign('bodyDisplay','innerHTML',QueryManager::noteMsg("Media Programs record successfully Deleted!"));
-$obj->call('xajax_view_mediaPrograms','','','');
+$obj->assign('bodyDisplay','innerHTML',errorMsg("Media Programs record successfully Deleted!"));
+$obj->call("xajax_view_mediaPrograms",'','','','',1,20);
 return $obj;
-}//------------------End of function delete_mediaPrograms-------------------
-//------------------Start of function delete_youthApprentice-------------------
-function delete_youthApprentice($formValues){
+}
+
+function delete_youthApprentice($id){
 $obj=new xajaxResponse();
 
-if(count($formValues['tbl_youthapprenticeId'])>0){
-for($x=0;$x<count($formValues['tbl_youthapprenticeId']);$x++){
-	$sql="DELETE  y.* FROM `tbl_youthapprentice` y  WHERE  y.`tbl_youthapprenticeId`='".$formValues['tbl_youthapprenticeId'][$x]."'";
-	//$obj->alert($sql);
-if($sql<>''){
+@mysql_query('SET foreign_key_checks = 0')or die(mysql_error());
+$sql="
+DELETE `y`.*,`yj`.* 
+FROM `tbl_youthapprentice` as `y`
+INNER JOIN `tbl_apprenticeship_jobholder` as `yj` 
+ON (`yj`.`apprenticeship_id` = `y`.`tbl_youthapprenticeId`)
+Where  `y`.`tbl_youthapprenticeId`='".$id."'
+";
+@mysql_query($sql)or die(mysql_error());
+@mysql_query('SET foreign_key_checks = 1')or die(mysql_error());
 
-@mysql_query($sql)or die(QueryManager::http("DEL-164"));
-}
-}
-}
-
-$obj->assign('bodyDisplay','innerHTML',QueryManager::noteMsg("Youth Apprenticeship record successfully Deleted!"));
-$obj->call('xajax_view_youthApprentice','','','');
+$obj->assign('bodyDisplay','innerHTML',errorMsg("Youth Apprenticeship record successfully Deleted!"));
+$obj->call('xajax_view_youthApprentice','','','',1,20);
 return $obj;
-}//------------------End of function delete_youthApprentice-------------------
-//------------------Start of function delete_bds-------------------
-function delete_bds($formValues){
+}
+
+function delete_bds($id){
 $obj=new xajaxResponse();
 
-if(count($formValues['tbl_businessdevId'])>0){
-for($x=0;$x<count($formValues['tbl_businessdevId']);$x++){
-	$sql="DELETE  b.* FROM `tbl_businessdev` b  WHERE  b.`tbl_businessdevId`='".$formValues['tbl_businessdevId'][$x]."'";
-	//$obj->alert($sql);
-if($sql<>''){
+@mysql_query('SET foreign_key_checks = 0')or die(mysql_error());
+$sql="
+DELETE `b`.*,`bj`.* 
+FROM `tbl_businessdev` as `b`
+INNER JOIN `tbl_bds_jobHolder` as `bj` 
+ON (`bj`.`bds_id` = `b`.`tbl_businessdevId`)
+Where  `b`.`tbl_businessdevId`='".$id."'
+";
+@mysql_query($sql)or die(mysql_error());
+@mysql_query('SET foreign_key_checks = 1')or die(mysql_error());
 
-@mysql_query($sql)or die(QueryManager::http("DEL-206"));
-}
-}
-}
-
-$obj->assign('bodyDisplay','innerHTML',QueryManager::noteMsg("Business Development Service record successfully Deleted!"));
-$obj->call('xajax_view_bds','','','');
+$obj->assign('bodyDisplay','innerHTML',errorMsg("Business Development Service record successfully Deleted!"));
+$obj->call('xajax_view_bds','','','',1,20);
 return $obj;
-}//------------------End of function delete_bds-------------------
-//------------------Start of function delete_bankLoans-------------------
-function delete_bankLoans($formValues){
+}
+
+function delete_bankLoans($id){
 $obj=new xajaxResponse();
 
-if(count($formValues['tbl_bankLoanId'])>0){
-for($x=0;$x<count($formValues['tbl_bankLoanId']);$x++){
-	$sql="DELETE  b.* FROM `tbl_bankloans` b  WHERE  b.`tbl_bankLoanId`='".$formValues['tbl_bankLoanId'][$x]."'";
-	//$obj->alert($sql);
-if($sql<>''){
+@mysql_query('SET foreign_key_checks = 0')or die(mysql_error());
+$sql="
+DELETE `b`.*,`bj`.* 
+FROM `tbl_bankloans` as `b`
+INNER JOIN `tbl_bank_loans_jobHolder` as `bj` 
+ON (`bj`.`bankLoan_id` = `b`.`tbl_bankLoanId`)
+Where  `b`.`tbl_bankLoanId`='".$id."'
+";
+@mysql_query($sql)or die(mysql_error());
+@mysql_query('SET foreign_key_checks = 1')or die(mysql_error());
 
-@mysql_query($sql)or die(QueryManager::http("DEL-227"));
-}
-}
-}
-
-$obj->assign('bodyDisplay','innerHTML',QueryManager::noteMsg("Bank Loans record successfully Deleted!"));
-$obj->call('xajax_view_bankLoans','','','');
+$obj->assign('bodyDisplay','innerHTML',errorMsg("Bank Loans record successfully Deleted!"));
+$obj->call('xajax_view_bankLoans','','','','',1,20);
 return $obj;
-}//------------------End of function delete_bankLoans-------------------
-//------------------Start of function delete_partnerships-------------------
+}
+
+
+function delete_inputSales($id){
+$obj=new xajaxResponse();
+
+@mysql_query('SET foreign_key_checks = 0')or die(mysql_error());
+$sql="
+DELETE `s`.*,`sr`.*,`sm`.* 
+from `tbl_input_sales` as `s`
+join `inputsales_metadata` as `sr` on (`sr`.`sales_id` = `s`.`id`)
+join `tbl_input_sales_meta_data` as `sm` on (`sm`.`id` = `sr`.`metadata_id`)
+Where  `s`.`id`='".$id."'
+";
+@mysql_query($sql)or die(mysql_error());
+@mysql_query('SET foreign_key_checks = 1')or die(mysql_error());
+
+$obj->assign('bodyDisplay','innerHTML',errorMsg("INPUT SALES record successfully Deleted!"));
+$obj->call('xajax_view_inputSales','','','',1,20);
+return $obj;
+}
+
+function delete_phh($id){
+$obj=new xajaxResponse();
+
+@mysql_query('SET foreign_key_checks = 0')or die(mysql_error());
+$sql="
+DELETE `p`.*,`pr`.*,`pm`.* 
+from `tbl_phh` as `p`
+join `phh_metadata` as `pr` on (`pr`.`phh_id` = `p`.`id`)
+join `tbl_phh_meta_data` as `pm` on (`pm`.`id` = `pr`.`metadata_id`)
+Where  `s`.`id`='".$id."'
+";
+@mysql_query($sql)or die(mysql_error());
+@mysql_query('SET foreign_key_checks = 1')or die(mysql_error());
+
+$obj->assign('bodyDisplay','innerHTML',errorMsg("PHH record successfully Deleted!"));
+$obj->call('xajax_view_phh','','','',1,20);
+return $obj;
+}
+
 function delete_partnerships($formValues){
 $obj=new xajaxResponse();
 
@@ -690,7 +731,7 @@ for($i=0;$i<count($formvalues['map_id']);$i++){
 $map_id=$formvalues['map_id'][$i];
 $sql="select * from tbl_zonalmapping  where map_id='".$map_id."'";
 #$obj->alert($sql);
-$query=@mysql_query($sql)or die(http(0139));
+$query=@mysql_query($sql)or die(mysql_error());
 while($row=mysql_fetch_array($query)){
 @mysql_query("delete from tbl_zonalmapping WHERE map_id='".$map_id."'")or die(http(0142));
 
@@ -762,9 +803,9 @@ $sqlone="update tbl_district set Display='NO', updatedby='".$_SESSION['username'
 $sqltwo="delete from tbl_subcounty  where districtCode='".$district_code."'";
 $sqlthree="delete from tbl_parish  where districtCode='".$district_code."'";
 //$obj->alert($sql);
-mysql_query($sqlone) or die(http(0748));
-mysql_query($sqltwo) or die(http(0749));
-mysql_query($sqlthree) or die(http(750));
+mysql_query($sqlone) or die(mysql_error());
+mysql_query($sqltwo) or die(mysql_error());
+mysql_query($sqlthree) or die(mysql_error());
 }
 $obj->assign('bodyDisplay','innerHTML',"<font color=red>District Deleted!</font>");
 $obj->call("xajax_view_district",'','',1,20);
@@ -863,7 +904,7 @@ for($x=0;$x<count($formvalues['household_id']);$x++){
 	
 	$insert="update tbl_household set display='NO' where household_id='".$hh_id."'";
 	#$obj->alert($insert);
-	mysql_query($insert)or die(http(0297));
+	mysql_query($insert)or die(mysql_error());
 	$data="House Hold Details Changed!";
 	}
 	
@@ -879,7 +920,7 @@ for($x=0;$x<count($formvalues['child_id']);$x++){
 	
 	$insert="update tbl_ovcdetails set display='NO' where child_id='".$child_id."'";
 	#$obj->alert($insert);
-	mysql_query($insert)or die(http(0297));
+	mysql_query($insert)or die(mysql_error());
 	$data="OVC Details Deleted!";
 	}
 	

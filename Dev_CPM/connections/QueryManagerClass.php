@@ -2598,6 +2598,8 @@ order by p.prog_id asc";
         return $data;
 
     }
+
+	
 	
 	function Form2PartnerFilter($partnerId)
     {
@@ -12110,6 +12112,46 @@ function cleanUpDateSubmissionValues($date_submission,$reporting_period,$table,$
 	return 	$queryStatement;
 }
 
+
+function cleanDirtyDates_Form2Edits($date){
+		$sanitizeDate= @date('Y-m-d', @strtotime($date));
+		switch($sanitizeDate){
+		case ($sanitizeDate > date('Y-m-d')):
+		$result=date('Y-m-d h:i:s');
+		break;
+		
+		case ($sanitizeDate < date_format((date_create('1910-01-01')), 'Y-m-d')):
+		$result=date('Y-m-d h:i:s');
+		break;
+
+		default:
+		$result=$sanitizeDate;
+		break;		
+			
+		}
+		return $result;
+	}
+
+	function validateRequiredNumericInput_Form2Edits($input){
+		
+		switch(true){
+			case is_numeric($input):
+			$result=intval($input);
+			break;
+
+			case (empty($input) or ($input=='')):
+			$result=0;
+			break;
+
+			default:
+			$result=intval($input);
+			break;
+
+
+		}
+
+		return $result;
+	}
 
 
 

@@ -1405,14 +1405,14 @@ $data.="
 			case trim('CPMA Year Three'):
 			$reportingYearToPeriod="and `l`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
 			and `l`.`reportingMonth` between ('2015-10-01') and ('2016-09-30')
-			and `l`.`DateSubmission` between ('2015-10-01') and ('2016-03-31')
+			and `l`.`DateSubmission` between ('2015-10-01') and ('2016-09-30')
 			and `l`.`year` in (2015,2016)";
 			break;
 			
 			case trim('CPMA Year Four'):
 			$reportingYearToPeriod="and `l`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
 			and `l`.`reportingMonth` between ('2016-10-01') and ('2017-09-30')
-			and `l`.`DateSubmission` between ('2016-10-01') and ('2017-03-31')
+			and `l`.`DateSubmission` between ('2016-10-01') and ('2017-09-30')
 			and `l`.`year` in (2016,2017)";
 			break;
 			
@@ -1429,21 +1429,13 @@ $data.="
 		switch(trim($reporting_period)){
 			case trim('Project start up'):
 			$reportingYearToPeriodCleaned="
-			and `l`.`reportingPeriod` = 'Oct - Mar' 
-			and `l`.`reportingMonth` between ('2012-10-01') and ('2013-03-31')
-			and `l`.`year` in (2012,2013)
-			";
-			break;
-			
-			case trim('Oct 2013 - Mar 2014'):
-			$reportingYearToPeriodCleaned="
 			and `l`.`reportingPeriod` = 'Apr - Sep' 
 			and `l`.`reportingMonth` between ('2013-04-01') and ('2013-09-30')
 			and `l`.`year` in (2013)
 			";
 			break;
 			
-			case trim('Apr 2014 - Sep 2014'):
+			case trim('Oct 2013 - Mar 2014'):
 			$reportingYearToPeriodCleaned="
 			and `l`.`reportingPeriod` = 'Oct - Mar' 
 			and `l`.`reportingMonth` between ('2013-10-01') and ('2014-03-31')
@@ -1451,7 +1443,7 @@ $data.="
 			";
 			break;
 			
-			case trim('Oct 2014 - Mar 2015'):
+			case trim('Apr 2014 - Sep 2014'):
 			$reportingYearToPeriodCleaned="
 			and `l`.`reportingPeriod` = 'Apr - Sep' 
 			and `l`.`reportingMonth` between ('2014-04-01') and ('2014-09-30')
@@ -1459,7 +1451,7 @@ $data.="
 			";
 			break;
 			
-			case trim('Apr 2015 - Sep 2015'):
+			case trim('Oct 2014 - Mar 2015'):
 			$reportingYearToPeriodCleaned="
 			and `l`.`reportingPeriod` = 'Oct - Mar' 
 			and `l`.`reportingMonth` between ('2014-10-01') and ('2015-03-31')
@@ -1467,7 +1459,7 @@ $data.="
 			";
 			break;
 			
-			case'Apr 2015 - Sep 2015':
+			case trim('Apr 2015 - Sep 2015'):
 			$reportingYearToPeriodCleaned="
 			and `l`.`reportingPeriod` = 'Apr - Sep' 
 			and `l`.`reportingMonth` between ('2015-04-01') and ('2015-09-30')
@@ -1662,7 +1654,7 @@ $data.="
 					$data.="<td ".$col_span." ".$row_span." >
 						<input type='button' class='formButton2'title='Edit'
 							onclick=\"xajax_edit_labourSavingTech('".$row_parent['tbl_laboursavingtechId']."');return false;\" value='edit' /> |
-						<input type='button' value='Delete' class='red'
+						<input type='button' class='disabled' disabled='disabled' value='Delete'
 							onclick=\"ConfirmDelete('".$row_parent['tbl_laboursavingtechId']."','Delete_labourSavingTech');return false;\" align='left'>
 					</td>";
 				$data.="</tr>";
@@ -1807,23 +1799,7 @@ $data.="
     <th>N</th>
     <th>O</th>
   </tr>";
-  //$data.="
-  //<tr><td colspan=2>Select empty record rows to display</td><td>
-  //<select name='addField[]' id ='addField' size='1' onchange=\"xajax_new_labourSavingTech(getElementById('addField').value);return false;\" style='width:70px'>
-  //              <option value=''>-select-</option>";
-                // $values=array('1','3','5','15','40','100');
-                //                        
-                //                        $q = 0; 
-                //                        foreach ($values as $s) {
-                //                            $selected=($addField==$s)?"selected":"";
-                //                            $data.="<option value=\"".$s."\" ".$selected.">".$s." Record(s)</option>";
-                //                            $q++;
-                //                        } 
-                //$data.="</select>
-  //</td></tr>
-  //";
-
-//Loop to determine how many records to display
+ 
   
   
   
@@ -2201,39 +2177,100 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 				</tr>
 			</thead>
 		<tbody>";
+
+	$table='tbl_mediaprograms';
+	$name_column_submission_date='DateSubmission';
+	$name_column_rep_period='reportingPeriod';
+	$name_column_year='year';
+	$primary_key_column='tbl_mediaprogramsId';
+
+	//get expected end of reporting period date
+	$first_three_chars_rp=substr($reporting_period,0,3);
+	//$obj->alert($reporting_period);
+
+	switch($first_three_chars_rp){
+		case 'Oct':
+		$expected_end_date=''.trim(substr($reporting_period,-4)).'-03-31';
+		break;
+
+		case 'Apr':
+		$expected_end_date=''.trim(substr($reporting_period,-4)).'-04-30';
+		break;
+
+		default:
+		break;
+
+	}
+
+	//select records dates with issues
+		$statement_rec_with_issues="select * from ".$table." 
+		where ".$name_column_submission_date." > '".$expected_end_date."'
+		";
+
+		//$obj->alert($statement_rec_with_issues);
+
+		$query_rec_with_issues = Execute($statement_rec_with_issues) or die(mysql_error());
+			while ($row_rec_with_issues = FetchRecords($query_rec_with_issues)) {
+				//update  records with issues
+					$date_submission = $row_rec_with_issues[''.$name_column_submission_date.''];
+					$affected_rec = $row_rec_with_issues[''.$primary_key_column.''];
+
+					//Return statement from method to do the table clean-up
+					$stamentToCleanUp = $qmobj->cleanUpDateSubmissionValues(
+						$date_submission,
+						$reporting_period,
+						$table,
+						$name_column_submission_date,
+						$name_column_rep_period,
+						$name_column_year,
+						$primary_key_column,
+						$affected_rec
+					);
+
+					switch(true){
+						case(!empty($stamentToCleanUp) and ($stamentToCleanUp !=='')):
+						@Execute($stamentToCleanUp) or die(mysql_error());
+						break;
+
+						default:
+						break;
+					}
+			
+			}
 		
-		switch($cpma_year){
-			case'CPMA Year One':
-			$reportingYearToPeriod="and `m`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
-			and `m`.`reportingMonth` between ('2012-10-01') and ('2013-09-30')
-			and `m`.`year` in (2012,2013)";
+		switch(trim($cpma_year)){
+			case trim('Project start up'):
+			$reportingYearToPeriod="and `m`.`reportingPeriod` in ('Apr - Sep') 
+			and `m`.`year` in (2013)";
 			break;
 
-			case'CPMA Year Two':
+			case trim('CPMA Year One'):
 			$reportingYearToPeriod="and `m`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
 			and `m`.`reportingMonth` between ('2013-10-01') and ('2014-09-30')
 			and `m`.`year` in (2013,2014)";
 			break;
 
-			case'CPMA Year Three':
+			case trim('CPMA Year Two'):
 			$reportingYearToPeriod="and `m`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
 			and `m`.`reportingMonth` between ('2014-10-01') and ('2015-09-30')
 			and `m`.`year` in (2014,2015)";
 			break;
 
-			case'CPMA Year Four':
+			case trim('CPMA Year Three'):
 			$reportingYearToPeriod="and `m`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
 			and `m`.`reportingMonth` between ('2015-10-01') and ('2016-09-30')
+			and `m`.`DateSubmission` between ('2015-10-01') and ('2016-09-30')
 			and `m`.`year` in (2015,2016)";
 			break;
 
-			case'CPMA Year Five':
+			case trim('CPMA Year Four'):
 			$reportingYearToPeriod="and `m`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
 			and `m`.`reportingMonth` between ('2016-10-01') and ('2017-09-30')
+			and `m`.`DateSubmission` between ('2016-10-01') and ('2017-09-30')
 			and `m`.`year` in (2016,2017)";
 			break;
 
-			case'CPMA Year Six':
+			case trim('CPMA Year Five(Activity close out)'):
 			$reportingYearToPeriod="and `m`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
 			and `m`.`reportingMonth` between ('2017-10-01') and ('2018-09-30')
 			and `m`.`year` in (2017,2018)";
@@ -2243,16 +2280,8 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 			break;
 			}
 
-			switch($reporting_period){
-			case'Oct 2012 - Mar 2013':
-			$reportingYearToPeriodCleaned="
-			and `m`.`reportingPeriod` = 'Oct - Mar' 
-			and `m`.`reportingMonth` between ('2012-10-01') and ('2013-03-31')
-			and `m`.`year` in (2012,2013)
-			";
-			break;
-
-			case'Apr 2013 - Sep 2013':
+			switch(trim($reporting_period)){
+			case trim('Project start up'):
 			$reportingYearToPeriodCleaned="
 			and `m`.`reportingPeriod` = 'Apr - Sep' 
 			and `m`.`reportingMonth` between ('2013-04-01') and ('2013-09-30')
@@ -2260,7 +2289,7 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 			";
 			break;
 
-			case'Oct 2013 - Mar 2014':
+			case trim('Oct 2013 - Mar 2014'):
 			$reportingYearToPeriodCleaned="
 			and `m`.`reportingPeriod` = 'Oct - Mar' 
 			and `m`.`reportingMonth` between ('2013-10-01') and ('2014-03-31')
@@ -2268,7 +2297,7 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 			";
 			break;
 
-			case'Apr 2014 - Sep 2014':
+			case trim('Apr 2014 - Sep 2014'):
 			$reportingYearToPeriodCleaned="
 			and `m`.`reportingPeriod` = 'Apr - Sep' 
 			and `m`.`reportingMonth` between ('2014-04-01') and ('2014-09-30')
@@ -2276,7 +2305,7 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 			";
 			break;
 
-			case'Oct 2014 - Mar 2015':
+			case trim('Oct 2014 - Mar 2015'):
 			$reportingYearToPeriodCleaned="
 			and `m`.`reportingPeriod` = 'Oct - Mar' 
 			and `m`.`reportingMonth` between ('2014-10-01') and ('2015-03-31')
@@ -2284,7 +2313,7 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 			";
 			break;
 
-			case'Apr 2015 - Sep 2015':
+			case trim('Apr 2015 - Sep 2015'):
 			$reportingYearToPeriodCleaned="
 			and `m`.`reportingPeriod` = 'Apr - Sep' 
 			and `m`.`reportingMonth` between ('2015-04-01') and ('2015-09-30')
@@ -2292,7 +2321,7 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 			";
 			break;
 
-			case'Oct 2015 - Mar 2016':
+			case trim('Oct 2015 - Mar 2016'):
 			$reportingYearToPeriodCleaned="
 			and `m`.`reportingPeriod` = 'Oct - Mar' 
 			and `m`.`reportingMonth` between ('2015-10-01') and ('2016-03-31')
@@ -2300,7 +2329,7 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 			";
 			break;
 
-			case'Apr 2016 - Sep 2016':
+			case trim('Apr 2016 - Sep 2016'):
 			$reportingYearToPeriodCleaned="
 			and `m`.`reportingPeriod` = 'Apr - Sep' 
 			and `m`.`reportingMonth` between ('2016-04-01') and ('2016-09-30')
@@ -2308,7 +2337,7 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 			";
 			break;
 
-			case'Oct 2016 - Mar 2017':
+			case trim('Oct 2016 - Mar 2017'):
 			$reportingYearToPeriodCleaned="
 			and `m`.`reportingPeriod` = 'Oct - Mar' 
 			and `m`.`reportingMonth` between ('2016-10-01') and ('2017-03-31')
@@ -2316,7 +2345,7 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 			";
 			break;
 
-			case'Apr 2017 - Sep 2017':
+			case trim('Apr 2017 - Sep 2017'):
 			$reportingYearToPeriodCleaned="
 			and `m`.`reportingPeriod` = 'Apr - Sep' 
 			and `m`.`reportingMonth` between ('2017-04-01') and ('2017-09-30')
@@ -2324,7 +2353,7 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 			";
 			break;
 
-			case'Oct 2017 - Mar 2018':
+			case trim('Oct 2017 – Mar 2018'):
 			$reportingYearToPeriodCleaned="
 			and `m`.`reportingPeriod` = 'Oct - Mar' 
 			and `m`.`reportingMonth` between ('2017-10-01') and ('2018-03-31')
@@ -2332,7 +2361,7 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 			";
 			break;
 
-			case'Apr 2018 - Sep 2018':
+			case trim('Apr 2018 – May 2018'):
 			$reportingYearToPeriodCleaned="
 			and `m`.`reportingPeriod` = 'Apr - Sep' 
 			and `m`.`reportingMonth` between ('2018-04-01') and ('2018-09-30')
@@ -2340,88 +2369,80 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 			";
 			break;
 
-
-			break;
-
 			default:
 			break;
 			}
 		
 		//Pick parent records		
-		$query_string="select `m`.*,
-				case
-				when `m`.`reportingPeriod` = 'Oct - Mar' 
-				and `m`.`reportingMonth` 
-				between ('2012-10-01') and ('2013-03-31') 
-				and `m`.`year` in (2012,2013) 
-				then 'Oct 2012 - Mar 2013'
+		$query_string="
+			select  `m`.*,
+					case
+					when `m`.`reportingPeriod` = 'Apr - Sep' 
+					and `m`.`reportingMonth` 
+					between ('2013-04-01') and ('2013-09-30') 
+					and `m`.`year` in (2013) 
+					then 'Apr 2012 - Sep 2013'
+					
+					when `m`.`reportingPeriod` = 'Oct - Mar' 
+					and `m`.`reportingMonth` 
+					between ('2013-10-01') and ('2014-03-31') 
+					and `m`.`year` in (2013,2014) 
+					then 'Oct 2013 - Mar 2014'
 
-				when `m`.`reportingPeriod` = 'Apr - Sep' 
-				and `m`.`reportingMonth` 
-				between ('2013-04-01') and ('2013-09-30') 
-				and `m`.`year` in (2013) 
-				then 'Apr 2013 - Sep 2013'
+					when `m`.`reportingPeriod` = 'Apr - Sep' 
+					and `m`.`reportingMonth` 
+					between ('2014-04-01') and ('2014-09-30') 
+					and `m`.`year` in (2014) 
+					then 'Apr 2014 - Sep 2014'
 
-				when `m`.`reportingPeriod` = 'Oct - Mar' 
-				and `m`.`reportingMonth` 
-				between ('2013-10-01') and ('2014-03-31') 
-				and `m`.`year` in (2013,2014) 
-				then 'Oct 2013 - Mar 2014'
+					when `m`.`reportingPeriod` = 'Oct - Mar' 
+					and `m`.`reportingMonth` 
+					between ('2014-10-01') and ('2015-03-31') 
+					and `m`.`year` in (2014,2015) 
+					then 'Oct 2014 - Mar 2015'
 
-				when `m`.`reportingPeriod` = 'Apr - Sep' 
-				and `m`.`reportingMonth` 
-				between ('2014-04-01') and ('2014-09-30') 
-				and `m`.`year` in (2014) 
-				then 'Apr 2014 - Sep 2014'
+					when `m`.`reportingPeriod` = 'Apr - Sep' 
+					and `m`.`reportingMonth` 
+					between ('2015-04-01') and ('2015-09-30') 
+					and `m`.`year` in (2015) 
+					then 'Apr 2015 - Sep 2015'
 
-				when `m`.`reportingPeriod` = 'Oct - Mar' 
-				and `m`.`reportingMonth` 
-				between ('2014-10-01') and ('2015-03-31') 
-				and `m`.`year` in (2014,2015) 
-				then 'Oct 2014 - Mar 2015'
+					when `m`.`reportingPeriod` = 'Oct - Mar' 
+					and `m`.`reportingMonth` 
+					between ('2015-10-01') and ('2016-03-31') 
+					and `m`.`year` in (2015,2016) 
+					then 'Oct 2015 - Mar 2016'
 
-				when `m`.`reportingPeriod` = 'Apr - Sep' 
-				and `m`.`reportingMonth` 
-				between ('2015-04-01') and ('2015-09-30') 
-				and `m`.`year` in (2015) 
-				then 'Apr 2015 - Sep 2015'
+					when `m`.`reportingPeriod` = 'Apr - Sep' 
+					and `m`.`reportingMonth` 
+					between ('2016-04-01') and ('2016-09-30') 
+					and `m`.`year` in (2016) 
+					then 'Apr 2016 - Sep 2016'
 
-				when `m`.`reportingPeriod` = 'Oct - Mar' 
-				and `m`.`reportingMonth` 
-				between ('2015-10-01') and ('2016-03-31') 
-				and `m`.`year` in (2015,2016) 
-				then 'Oct 2015 - Mar 2016'
+					when `m`.`reportingPeriod` = 'Oct - Mar' 
+					and `m`.`reportingMonth` 
+					between ('2016-10-01') and ('2017-03-31') 
+					and `m`.`year` in (2016,2017) 
+					then 'Oct 2016 - Mar 2017'
 
-				when `m`.`reportingPeriod` = 'Apr - Sep' 
-				and `m`.`reportingMonth` 
-				between ('2016-04-01') and ('2016-09-30') 
-				and `m`.`year` in (2016) 
-				then 'Apr 2016 - Sep 2016'
+					when `m`.`reportingPeriod` = 'Apr - Sep' 
+					and `m`.`reportingMonth` 
+					between ('2017-04-01') and ('2017-09-30') 
+					and `m`.`year` in (2017) 
+					then 'Apr 2017 - Sep 2017'
 
-				when `m`.`reportingPeriod` = 'Oct - Mar' 
-				and `m`.`reportingMonth` 
-				between ('2016-10-01') and ('2017-03-31') 
-				and `m`.`year` in (2016,2017) 
-				then 'Oct 2016 - Mar 2017'
+					when `m`.`reportingPeriod` = 'Oct - Mar' 
+					and `m`.`reportingMonth` 
+					between ('2017-10-01') and ('2018-03-31') 
+					and `m`.`year` in (2017,2018) 
+					then 'Oct 2017 - Mar 2018'
 
-				when `m`.`reportingPeriod` = 'Apr - Sep' 
-				and `m`.`reportingMonth` 
-				between ('2017-04-01') and ('2017-09-30') 
-				and `m`.`year` in (2017) 
-				then 'Apr 2017 - Sep 2017'
-
-				when `m`.`reportingPeriod` = 'Oct - Mar' 
-				and `m`.`reportingMonth` 
-				between ('2017-10-01') and ('2018-03-31') 
-				and `m`.`year` in (2017,2018) 
-				then 'Oct 2017 - Mar 2018'
-
-				when `m`.`reportingPeriod` = 'Apr - Sep' 
-				and `m`.`reportingMonth` 
-				between ('2018-04-01') and ('2018-09-30') 
-				and `m`.`year` in (2017) 
-				then 'Apr 2018 - Sep 2018'
-
+					when `m`.`reportingPeriod` = 'Apr - Sep' 
+					and `m`.`reportingMonth` 
+					between ('2018-04-01') and ('2018-09-30') 
+					and `m`.`year` in (2018) 
+					then 'Apr 2018 - May 2018'
+					
 				else `m`.`reportingPeriod`
 				end 
 				as  `reportingPeriod_cleaned`,
@@ -2505,9 +2526,9 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 					//end of parent record row
 					$data.="<td ".$col_span." ".$row_span." >
 						<input type='button' class='formButton2'title='Edit'
-							onclick=\"xajax_edit_mediaPrograms(".$row_parent['tbl_mediaprogramsId'].");return false;\" value='edit' /> |
-						<input type='button' value='Delete' class='red'
-							onclick=\"ConfirmDelete(xajax.getFormValues('mediaProgramsEdit'),'Delete_mediaPrograms');return false;\" align='left'>
+							onclick=\"xajax_edit_mediaPrograms('".$row_parent['tbl_mediaprogramsId']."');return false;\" value='edit' /> |
+						<input type='button' class='disabled' disabled='disabled' value='Delete' class='red'
+							onclick=\"ConfirmDelete(xajax.getFormValues('".$row_parent['tbl_mediaprogramsId']."'),'Delete_mediaPrograms');return false;\" align='left'>
 					</td>";
 				$data.="</tr>";
 				
@@ -2983,7 +3004,7 @@ $jobsCreatedTotalOld=($jobsCreatedFemaleOld1+$jobsCreatedMaleOld1);
 $obj->assign($jobsCreatedTotalOld1,"value",$jobsCreatedTotalOld);
 return $obj;
 }
-//save_labourSavingTech
+//save_mediaPrograms
 function save_mediaPrograms($formValues){
 $obj = new xajaxResponse();
 
@@ -3177,234 +3198,280 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 		</tr>
 	</thead>
 	<tbody>";
+
+
+  $table='tbl_youthapprentice';
+	$name_column_submission_date='DateSubmission';
+	$name_column_rep_period='reportingPeriod';
+	$name_column_year='year';
+	$primary_key_column='tbl_youthapprenticeId';
+
+	//get expected end of reporting period date
+	$first_three_chars_rp=substr($reporting_period,0,3);
+	//$obj->alert($reporting_period);
+
+	switch($first_three_chars_rp){
+		case 'Oct':
+		$expected_end_date=''.trim(substr($reporting_period,-4)).'-03-31';
+		break;
+
+		case 'Apr':
+		$expected_end_date=''.trim(substr($reporting_period,-4)).'-04-30';
+		break;
+
+		default:
+		break;
+
+	}
+
+	//select records dates with issues
+		$statement_rec_with_issues="select * from ".$table." 
+		where ".$name_column_submission_date." > '".$expected_end_date."'
+		";
+
+		//$obj->alert($statement_rec_with_issues);
+
+		$query_rec_with_issues = Execute($statement_rec_with_issues) or die(mysql_error());
+			while ($row_rec_with_issues = FetchRecords($query_rec_with_issues)) {
+				//update  records with issues
+					$date_submission = $row_rec_with_issues[''.$name_column_submission_date.''];
+					$affected_rec = $row_rec_with_issues[''.$primary_key_column.''];
+
+					//Return statement from method to do the table clean-up
+					$stamentToCleanUp = $qmobj->cleanUpDateSubmissionValues(
+						$date_submission,
+						$reporting_period,
+						$table,
+						$name_column_submission_date,
+						$name_column_rep_period,
+						$name_column_year,
+						$primary_key_column,
+						$affected_rec
+					);
+
+					switch(true){
+						case(!empty($stamentToCleanUp) and ($stamentToCleanUp !=='')):
+						@Execute($stamentToCleanUp) or die(mysql_error());
+						break;
+
+						default:
+						break;
+					}
+			
+			}
 	
-				switch($cpma_year){
-					case'CPMA Year One':
-					$reportingYearToPeriod="and `l`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
-					and `y`.`reportingMonth` between ('2012-10-01') and ('2013-09-30')
-					and `y`.`year` in (2012,2013)";
-					break;
-					
-					case'CPMA Year Two':
-					$reportingYearToPeriod="and `y`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
-					and `y`.`reportingMonth` between ('2013-10-01') and ('2014-09-30')
-					and `y`.`year` in (2013,2014)";
-					break;
-					
-					case'CPMA Year Three':
-					$reportingYearToPeriod="and `y`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
-					and `y`.`reportingMonth` between ('2014-10-01') and ('2015-09-30')
-					and `y`.`year` in (2014,2015)";
-					break;
-					
-					case'CPMA Year Four':
-					$reportingYearToPeriod="and `y`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
-					and `y`.`reportingMonth` between ('2015-10-01') and ('2016-09-30')
-					and `y`.`year` in (2015,2016)";
-					break;
-					
-					case'CPMA Year Five':
-					$reportingYearToPeriod="and `y`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
-					and `y`.`reportingMonth` between ('2016-10-01') and ('2017-09-30')
-					and `y`.`year` in (2016,2017)";
-					break;
-					
-					case'CPMA Year Six':
-					$reportingYearToPeriod="and `y`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
-					and `y`.`reportingMonth` between ('2017-10-01') and ('2018-09-30')
-					and `y`.`year` in (2017,2018)";
-					break;
-					
-					default:
-					break;
-				}
-				
-				switch($reporting_period){
-					case'Oct 2012 - Mar 2013':
-					$reportingYearToPeriodCleaned="
-					and `y`.`reportingPeriod` = 'Oct - Mar' 
-					and `y`.`reportingMonth` between ('2012-10-01') and ('2013-03-31')
-					and `y`.`year` in (2012,2013)
-					";
-					break;
-					
-					case'Apr 2013 - Sep 2013':
-					$reportingYearToPeriodCleaned="
-					and `y`.`reportingPeriod` = 'Apr - Sep' 
-					and `y`.`reportingMonth` between ('2013-04-01') and ('2013-09-30')
-					and `y`.`year` in (2013)
-					";
-					break;
-					
-					case'Oct 2013 - Mar 2014':
-					$reportingYearToPeriodCleaned="
-					and `y`.`reportingPeriod` = 'Oct - Mar' 
-					and `y`.`reportingMonth` between ('2013-10-01') and ('2014-03-31')
-					and `y`.`year` in (2013,2014)
-					";
-					break;
-					
-					case'Apr 2014 - Sep 2014':
-					$reportingYearToPeriodCleaned="
-					and `y`.`reportingPeriod` = 'Apr - Sep' 
-					and `y`.`reportingMonth` between ('2014-04-01') and ('2014-09-30')
-					and `y`.`year` in (2014)
-					";
-					break;
-					
-					case'Oct 2014 - Mar 2015':
-					$reportingYearToPeriodCleaned="
-					and `y`.`reportingPeriod` = 'Oct - Mar' 
-					and `y`.`reportingMonth` between ('2014-10-01') and ('2015-03-31')
-					and `y`.`year` in (2014,2015)
-					";
-					break;
-					
-					case'Apr 2015 - Sep 2015':
-					$reportingYearToPeriodCleaned="
-					and `y`.`reportingPeriod` = 'Apr - Sep' 
-					and `y`.`reportingMonth` between ('2015-04-01') and ('2015-09-30')
-					and `y`.`year` in (2015)
-					";
-					break;
-					
-					case'Oct 2015 - Mar 2016':
-					$reportingYearToPeriodCleaned="
-					and `y`.`reportingPeriod` = 'Oct - Mar' 
-					and `y`.`reportingMonth` between ('2015-10-01') and ('2016-03-31')
-					and `y`.`year` in (2015,2016)
-					";
-					break;
-					
-					case'Apr 2016 - Sep 2016':
-					$reportingYearToPeriodCleaned="
-					and `y`.`reportingPeriod` = 'Apr - Sep' 
-					and `y`.`reportingMonth` between ('2016-04-01') and ('2016-09-30')
-					and `y`.`year` in (2016)
-					";
-					break;
-					
-					case'Oct 2016 - Mar 2017':
-					$reportingYearToPeriodCleaned="
-					and `y`.`reportingPeriod` = 'Oct - Mar' 
-					and `y`.`reportingMonth` between ('2016-10-01') and ('2017-03-31')
-					and `y`.`year` in (2016,2017)
-					";
-					break;
-					
-					case'Apr 2017 - Sep 2017':
-					$reportingYearToPeriodCleaned="
-					and `y`.`reportingPeriod` = 'Apr - Sep' 
-					and `y`.`reportingMonth` between ('2017-04-01') and ('2017-09-30')
-					and `y`.`year` in (2017)
-					";
-					break;
-					
-					case'Oct 2017 - Mar 2018':
-					$reportingYearToPeriodCleaned="
-					and `y`.`reportingPeriod` = 'Oct - Mar' 
-					and `y`.`reportingMonth` between ('2017-10-01') and ('2018-03-31')
-					and `y`.`year` in (2017,2018)
-					";
-					break;
-					
-					case'Apr 2018 - Sep 2018':
-					$reportingYearToPeriodCleaned="
-					and `y`.`reportingPeriod` = 'Apr - Sep' 
-					and `y`.`reportingMonth` between ('2018-04-01') and ('2018-09-30')
-					and `y`.`year` in (2018)
-					";
-					break;
-					
-					
-					break;
-					
-					default:
-					break;
-				} 
-		  
-				$query_string="select `y`.*,
-				case
-					when `y`.`reportingPeriod` = 'Oct - Mar' 
-					and `y`.`reportingMonth` 
-					between ('2012-10-01') and ('2013-03-31') 
-					and `y`.`year` in (2012,2013) 
-					then 'Oct 2012 - Mar 2013'
-					
-					when `y`.`reportingPeriod` = 'Apr - Sep' 
-					and `y`.`reportingMonth` 
-					between ('2013-04-01') and ('2013-09-30') 
-					and `y`.`year` in (2013) 
-					then 'Apr 2013 - Sep 2013'
-					
-					when `y`.`reportingPeriod` = 'Oct - Mar' 
-					and `y`.`reportingMonth` 
-					between ('2013-10-01') and ('2014-03-31') 
-					and `y`.`year` in (2013,2014) 
-					then 'Oct 2013 - Mar 2014'
-					
-					when `y`.`reportingPeriod` = 'Apr - Sep' 
-					and `y`.`reportingMonth` 
-					between ('2014-04-01') and ('2014-09-30') 
-					and `y`.`year` in (2014) 
-					then 'Apr 2014 - Sep 2014'
-					
-					when `y`.`reportingPeriod` = 'Oct - Mar' 
-					and `y`.`reportingMonth` 
-					between ('2014-10-01') and ('2015-03-31') 
-					and `y`.`year` in (2014,2015) 
-					then 'Oct 2014 - Mar 2015'
-					
-					when `y`.`reportingPeriod` = 'Apr - Sep' 
-					and `y`.`reportingMonth` 
-					between ('2015-04-01') and ('2015-09-30') 
-					and `y`.`year` in (2015) 
-					then 'Apr 2015 - Sep 2015'
-					
-					when `y`.`reportingPeriod` = 'Oct - Mar' 
-					and `y`.`reportingMonth` 
-					between ('2015-10-01') and ('2016-03-31') 
-					and `y`.`year` in (2015,2016) 
-					then 'Oct 2015 - Mar 2016'
-					
-					when `y`.`reportingPeriod` = 'Apr - Sep' 
-					and `y`.`reportingMonth` 
-					between ('2016-04-01') and ('2016-09-30') 
-					and `y`.`year` in (2016) 
-					then 'Apr 2016 - Sep 2016'
-					
-					when `y`.`reportingPeriod` = 'Oct - Mar' 
-					and `y`.`reportingMonth` 
-					between ('2016-10-01') and ('2017-03-31') 
-					and `y`.`year` in (2016,2017) 
-					then 'Oct 2016 - Mar 2017'
-					
-					when `y`.`reportingPeriod` = 'Apr - Sep' 
-					and `y`.`reportingMonth` 
-					between ('2017-04-01') and ('2017-09-30') 
-					and `y`.`year` in (2017) 
-					then 'Apr 2017 - Sep 2017'
-					
-					when `y`.`reportingPeriod` = 'Oct - Mar' 
-					and `y`.`reportingMonth` 
-					between ('2017-10-01') and ('2018-03-31') 
-					and `y`.`year` in (2017,2018) 
-					then 'Oct 2017 - Mar 2018'
-					
-					when `y`.`reportingPeriod` = 'Apr - Sep' 
-					and `y`.`reportingMonth` 
-					between ('2018-04-01') and ('2018-09-30') 
-					and `y`.`year` in (2017) 
-					then 'Apr 2018 - Sep 2018'
-					
-				else `y`.`reportingPeriod`
-				end 
-				as  `reportingPeriod_cleaned`,
-				DATEDIFF( `y`.`fromDate`,`y`.`toDate`) AS `duration`,
-				`v`.*	
-				from `tbl_youthapprentice` as `y`,
-				tbl_mainvaluechain as `v`
-				where `y`.valueChain LIKE CONCAT('%', SUBSTRING(`v`.`name`, 3, 20) ,'%')  ";
+			switch(trim($cpma_year)){
+
+			case trim('Project start up'):
+			$reportingYearToPeriod="and `y`.`reportingPeriod` in ('Apr - Sep') 
+			and `y`.`year` in (2013)";
+			break;
+
+			case trim('CPMA Year One'):
+			$reportingYearToPeriod="and `y`.`reportingPeriod` in ('Oct - Mar','Apr - Sep')
+			and `y`.`reportingMonth` between ('2013-10-01') and ('2014-09-30') 
+			and `y`.`year` in (2013,2014)";
+			break;
+			
+			case trim('CPMA Year Two'):
+			$reportingYearToPeriod="and `y`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
+			and `y`.`reportingMonth` between ('2014-10-01') and ('2015-09-30')
+			and `y`.`year` in (2014,2015)";
+			break;
+			
+			case trim('CPMA Year Three'):
+			$reportingYearToPeriod="and `y`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
+			and `y`.`reportingMonth` between ('2015-10-01') and ('2016-09-30')
+			and `y`.`DateSubmission` between ('2015-10-01') and ('2016-09-30')
+			and `y`.`year` in (2015,2016)";
+			break;
+			
+			case trim('CPMA Year Four'):
+			$reportingYearToPeriod="and `y`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
+			and `y`.`reportingMonth` between ('2016-10-01') and ('2017-09-30')
+			and `y`.`DateSubmission` between ('2016-10-01') and ('2017-09-30')
+			and `y`.`year` in (2016,2017)";
+			break;
+			
+			case trim('CPMA Year Five(Activity close out)'):
+			$reportingYearToPeriod="and `y`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
+			and `y`.`reportingMonth` between ('2017-10-01') and ('2018-09-30')
+			and `y`.`year` in (2017,2018)";
+			break;
+			
+			default:
+			break;
+		}
+		
+		switch(trim($reporting_period)){
+			case trim('Project start up'):
+			$reportingYearToPeriodCleaned="
+			and `y`.`reportingPeriod` = 'Apr - Sep' 
+			and `y`.`reportingMonth` between ('2013-04-01') and ('2013-09-30')
+			and `y`.`year` in (2013)
+			";
+			break;
+			
+			case trim('Oct 2013 - Mar 2014'):
+			$reportingYearToPeriodCleaned="
+			and `y`.`reportingPeriod` = 'Oct - Mar' 
+			and `y`.`reportingMonth` between ('2013-10-01') and ('2014-03-31')
+			and `y`.`year` in (2013,2014)
+			";
+			break;
+			
+			case trim('Apr 2014 - Sep 2014'):
+			$reportingYearToPeriodCleaned="
+			and `y`.`reportingPeriod` = 'Apr - Sep' 
+			and `y`.`reportingMonth` between ('2014-04-01') and ('2014-09-30')
+			and `y`.`year` in (2014)
+			";
+			break;
+			
+			case trim('Oct 2014 - Mar 2015'):
+			$reportingYearToPeriodCleaned="
+			and `y`.`reportingPeriod` = 'Oct - Mar' 
+			and `y`.`reportingMonth` between ('2014-10-01') and ('2015-03-31')
+			and `y`.`year` in (2014,2015)
+			";
+			break;
+			
+			case trim('Apr 2015 - Sep 2015'):
+			$reportingYearToPeriodCleaned="
+			and `y`.`reportingPeriod` = 'Apr - Sep' 
+			and `y`.`reportingMonth` between ('2015-04-01') and ('2015-09-30')
+			and `y`.`year` in (2015)
+			";
+			break;
+			
+			case trim('Oct 2015 - Mar 2016'):
+			$reportingYearToPeriodCleaned="
+			and `y`.`reportingPeriod` = 'Oct - Mar' 
+			and `y`.`reportingMonth` between ('2015-10-01') and ('2016-03-31')
+			and `y`.`year` in (2015,2016)
+			";
+			break;
+			
+			case trim('Apr 2016 - Sep 2016'):
+			$reportingYearToPeriodCleaned="
+			and `y`.`reportingPeriod` = 'Apr - Sep' 
+			and `y`.`reportingMonth` between ('2016-04-01') and ('2016-09-30')
+			and `y`.`year` in (2016)
+			";
+			break;
+			
+			case trim('Oct 2016 - Mar 2017'):
+			$reportingYearToPeriodCleaned="
+			and `y`.`reportingPeriod` = 'Oct - Mar' 
+			and `y`.`reportingMonth` between ('2016-10-01') and ('2017-03-31')
+			and `y`.`year` in (2016,2017)
+			";
+			break;
+			
+			case trim('Apr 2017 - Sep 2017'):
+			$reportingYearToPeriodCleaned="
+			and `y`.`reportingPeriod` = 'Apr - Sep' 
+			and `y`.`reportingMonth` between ('2017-04-01') and ('2017-09-30')
+			and `y`.`year` in (2017)
+			";
+			break;
+			
+			case trim('Oct 2017 – Mar 2018'):
+			$reportingYearToPeriodCleaned="
+			and `y`.`reportingPeriod` = 'Oct - Mar' 
+			and `y`.`reportingMonth` between ('2017-10-01') and ('2018-03-31')
+			and `y`.`year` in (2017,2018)
+			";
+			break;
+			
+			case trim('Apr 2018 – May 2018'):
+			$reportingYearToPeriodCleaned="
+			and `y`.`reportingPeriod` = 'Apr - Sep' 
+			and `y`.`reportingMonth` between ('2018-04-01') and ('2018-09-30')
+			and `y`.`year` in (2018)
+			";
+			break;
+			
+			default:
+			break;
+		}
+		
+		$query_string="select  `y`.*,
+		case
+		when `y`.`reportingPeriod` = 'Apr - Sep' 
+		and `y`.`reportingMonth` 
+		between ('2013-04-01') and ('2013-09-30') 
+		and `y`.`year` in (2013) 
+		then 'Apr 2012 - Sep 2013'
+		
+		when `y`.`reportingPeriod` = 'Oct - Mar' 
+		and `y`.`reportingMonth` 
+		between ('2013-10-01') and ('2014-03-31') 
+		and `y`.`year` in (2013,2014) 
+		then 'Oct 2013 - Mar 2014'
+
+		when `y`.`reportingPeriod` = 'Apr - Sep' 
+		and `y`.`reportingMonth` 
+		between ('2014-04-01') and ('2014-09-30') 
+		and `y`.`year` in (2014) 
+		then 'Apr 2014 - Sep 2014'
+
+		when `y`.`reportingPeriod` = 'Oct - Mar' 
+		and `y`.`reportingMonth` 
+		between ('2014-10-01') and ('2015-03-31') 
+		and `y`.`year` in (2014,2015) 
+		then 'Oct 2014 - Mar 2015'
+
+		when `y`.`reportingPeriod` = 'Apr - Sep' 
+		and `y`.`reportingMonth` 
+		between ('2015-04-01') and ('2015-09-30') 
+		and `y`.`year` in (2015) 
+		then 'Apr 2015 - Sep 2015'
+
+		when `y`.`reportingPeriod` = 'Oct - Mar' 
+		and `y`.`reportingMonth` 
+		between ('2015-10-01') and ('2016-03-31') 
+		and `y`.`year` in (2015,2016) 
+		then 'Oct 2015 - Mar 2016'
+
+		when `y`.`reportingPeriod` = 'Apr - Sep' 
+		and `y`.`reportingMonth` 
+		between ('2016-04-01') and ('2016-09-30') 
+		and `y`.`year` in (2016) 
+		then 'Apr 2016 - Sep 2016'
+
+		when `y`.`reportingPeriod` = 'Oct - Mar' 
+		and `y`.`reportingMonth` 
+		between ('2016-10-01') and ('2017-03-31') 
+		and `y`.`year` in (2016,2017) 
+		then 'Oct 2016 - Mar 2017'
+
+		when `y`.`reportingPeriod` = 'Apr - Sep' 
+		and `y`.`reportingMonth` 
+		between ('2017-04-01') and ('2017-09-30') 
+		and `y`.`year` in (2017) 
+		then 'Apr 2017 - Sep 2017'
+
+		when `y`.`reportingPeriod` = 'Oct - Mar' 
+		and `y`.`reportingMonth` 
+		between ('2017-10-01') and ('2018-03-31') 
+		and `y`.`year` in (2017,2018) 
+		then 'Oct 2017 - Mar 2018'
+
+		when `y`.`reportingPeriod` = 'Apr - Sep' 
+		and `y`.`reportingMonth` 
+		between ('2018-04-01') and ('2018-09-30') 
+		and `y`.`year` in (2018) 
+		then 'Apr 2018 - May 2018'
+		
+	else `y`.`reportingPeriod`
+	end 
+	as  `reportingPeriod_cleaned`,
+  DATEDIFF( `y`.`fromDate`,`y`.`toDate`) AS `duration`,
+  `v`.*	
+  from `tbl_youthapprentice` as `y`,
+  tbl_mainvaluechain as `v`
+  where `y`.valueChain LIKE CONCAT('%', SUBSTRING(`v`.`name`, 3, 20) ,'%')  ";
 				
 					$reporting_period=(!empty($cpma_year))?'':$reporting_period;
 					$cpma_year=(!empty($reporting_period))?'':$cpma_year;
@@ -3412,6 +3479,7 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 					$cpma_year=(!empty($cpma_year))?" ".$reportingYearToPeriod." ":"";
 					$valueChain=(!empty($valueChain))?" AND `v`.`tbl_chainId` = '".$valueChain."' ":"";
 					$query_string.=$reporting_period.$cpma_year.$valueChain;
+          $query_string.=" group BY `y`.`tbl_youthapprenticeId` ";
 					$query_string.=" order BY `y`.`tbl_youthapprenticeId` desc";
 
 			$n=1;
@@ -3468,9 +3536,9 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 					//end of parent record row
 					$data.="<td ".$col_span." ".$row_span." >
 						<input type='button' class='formButton2'title='Edit'
-							onclick=\"xajax_edit_youthApprentice(".$row_parent['tbl_youthapprenticeId'].");return false;\" value='edit' /> |
-						<input type='button' value='Delete' class='red'
-							onclick=\"ConfirmDelete(xajax.getFormValues('youthApprentice'),'Delete_youthApprentice');return false;\" align='left'>
+							onclick=\"xajax_edit_youthApprentice('".$row_parent['tbl_youthapprenticeId']."');return false;\" value='edit' /> |
+						<input type='button' value='Delete' class='disabled' disabled='disabled'
+							onclick=\"ConfirmDelete('".$row_parent['tbl_youthapprenticeId']."','Delete_youthApprentice');return false;\" align='left'>
 					</td>";
 				$data.="</tr>";
 				
@@ -3912,7 +3980,7 @@ $totalValue=($female+$male);
 $obj->assign($total,'value',$totalValue);
 return $obj;
 }
-//save_labourSavingTech
+//save_youthApprentice
 function save_youthApprentice($formValues){
 $obj = new xajaxResponse();
 
@@ -4130,38 +4198,101 @@ $data.="<tr>
   </tr>
   </thead>
   <tbody>";
-	switch($cpma_year){
-			case'CPMA Year One':
-			$reportingYearToPeriod="and `l`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
-			and `v`.`reportingMonth` between ('2012-10-01') and ('2013-09-30')
-			and `v`.`year` in (2012,2013)";
-			break;
+
+  $table='tbl_businessdev';
+	$name_column_submission_date='DateSubmission';
+	$name_column_rep_period='reportingPeriod';
+	$name_column_year='year';
+	$primary_key_column='tbl_businessdevId';
+
+	//get expected end of reporting period date
+	$first_three_chars_rp=substr($reporting_period,0,3);
+	//$obj->alert($reporting_period);
+
+	switch($first_three_chars_rp){
+		case 'Oct':
+		$expected_end_date=''.trim(substr($reporting_period,-4)).'-03-31';
+		break;
+
+		case 'Apr':
+		$expected_end_date=''.trim(substr($reporting_period,-4)).'-04-30';
+		break;
+
+		default:
+		break;
+
+	}
+
+	//select records dates with issues
+		$statement_rec_with_issues="select * from ".$table." 
+		where ".$name_column_submission_date." > '".$expected_end_date."'
+		";
+
+		//$obj->alert($statement_rec_with_issues);
+
+		$query_rec_with_issues = Execute($statement_rec_with_issues) or die(mysql_error());
+			while ($row_rec_with_issues = FetchRecords($query_rec_with_issues)) {
+				//update  records with issues
+					$date_submission = $row_rec_with_issues[''.$name_column_submission_date.''];
+					$affected_rec = $row_rec_with_issues[''.$primary_key_column.''];
+
+					//Return statement from method to do the table clean-up
+					$stamentToCleanUp = $qmobj->cleanUpDateSubmissionValues(
+						$date_submission,
+						$reporting_period,
+						$table,
+						$name_column_submission_date,
+						$name_column_rep_period,
+						$name_column_year,
+						$primary_key_column,
+						$affected_rec
+					);
+
+					switch(true){
+						case(!empty($stamentToCleanUp) and ($stamentToCleanUp !=='')):
+						@Execute($stamentToCleanUp) or die(mysql_error());
+						break;
+
+						default:
+						break;
+					}
 			
-			case'CPMA Year Two':
-			$reportingYearToPeriod="and `v`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
-			and `v`.`reportingMonth` between ('2013-10-01') and ('2014-09-30')
+			}
+
+	switch(trim($cpma_year)){
+
+			case trim('Project start up'):
+			$reportingYearToPeriod="and `v`.`reportingPeriod` in ('Apr - Sep') 
+			and `v`.`year` in (2013)";
+			break;
+
+			case trim('CPMA Year One'):
+			$reportingYearToPeriod="and `v`.`reportingPeriod` in ('Oct - Mar','Apr - Sep')
+			and `v`.`reportingMonth` between ('2013-10-01') and ('2014-09-30') 
 			and `v`.`year` in (2013,2014)";
 			break;
 			
-			case'CPMA Year Three':
+			case trim('CPMA Year Two'):
 			$reportingYearToPeriod="and `v`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
 			and `v`.`reportingMonth` between ('2014-10-01') and ('2015-09-30')
 			and `v`.`year` in (2014,2015)";
 			break;
 			
-			case'CPMA Year Four':
+			case trim('CPMA Year Three'):
 			$reportingYearToPeriod="and `v`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
 			and `v`.`reportingMonth` between ('2015-10-01') and ('2016-09-30')
+			and `v`.`DateSubmission` between ('2015-10-01') and ('2016-09-30')
 			and `v`.`year` in (2015,2016)";
 			break;
 			
-			case'CPMA Year Five':
+			case trim('CPMA Year Four'):
 			$reportingYearToPeriod="and `v`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
 			and `v`.`reportingMonth` between ('2016-10-01') and ('2017-09-30')
+			and `v`.`DateSubmission` between ('2016-10-01') and ('2017-09-30')
 			and `v`.`year` in (2016,2017)";
 			break;
 			
-			case'CPMA Year Six':
+			case trim('CPMA Year Five(Activity close out)'):
 			$reportingYearToPeriod="and `v`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
 			and `v`.`reportingMonth` between ('2017-10-01') and ('2018-09-30')
 			and `v`.`year` in (2017,2018)";
@@ -4171,16 +4302,8 @@ $data.="<tr>
 			break;
 		}
 		
-		switch($reporting_period){
-			case'Oct 2012 - Mar 2013':
-			$reportingYearToPeriodCleaned="
-			and `v`.`reportingPeriod` = 'Oct - Mar' 
-			and `v`.`reportingMonth` between ('2012-10-01') and ('2013-03-31')
-			and `v`.`year` in (2012,2013)
-			";
-			break;
-			
-			case'Apr 2013 - Sep 2013':
+		switch(trim($reporting_period)){
+			case trim('Project start up'):
 			$reportingYearToPeriodCleaned="
 			and `v`.`reportingPeriod` = 'Apr - Sep' 
 			and `v`.`reportingMonth` between ('2013-04-01') and ('2013-09-30')
@@ -4188,7 +4311,7 @@ $data.="<tr>
 			";
 			break;
 			
-			case'Oct 2013 - Mar 2014':
+			case trim('Oct 2013 - Mar 2014'):
 			$reportingYearToPeriodCleaned="
 			and `v`.`reportingPeriod` = 'Oct - Mar' 
 			and `v`.`reportingMonth` between ('2013-10-01') and ('2014-03-31')
@@ -4196,7 +4319,7 @@ $data.="<tr>
 			";
 			break;
 			
-			case'Apr 2014 - Sep 2014':
+			case trim('Apr 2014 - Sep 2014'):
 			$reportingYearToPeriodCleaned="
 			and `v`.`reportingPeriod` = 'Apr - Sep' 
 			and `v`.`reportingMonth` between ('2014-04-01') and ('2014-09-30')
@@ -4204,7 +4327,7 @@ $data.="<tr>
 			";
 			break;
 			
-			case'Oct 2014 - Mar 2015':
+			case trim('Oct 2014 - Mar 2015'):
 			$reportingYearToPeriodCleaned="
 			and `v`.`reportingPeriod` = 'Oct - Mar' 
 			and `v`.`reportingMonth` between ('2014-10-01') and ('2015-03-31')
@@ -4212,7 +4335,7 @@ $data.="<tr>
 			";
 			break;
 			
-			case'Apr 2015 - Sep 2015':
+			case trim('Apr 2015 - Sep 2015'):
 			$reportingYearToPeriodCleaned="
 			and `v`.`reportingPeriod` = 'Apr - Sep' 
 			and `v`.`reportingMonth` between ('2015-04-01') and ('2015-09-30')
@@ -4220,7 +4343,7 @@ $data.="<tr>
 			";
 			break;
 			
-			case'Oct 2015 - Mar 2016':
+			case trim('Oct 2015 - Mar 2016'):
 			$reportingYearToPeriodCleaned="
 			and `v`.`reportingPeriod` = 'Oct - Mar' 
 			and `v`.`reportingMonth` between ('2015-10-01') and ('2016-03-31')
@@ -4228,7 +4351,7 @@ $data.="<tr>
 			";
 			break;
 			
-			case'Apr 2016 - Sep 2016':
+			case trim('Apr 2016 - Sep 2016'):
 			$reportingYearToPeriodCleaned="
 			and `v`.`reportingPeriod` = 'Apr - Sep' 
 			and `v`.`reportingMonth` between ('2016-04-01') and ('2016-09-30')
@@ -4236,7 +4359,7 @@ $data.="<tr>
 			";
 			break;
 			
-			case'Oct 2016 - Mar 2017':
+			case trim('Oct 2016 - Mar 2017'):
 			$reportingYearToPeriodCleaned="
 			and `v`.`reportingPeriod` = 'Oct - Mar' 
 			and `v`.`reportingMonth` between ('2016-10-01') and ('2017-03-31')
@@ -4244,7 +4367,7 @@ $data.="<tr>
 			";
 			break;
 			
-			case'Apr 2017 - Sep 2017':
+			case trim('Apr 2017 - Sep 2017'):
 			$reportingYearToPeriodCleaned="
 			and `v`.`reportingPeriod` = 'Apr - Sep' 
 			and `v`.`reportingMonth` between ('2017-04-01') and ('2017-09-30')
@@ -4252,7 +4375,7 @@ $data.="<tr>
 			";
 			break;
 			
-			case'Oct 2017 - Mar 2018':
+			case trim('Oct 2017 – Mar 2018'):
 			$reportingYearToPeriodCleaned="
 			and `v`.`reportingPeriod` = 'Oct - Mar' 
 			and `v`.`reportingMonth` between ('2017-10-01') and ('2018-03-31')
@@ -4260,7 +4383,7 @@ $data.="<tr>
 			";
 			break;
 			
-			case'Apr 2018 - Sep 2018':
+			case trim('Apr 2018 – May 2018'):
 			$reportingYearToPeriodCleaned="
 			and `v`.`reportingPeriod` = 'Apr - Sep' 
 			and `v`.`reportingMonth` between ('2018-04-01') and ('2018-09-30')
@@ -4268,91 +4391,81 @@ $data.="<tr>
 			";
 			break;
 			
-			
-			break;
-			
 			default:
 			break;
-		} 
-  
-  
-	$query_string="select 1,`v`.*,
-	case
-			when `v`.`reportingPeriod` = 'Oct - Mar' 
-			and `v`.`reportingMonth` 
-			between ('2012-10-01') and ('2013-03-31') 
-			and `v`.`year` in (2012,2013) 
-			then 'Oct 2012 - Mar 2013'
-			
-			when `v`.`reportingPeriod` = 'Apr - Sep' 
-			and `v`.`reportingMonth` 
-			between ('2013-04-01') and ('2013-09-30') 
-			and `v`.`year` in (2013) 
-			then 'Apr 2013 - Sep 2013'
-			
-			when `v`.`reportingPeriod` = 'Oct - Mar' 
-			and `v`.`reportingMonth` 
-			between ('2013-10-01') and ('2014-03-31') 
-			and `v`.`year` in (2013,2014) 
-			then 'Oct 2013 - Mar 2014'
-			
-			when `v`.`reportingPeriod` = 'Apr - Sep' 
-			and `v`.`reportingMonth` 
-			between ('2014-04-01') and ('2014-09-30') 
-			and `v`.`year` in (2014) 
-			then 'Apr 2014 - Sep 2014'
-			
-			when `v`.`reportingPeriod` = 'Oct - Mar' 
-			and `v`.`reportingMonth` 
-			between ('2014-10-01') and ('2015-03-31') 
-			and `v`.`year` in (2014,2015) 
-			then 'Oct 2014 - Mar 2015'
-			
-			when `v`.`reportingPeriod` = 'Apr - Sep' 
-			and `v`.`reportingMonth` 
-			between ('2015-04-01') and ('2015-09-30') 
-			and `v`.`year` in (2015) 
-			then 'Apr 2015 - Sep 2015'
-			
-			when `v`.`reportingPeriod` = 'Oct - Mar' 
-			and `v`.`reportingMonth` 
-			between ('2015-10-01') and ('2016-03-31') 
-			and `v`.`year` in (2015,2016) 
-			then 'Oct 2015 - Mar 2016'
-			
-			when `v`.`reportingPeriod` = 'Apr - Sep' 
-			and `v`.`reportingMonth` 
-			between ('2016-04-01') and ('2016-09-30') 
-			and `v`.`year` in (2016) 
-			then 'Apr 2016 - Sep 2016'
-			
-			when `v`.`reportingPeriod` = 'Oct - Mar' 
-			and `v`.`reportingMonth` 
-			between ('2016-10-01') and ('2017-03-31') 
-			and `v`.`year` in (2016,2017) 
-			then 'Oct 2016 - Mar 2017'
-			
-			when `v`.`reportingPeriod` = 'Apr - Sep' 
-			and `v`.`reportingMonth` 
-			between ('2017-04-01') and ('2017-09-30') 
-			and `v`.`year` in (2017) 
-			then 'Apr 2017 - Sep 2017'
-			
-			when `v`.`reportingPeriod` = 'Oct - Mar' 
-			and `v`.`reportingMonth` 
-			between ('2017-10-01') and ('2018-03-31') 
-			and `v`.`year` in (2017,2018) 
-			then 'Oct 2017 - Mar 2018'
-			
-			when `v`.`reportingPeriod` = 'Apr - Sep' 
-			and `v`.`reportingMonth` 
-			between ('2018-04-01') and ('2018-09-30') 
-			and `v`.`year` in (2017) 
-			then 'Apr 2018 - Sep 2018'
-			
-		else `v`.`reportingPeriod`
-		end 
-		as  `reportingPeriod_cleaned`
+		}
+		
+		$query_string="select  `v`.*,
+		case
+		when `v`.`reportingPeriod` = 'Apr - Sep' 
+		and `v`.`reportingMonth` 
+		between ('2013-04-01') and ('2013-09-30') 
+		and `v`.`year` in (2013) 
+		then 'Apr 2012 - Sep 2013'
+		
+		when `v`.`reportingPeriod` = 'Oct - Mar' 
+		and `v`.`reportingMonth` 
+		between ('2013-10-01') and ('2014-03-31') 
+		and `v`.`year` in (2013,2014) 
+		then 'Oct 2013 - Mar 2014'
+
+		when `v`.`reportingPeriod` = 'Apr - Sep' 
+		and `v`.`reportingMonth` 
+		between ('2014-04-01') and ('2014-09-30') 
+		and `v`.`year` in (2014) 
+		then 'Apr 2014 - Sep 2014'
+
+		when `v`.`reportingPeriod` = 'Oct - Mar' 
+		and `v`.`reportingMonth` 
+		between ('2014-10-01') and ('2015-03-31') 
+		and `v`.`year` in (2014,2015) 
+		then 'Oct 2014 - Mar 2015'
+
+		when `v`.`reportingPeriod` = 'Apr - Sep' 
+		and `v`.`reportingMonth` 
+		between ('2015-04-01') and ('2015-09-30') 
+		and `v`.`year` in (2015) 
+		then 'Apr 2015 - Sep 2015'
+
+		when `v`.`reportingPeriod` = 'Oct - Mar' 
+		and `v`.`reportingMonth` 
+		between ('2015-10-01') and ('2016-03-31') 
+		and `v`.`year` in (2015,2016) 
+		then 'Oct 2015 - Mar 2016'
+
+		when `v`.`reportingPeriod` = 'Apr - Sep' 
+		and `v`.`reportingMonth` 
+		between ('2016-04-01') and ('2016-09-30') 
+		and `v`.`year` in (2016) 
+		then 'Apr 2016 - Sep 2016'
+
+		when `v`.`reportingPeriod` = 'Oct - Mar' 
+		and `v`.`reportingMonth` 
+		between ('2016-10-01') and ('2017-03-31') 
+		and `v`.`year` in (2016,2017) 
+		then 'Oct 2016 - Mar 2017'
+
+		when `v`.`reportingPeriod` = 'Apr - Sep' 
+		and `v`.`reportingMonth` 
+		between ('2017-04-01') and ('2017-09-30') 
+		and `v`.`year` in (2017) 
+		then 'Apr 2017 - Sep 2017'
+
+		when `v`.`reportingPeriod` = 'Oct - Mar' 
+		and `v`.`reportingMonth` 
+		between ('2017-10-01') and ('2018-03-31') 
+		and `v`.`year` in (2017,2018) 
+		then 'Oct 2017 - Mar 2018'
+
+		when `v`.`reportingPeriod` = 'Apr - Sep' 
+		and `v`.`reportingMonth` 
+		between ('2018-04-01') and ('2018-09-30') 
+		and `v`.`year` in (2018) 
+		then 'Apr 2018 - May 2018'
+		
+	else `v`.`reportingPeriod`
+	end 
+	as  `reportingPeriod_cleaned`
 	from `tbl_businessdev` as `v`
 	where 1=1  ";  
 	
@@ -4438,8 +4551,8 @@ $data.="<tr>
 					//end of parent record row
 					$data.="<td ".$col_span." ".$row_span." >
 						<input type='button' class='formButton2'title='Edit'
-							onclick=\"xajax_edit_bds(".$row_parent['tbl_businessdevId'].");return false;\" value='edit' /> |
-						<input type='button' value='Delete' class='red'
+							onclick=\"xajax_edit_bds('".$row_parent['tbl_businessdevId']."');return false;\" value='edit' /> |
+						<input type='button' value='Delete' class='disabled' disabled='disabled'
 							onclick=\"ConfirmDelete('".$row_parent['tbl_businessdevId']."','Delete_bds');return false;\" align='left'>
 					</td>";
 				$data.="</tr>";
@@ -4871,7 +4984,7 @@ $jobsCreatedTotalOld=($jobsCreatedFemaleOld1+$jobsCreatedMaleOld1);
 $obj->assign($jobsCreatedTotalOld1,"value",$jobsCreatedTotalOld);
 return $obj;
 }
-//save_labourSavingTech
+//save_bds
 function save_bds($formValues){
 $obj = new xajaxResponse();
 
@@ -5063,39 +5176,101 @@ $data.="<tr>
   </tr>
   </thead>
   <tbody>";
-  
-  switch($cpma_year){
-			case'CPMA Year One':
-			$reportingYearToPeriod="and `b`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
-			and `b`.`reportingMonth` between ('2012-10-01') and ('2013-09-30')
-			and `b`.`year` in (2012,2013)";
-			break;
+
+  	$table='tbl_bankloans';
+	$name_column_submission_date='DateSubmission';
+	$name_column_rep_period='reportingPeriod';
+	$name_column_year='year';
+	$primary_key_column='tbl_bankLoanId';
+
+	//get expected end of reporting period date
+	$first_three_chars_rp=substr($reporting_period,0,3);
+	//$obj->alert($reporting_period);
+
+	switch($first_three_chars_rp){
+		case 'Oct':
+		$expected_end_date=''.trim(substr($reporting_period,-4)).'-03-31';
+		break;
+
+		case 'Apr':
+		$expected_end_date=''.trim(substr($reporting_period,-4)).'-04-30';
+		break;
+
+		default:
+		break;
+
+	}
+
+	//select records dates with issues
+		$statement_rec_with_issues="select * from ".$table." 
+		where ".$name_column_submission_date." > '".$expected_end_date."'
+		";
+
+		//$obj->alert($statement_rec_with_issues);
+
+		$query_rec_with_issues = Execute($statement_rec_with_issues) or die(mysql_error());
+			while ($row_rec_with_issues = FetchRecords($query_rec_with_issues)) {
+				//update  records with issues
+					$date_submission = $row_rec_with_issues[''.$name_column_submission_date.''];
+					$affected_rec = $row_rec_with_issues[''.$primary_key_column.''];
+
+					//Return statement from method to do the table clean-up
+					$stamentToCleanUp = $qmobj->cleanUpDateSubmissionValues(
+						$date_submission,
+						$reporting_period,
+						$table,
+						$name_column_submission_date,
+						$name_column_rep_period,
+						$name_column_year,
+						$primary_key_column,
+						$affected_rec
+					);
+
+					switch(true){
+						case(!empty($stamentToCleanUp) and ($stamentToCleanUp !=='')):
+						@Execute($stamentToCleanUp) or die(mysql_error());
+						break;
+
+						default:
+						break;
+					}
 			
-			case'CPMA Year Two':
-			$reportingYearToPeriod="and `b`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
-			and `b`.`reportingMonth` between ('2013-10-01') and ('2014-09-30')
+			}
+  
+  switch(trim($cpma_year)){
+
+			case trim('Project start up'):
+			$reportingYearToPeriod="and `b`.`reportingPeriod` in ('Apr - Sep') 
+			and `b`.`year` in (2013)";
+			break;
+
+			case trim('CPMA Year One'):
+			$reportingYearToPeriod="and `b`.`reportingPeriod` in ('Oct - Mar','Apr - Sep')
+			and `b`.`reportingMonth` between ('2013-10-01') and ('2014-09-30') 
 			and `b`.`year` in (2013,2014)";
 			break;
 			
-			case'CPMA Year Three':
+			case trim('CPMA Year Two'):
 			$reportingYearToPeriod="and `b`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
 			and `b`.`reportingMonth` between ('2014-10-01') and ('2015-09-30')
 			and `b`.`year` in (2014,2015)";
 			break;
 			
-			case'CPMA Year Four':
+			case trim('CPMA Year Three'):
 			$reportingYearToPeriod="and `b`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
 			and `b`.`reportingMonth` between ('2015-10-01') and ('2016-09-30')
+			and `b`.`DateSubmission` between ('2015-10-01') and ('2016-09-30')
 			and `b`.`year` in (2015,2016)";
 			break;
 			
-			case'CPMA Year Five':
+			case trim('CPMA Year Four'):
 			$reportingYearToPeriod="and `b`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
 			and `b`.`reportingMonth` between ('2016-10-01') and ('2017-09-30')
+			and `b`.`DateSubmission` between ('2016-10-01') and ('2017-09-30')
 			and `b`.`year` in (2016,2017)";
 			break;
 			
-			case'CPMA Year Six':
+			case trim('CPMA Year Five(Activity close out)'):
 			$reportingYearToPeriod="and `b`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
 			and `b`.`reportingMonth` between ('2017-10-01') and ('2018-09-30')
 			and `b`.`year` in (2017,2018)";
@@ -5105,16 +5280,8 @@ $data.="<tr>
 			break;
 		}
 		
-		switch($reporting_period){
-			case'Oct 2012 - Mar 2013':
-			$reportingYearToPeriodCleaned="
-			and `b`.`reportingPeriod` = 'Oct - Mar' 
-			and `b`.`reportingMonth` between ('2012-10-01') and ('2013-03-31')
-			and `b`.`year` in (2012,2013)
-			";
-			break;
-			
-			case'Apr 2013 - Sep 2013':
+		switch(trim($reporting_period)){
+			case trim('Project start up'):
 			$reportingYearToPeriodCleaned="
 			and `b`.`reportingPeriod` = 'Apr - Sep' 
 			and `b`.`reportingMonth` between ('2013-04-01') and ('2013-09-30')
@@ -5122,7 +5289,7 @@ $data.="<tr>
 			";
 			break;
 			
-			case'Oct 2013 - Mar 2014':
+			case trim('Oct 2013 - Mar 2014'):
 			$reportingYearToPeriodCleaned="
 			and `b`.`reportingPeriod` = 'Oct - Mar' 
 			and `b`.`reportingMonth` between ('2013-10-01') and ('2014-03-31')
@@ -5130,7 +5297,7 @@ $data.="<tr>
 			";
 			break;
 			
-			case'Apr 2014 - Sep 2014':
+			case trim('Apr 2014 - Sep 2014'):
 			$reportingYearToPeriodCleaned="
 			and `b`.`reportingPeriod` = 'Apr - Sep' 
 			and `b`.`reportingMonth` between ('2014-04-01') and ('2014-09-30')
@@ -5138,7 +5305,7 @@ $data.="<tr>
 			";
 			break;
 			
-			case'Oct 2014 - Mar 2015':
+			case trim('Oct 2014 - Mar 2015'):
 			$reportingYearToPeriodCleaned="
 			and `b`.`reportingPeriod` = 'Oct - Mar' 
 			and `b`.`reportingMonth` between ('2014-10-01') and ('2015-03-31')
@@ -5146,7 +5313,7 @@ $data.="<tr>
 			";
 			break;
 			
-			case'Apr 2015 - Sep 2015':
+			case trim('Apr 2015 - Sep 2015'):
 			$reportingYearToPeriodCleaned="
 			and `b`.`reportingPeriod` = 'Apr - Sep' 
 			and `b`.`reportingMonth` between ('2015-04-01') and ('2015-09-30')
@@ -5154,7 +5321,7 @@ $data.="<tr>
 			";
 			break;
 			
-			case'Oct 2015 - Mar 2016':
+			case trim('Oct 2015 - Mar 2016'):
 			$reportingYearToPeriodCleaned="
 			and `b`.`reportingPeriod` = 'Oct - Mar' 
 			and `b`.`reportingMonth` between ('2015-10-01') and ('2016-03-31')
@@ -5162,7 +5329,7 @@ $data.="<tr>
 			";
 			break;
 			
-			case'Apr 2016 - Sep 2016':
+			case trim('Apr 2016 - Sep 2016'):
 			$reportingYearToPeriodCleaned="
 			and `b`.`reportingPeriod` = 'Apr - Sep' 
 			and `b`.`reportingMonth` between ('2016-04-01') and ('2016-09-30')
@@ -5170,7 +5337,7 @@ $data.="<tr>
 			";
 			break;
 			
-			case'Oct 2016 - Mar 2017':
+			case trim('Oct 2016 - Mar 2017'):
 			$reportingYearToPeriodCleaned="
 			and `b`.`reportingPeriod` = 'Oct - Mar' 
 			and `b`.`reportingMonth` between ('2016-10-01') and ('2017-03-31')
@@ -5178,7 +5345,7 @@ $data.="<tr>
 			";
 			break;
 			
-			case'Apr 2017 - Sep 2017':
+			case trim('Apr 2017 - Sep 2017'):
 			$reportingYearToPeriodCleaned="
 			and `b`.`reportingPeriod` = 'Apr - Sep' 
 			and `b`.`reportingMonth` between ('2017-04-01') and ('2017-09-30')
@@ -5186,7 +5353,7 @@ $data.="<tr>
 			";
 			break;
 			
-			case'Oct 2017 - Mar 2018':
+			case trim('Oct 2017 – Mar 2018'):
 			$reportingYearToPeriodCleaned="
 			and `b`.`reportingPeriod` = 'Oct - Mar' 
 			and `b`.`reportingMonth` between ('2017-10-01') and ('2018-03-31')
@@ -5194,7 +5361,7 @@ $data.="<tr>
 			";
 			break;
 			
-			case'Apr 2018 - Sep 2018':
+			case trim('Apr 2018 – May 2018'):
 			$reportingYearToPeriodCleaned="
 			and `b`.`reportingPeriod` = 'Apr - Sep' 
 			and `b`.`reportingMonth` between ('2018-04-01') and ('2018-09-30')
@@ -5202,91 +5369,82 @@ $data.="<tr>
 			";
 			break;
 			
-			
-			break;
-			
 			default:
 			break;
 		}
-  
-$query_string="select `b`.*,
-case
-	when `b`.`reportingPeriod` = 'Oct - Mar' 
-	and `b`.`reportingMonth` 
-	between ('2012-10-01') and ('2013-03-31') 
-	and `b`.`year` in (2012,2013) 
-	then 'Oct 2012 - Mar 2013'
-	
-	when `b`.`reportingPeriod` = 'Apr - Sep' 
-	and `b`.`reportingMonth` 
-	between ('2013-04-01') and ('2013-09-30') 
-	and `b`.`year` in (2013) 
-	then 'Apr 2013 - Sep 2013'
-	
-	when `b`.`reportingPeriod` = 'Oct - Mar' 
-	and `b`.`reportingMonth` 
-	between ('2013-10-01') and ('2014-03-31') 
-	and `b`.`year` in (2013,2014) 
-	then 'Oct 2013 - Mar 2014'
-	
-	when `b`.`reportingPeriod` = 'Apr - Sep' 
-	and `b`.`reportingMonth` 
-	between ('2014-04-01') and ('2014-09-30') 
-	and `b`.`year` in (2014) 
-	then 'Apr 2014 - Sep 2014'
-	
-	when `b`.`reportingPeriod` = 'Oct - Mar' 
-	and `b`.`reportingMonth` 
-	between ('2014-10-01') and ('2015-03-31') 
-	and `b`.`year` in (2014,2015) 
-	then 'Oct 2014 - Mar 2015'
-	
-	when `b`.`reportingPeriod` = 'Apr - Sep' 
-	and `b`.`reportingMonth` 
-	between ('2015-04-01') and ('2015-09-30') 
-	and `b`.`year` in (2015) 
-	then 'Apr 2015 - Sep 2015'
-	
-	when `b`.`reportingPeriod` = 'Oct - Mar' 
-	and `b`.`reportingMonth` 
-	between ('2015-10-01') and ('2016-03-31') 
-	and `b`.`year` in (2015,2016) 
-	then 'Oct 2015 - Mar 2016'
-	
-	when `b`.`reportingPeriod` = 'Apr - Sep' 
-	and `b`.`reportingMonth` 
-	between ('2016-04-01') and ('2016-09-30') 
-	and `b`.`year` in (2016) 
-	then 'Apr 2016 - Sep 2016'
-	
-	when `b`.`reportingPeriod` = 'Oct - Mar' 
-	and `b`.`reportingMonth` 
-	between ('2016-10-01') and ('2017-03-31') 
-	and `b`.`year` in (2016,2017) 
-	then 'Oct 2016 - Mar 2017'
-	
-	when `b`.`reportingPeriod` = 'Apr - Sep' 
-	and `b`.`reportingMonth` 
-	between ('2017-04-01') and ('2017-09-30') 
-	and `b`.`year` in (2017) 
-	then 'Apr 2017 - Sep 2017'
-	
-	when `b`.`reportingPeriod` = 'Oct - Mar' 
-	and `b`.`reportingMonth` 
-	between ('2017-10-01') and ('2018-03-31') 
-	and `b`.`year` in (2017,2018) 
-	then 'Oct 2017 - Mar 2018'
-	
-	when `b`.`reportingPeriod` = 'Apr - Sep' 
-	and `b`.`reportingMonth` 
-	between ('2018-04-01') and ('2018-09-30') 
-	and `b`.`year` in (2017) 
-	then 'Apr 2018 - Sep 2018'
-	
-else `b`.`reportingPeriod`
-end 
-as  `reportingPeriod_cleaned`
-from `tbl_bankloans` as `b` "; 
+		
+		$query_string="select 1, `b`.*,
+		case
+		when `b`.`reportingPeriod` = 'Apr - Sep' 
+		and `b`.`reportingMonth` 
+		between ('2013-04-01') and ('2013-09-30') 
+		and `b`.`year` in (2013) 
+		then 'Apr 2012 - Sep 2013'
+		
+		when `b`.`reportingPeriod` = 'Oct - Mar' 
+		and `b`.`reportingMonth` 
+		between ('2013-10-01') and ('2014-03-31') 
+		and `b`.`year` in (2013,2014) 
+		then 'Oct 2013 - Mar 2014'
+
+		when `b`.`reportingPeriod` = 'Apr - Sep' 
+		and `b`.`reportingMonth` 
+		between ('2014-04-01') and ('2014-09-30') 
+		and `b`.`year` in (2014) 
+		then 'Apr 2014 - Sep 2014'
+
+		when `b`.`reportingPeriod` = 'Oct - Mar' 
+		and `b`.`reportingMonth` 
+		between ('2014-10-01') and ('2015-03-31') 
+		and `b`.`year` in (2014,2015) 
+		then 'Oct 2014 - Mar 2015'
+
+		when `b`.`reportingPeriod` = 'Apr - Sep' 
+		and `b`.`reportingMonth` 
+		between ('2015-04-01') and ('2015-09-30') 
+		and `b`.`year` in (2015) 
+		then 'Apr 2015 - Sep 2015'
+
+		when `b`.`reportingPeriod` = 'Oct - Mar' 
+		and `b`.`reportingMonth` 
+		between ('2015-10-01') and ('2016-03-31') 
+		and `b`.`year` in (2015,2016) 
+		then 'Oct 2015 - Mar 2016'
+
+		when `b`.`reportingPeriod` = 'Apr - Sep' 
+		and `b`.`reportingMonth` 
+		between ('2016-04-01') and ('2016-09-30') 
+		and `b`.`year` in (2016) 
+		then 'Apr 2016 - Sep 2016'
+
+		when `b`.`reportingPeriod` = 'Oct - Mar' 
+		and `b`.`reportingMonth` 
+		between ('2016-10-01') and ('2017-03-31') 
+		and `b`.`year` in (2016,2017) 
+		then 'Oct 2016 - Mar 2017'
+
+		when `b`.`reportingPeriod` = 'Apr - Sep' 
+		and `b`.`reportingMonth` 
+		between ('2017-04-01') and ('2017-09-30') 
+		and `b`.`year` in (2017) 
+		then 'Apr 2017 - Sep 2017'
+
+		when `b`.`reportingPeriod` = 'Oct - Mar' 
+		and `b`.`reportingMonth` 
+		between ('2017-10-01') and ('2018-03-31') 
+		and `b`.`year` in (2017,2018) 
+		then 'Oct 2017 - Mar 2018'
+
+		when `b`.`reportingPeriod` = 'Apr - Sep' 
+		and `b`.`reportingMonth` 
+		between ('2018-04-01') and ('2018-09-30') 
+		and `b`.`year` in (2018) 
+		then 'Apr 2018 - May 2018'		
+	else `b`.`reportingPeriod`
+	end 
+	as  `reportingPeriod_cleaned`
+from `tbl_bankloans` as `b` 
+where 1=1 "; 
 $reporting_period=(!empty($cpma_year))?'':$reporting_period;
 $cpma_year=(!empty($reporting_period))?'':$cpma_year;
 $reporting_period=(!empty($reporting_period))?" ".$reportingYearToPeriodCleaned." ":"";
@@ -5299,7 +5457,7 @@ $query_string.=" order by `b`.`tbl_bankLoanId` desc";
 
 
 	$x=1;
-	$query_=mysql_query($query_string)or die(http(__line__));
+	$query_=mysql_query($query_string)or die(mysql_error());
 	 /**************
 	 *paging parameters
 	 *
@@ -5357,8 +5515,8 @@ $query_string.=" order by `b`.`tbl_bankLoanId` desc";
 					//end of parent record row
 					$data.="<td ".$col_span." ".$row_span." >
 						<input type='button' class='formButton2'title='Edit'
-							onclick=\"xajax_edit_bankLoans(".$row_parent['tbl_bankLoanId'].");return false;\" value='edit' /> |
-						<input type='button' value='Delete' class='red'
+							onclick=\"xajax_edit_bankLoans('".$row_parent['tbl_bankLoanId']."');return false;\" value='edit' /> |
+						<input type='button' value='Delete' class='disabled' disabled='disabled'
 							onclick=\"ConfirmDelete('".$row_parent['tbl_bankLoanId']."','Delete_bankLoans');return false;\" align='left'>
 					</td>";
 				$data.="</tr>";
@@ -5850,12 +6008,12 @@ $data="<form action='".$_SERVER['PHP_SELF']."' name='inputSalesEdit' id='inputSa
 $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing='1' cellpadding='1'>".inputSalesFilter();
 
 $data.="<tr>
-					<th colspan='23'>
-					Commodity Production and Marketing Activity VALUE CHAIN DATA COLLECTION FORM/INPUT SALES</th>
-				</tr>";			
+	<th colspan='23'>
+	Commodity Production and Marketing Activity VALUE CHAIN DATA COLLECTION FORM/INPUT SALES</th>
+</tr>";			
 
-				//===================data to be displayed=====================
-				$data.="<tr>
+//===================data to be displayed=====================
+$data.="<tr>
     <th rowspan='3' class='first-cell-header'>#</th>
     <th rowspan='3'>Name of Middle Value Chain Actor (Trader, Exporter, Processor, Input dealer), Trade and business association or CBOs - (Include Vas giving independent service</th>
 	<th rowspan='3'>Date of Start of Inputs Sales Business</th>
@@ -5890,9 +6048,225 @@ $data.="<tr>
   </tr>
   </thead>
   <tbody>";
+
   
-	$query_string="select `s`.* from `tbl_input_sales` as `s` ";	
-	$query_string.=" group by `s`.`id` order by `s`.`id` desc";
+  $table='tbl_input_sales_meta_data';
+	$name_column_submission_date='dateSubmission';
+	$name_column_rep_period='reportingPeriod';
+	$name_column_year='year';
+	$primary_key_column='input_sales_id';
+
+	//get expected end of reporting period date
+	$first_three_chars_rp=substr($reporting_period,0,3);
+	//$obj->alert($reporting_period);
+
+	switch($first_three_chars_rp){
+		case 'Oct':
+		$expected_end_date=''.trim(substr($reporting_period,-4)).'-03-31';
+		break;
+
+		case 'Apr':
+		$expected_end_date=''.trim(substr($reporting_period,-4)).'-04-30';
+		break;
+
+		default:
+		break;
+
+	}
+
+	//select records dates with issues
+		$statement_rec_with_issues="select * from ".$table." 
+		where ".$name_column_submission_date." > '".$expected_end_date."'
+		";
+
+		//$obj->alert($statement_rec_with_issues);
+
+		$query_rec_with_issues = Execute($statement_rec_with_issues) or die(mysql_error());
+			while ($row_rec_with_issues = FetchRecords($query_rec_with_issues)) {
+				//update  records with issues
+					$date_submission = $row_rec_with_issues[''.$name_column_submission_date.''];
+					$affected_rec = $row_rec_with_issues[''.$primary_key_column.''];
+
+					//Return statement from method to do the table clean-up
+					$stamentToCleanUp = $qmobj->cleanUpDateSubmissionValues(
+						$date_submission,
+						$reporting_period,
+						$table,
+						$name_column_submission_date,
+						$name_column_rep_period,
+						$name_column_year,
+						$primary_key_column,
+						$affected_rec
+					);
+
+					switch(true){
+						case(!empty($stamentToCleanUp) and ($stamentToCleanUp !=='')):
+						@Execute($stamentToCleanUp) or die(mysql_error());
+						break;
+
+						default:
+						break;
+					}
+			
+			}
+
+
+	switch(trim($cpma_year)){
+
+			case trim('Project start up'):
+			$reportingYearToPeriod="and `sm`.`reportingPeriod` in ('Apr - Sep') 
+			and `sm`.`year` in (2013)";
+			break;
+
+			case trim('CPMA Year One'):
+			$reportingYearToPeriod="and `sm`.`reportingPeriod` in ('Oct - Mar','Apr - Sep')
+			and `sm`.`reportingMonth` between ('2013-10-01') and ('2014-09-30') 
+			and `sm`.`year` in (2013,2014)";
+			break;
+			
+			case trim('CPMA Year Two'):
+			$reportingYearToPeriod="and `sm`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
+			and `sm`.`reportingMonth` between ('2014-10-01') and ('2015-09-30')
+			and `sm`.`year` in (2014,2015)";
+			break;
+			
+			case trim('CPMA Year Three'):
+			$reportingYearToPeriod="and `sm`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
+			and `sm`.`reportingMonth` between ('2015-10-01') and ('2016-09-30')
+			and `sm`.`DateSubmission` between ('2015-10-01') and ('2016-09-30')
+			and `sm`.`year` in (2015,2016)";
+			break;
+			
+			case trim('CPMA Year Four'):
+			$reportingYearToPeriod="and `sm`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
+			and `sm`.`reportingMonth` between ('2016-10-01') and ('2017-09-30')
+			and `sm`.`DateSubmission` between ('2016-10-01') and ('2017-09-30')
+			and `sm`.`year` in (2016,2017)";
+			break;
+			
+			case trim('CPMA Year Five(Activity close out)'):
+			$reportingYearToPeriod="and `sm`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
+			and `sm`.`reportingMonth` between ('2017-10-01') and ('2018-09-30')
+			and `sm`.`year` in (2017,2018)";
+			break;
+			
+			default:
+			break;
+		}
+		
+		switch(trim($reporting_period)){
+			case trim('Project start up'):
+			$reportingYearToPeriodCleaned="
+			and `sm`.`reportingPeriod` = 'Apr - Sep' 
+			and `sm`.`reportingMonth` between ('2013-04-01') and ('2013-09-30')
+			and `sm`.`year` in (2013)
+			";
+			break;
+			
+			case trim('Oct 2013 - Mar 2014'):
+			$reportingYearToPeriodCleaned="
+			and `sm`.`reportingPeriod` = 'Oct - Mar' 
+			and `sm`.`reportingMonth` between ('2013-10-01') and ('2014-03-31')
+			and `sm`.`year` in (2013,2014)
+			";
+			break;
+			
+			case trim('Apr 2014 - Sep 2014'):
+			$reportingYearToPeriodCleaned="
+			and `sm`.`reportingPeriod` = 'Apr - Sep' 
+			and `sm`.`reportingMonth` between ('2014-04-01') and ('2014-09-30')
+			and `sm`.`year` in (2014)
+			";
+			break;
+			
+			case trim('Oct 2014 - Mar 2015'):
+			$reportingYearToPeriodCleaned="
+			and `sm`.`reportingPeriod` = 'Oct - Mar' 
+			and `sm`.`reportingMonth` between ('2014-10-01') and ('2015-03-31')
+			and `sm`.`year` in (2014,2015)
+			";
+			break;
+			
+			case trim('Apr 2015 - Sep 2015'):
+			$reportingYearToPeriodCleaned="
+			and `sm`.`reportingPeriod` = 'Apr - Sep' 
+			and `sm`.`reportingMonth` between ('2015-04-01') and ('2015-09-30')
+			and `sm`.`year` in (2015)
+			";
+			break;
+			
+			case trim('Oct 2015 - Mar 2016'):
+			$reportingYearToPeriodCleaned="
+			and `sm`.`reportingPeriod` = 'Oct - Mar' 
+			and `sm`.`reportingMonth` between ('2015-10-01') and ('2016-03-31')
+			and `sm`.`year` in (2015,2016)
+			";
+			break;
+			
+			case trim('Apr 2016 - Sep 2016'):
+			$reportingYearToPeriodCleaned="
+			and `sm`.`reportingPeriod` = 'Apr - Sep' 
+			and `sm`.`reportingMonth` between ('2016-04-01') and ('2016-09-30')
+			and `sm`.`year` in (2016)
+			";
+			break;
+			
+			case trim('Oct 2016 - Mar 2017'):
+			$reportingYearToPeriodCleaned="
+			and `sm`.`reportingPeriod` = 'Oct - Mar' 
+			and `sm`.`reportingMonth` between ('2016-10-01') and ('2017-03-31')
+			and `sm`.`year` in (2016,2017)
+			";
+			break;
+			
+			case trim('Apr 2017 - Sep 2017'):
+			$reportingYearToPeriodCleaned="
+			and `sm`.`reportingPeriod` = 'Apr - Sep' 
+			and `sm`.`reportingMonth` between ('2017-04-01') and ('2017-09-30')
+			and `sm`.`year` in (2017)
+			";
+			break;
+			
+			case trim('Oct 2017 – Mar 2018'):
+			$reportingYearToPeriodCleaned="
+			and `sm`.`reportingPeriod` = 'Oct - Mar' 
+			and `sm`.`reportingMonth` between ('2017-10-01') and ('2018-03-31')
+			and `sm`.`year` in (2017,2018)
+			";
+			break;
+			
+			case trim('Apr 2018 – May 2018'):
+			$reportingYearToPeriodCleaned="
+			and `sm`.`reportingPeriod` = 'Apr - Sep' 
+			and `sm`.`reportingMonth` between ('2018-04-01') and ('2018-09-30')
+			and `sm`.`year` in (2018)
+			";
+			break;
+			
+			default:
+			break;
+		}		
+  
+		$query_string="select
+		`s`.`id`,  
+		`s`.`dateOfStartOfinputsSalesBusiness`,
+		`s`.`nameOfMiddleValueChainActor`,
+		`sm`.`dateSubmission`,
+		`sm`.`reportingPeriod`,
+		`sm`.`year`, 
+		`sm`.`reportingMonth`
+		from `tbl_input_sales` as `s`
+		join `inputsales_metadata` as `sr` on (`sr`.`sales_id` = `s`.`id`)
+		join `tbl_input_sales_meta_data` as `sm` on (`sm`.`id` = `sr`.`metadata_id`)
+		where `sm`.`input_sales_id`	is not null ";
+		$reporting_period=(!empty($cpma_year))?'':$reporting_period;
+		$cpma_year=(!empty($reporting_period))?'':$cpma_year;
+		$reporting_period=(!empty($reporting_period))?" ".$reportingYearToPeriodCleaned." ":"";
+		$cpma_year=(!empty($cpma_year))?" ".$reportingYearToPeriod." ":"";
+		/* $partnerType=(!empty($partnerType) and ($partnerType !=1))?" AND `s`.`msmeType` = '".$partnerType."' ":""; */
+		$query_string.=$reporting_period.$cpma_year;	
+		$query_string.=" group by `s`.`id` ";
+		$query_string.=" order by `s`.`id` desc";
 	
 	//$obj->alert($query_string);
 
@@ -5914,38 +6288,40 @@ $data.="<tr>
   while($row_parent=mysql_fetch_array($new_query)){
 	  
 	  
-	  switch($cpma_year){
-			case'CPMA Year One':
-			$reportingYearToPeriod="and `sm`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
-			and `sm`.`reportingMonth` between ('2012-10-01') and ('2013-09-30')
-			and `sm`.`year` in (2012,2013)";
+	  switch(trim($cpma_year)){
+
+			case trim('Project start up'):
+			$reportingYearToPeriod="and `sm`.`reportingPeriod` in ('Apr - Sep') 
+			and `sm`.`year` in (2013)";
 			break;
-			
-			case'CPMA Year Two':
-			$reportingYearToPeriod="and `sm`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
-			and `sm`.`reportingMonth` between ('2013-10-01') and ('2014-09-30')
+
+			case trim('CPMA Year One'):
+			$reportingYearToPeriod="and `sm`.`reportingPeriod` in ('Oct - Mar','Apr - Sep')
+			and `sm`.`reportingMonth` between ('2013-10-01') and ('2014-09-30') 
 			and `sm`.`year` in (2013,2014)";
 			break;
 			
-			case'CPMA Year Three':
+			case trim('CPMA Year Two'):
 			$reportingYearToPeriod="and `sm`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
 			and `sm`.`reportingMonth` between ('2014-10-01') and ('2015-09-30')
 			and `sm`.`year` in (2014,2015)";
 			break;
 			
-			case'CPMA Year Four':
+			case trim('CPMA Year Three'):
 			$reportingYearToPeriod="and `sm`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
 			and `sm`.`reportingMonth` between ('2015-10-01') and ('2016-09-30')
+			and `sm`.`DateSubmission` between ('2015-10-01') and ('2016-09-30')
 			and `sm`.`year` in (2015,2016)";
 			break;
 			
-			case'CPMA Year Five':
+			case trim('CPMA Year Four'):
 			$reportingYearToPeriod="and `sm`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
 			and `sm`.`reportingMonth` between ('2016-10-01') and ('2017-09-30')
+			and `sm`.`DateSubmission` between ('2016-10-01') and ('2017-09-30')
 			and `sm`.`year` in (2016,2017)";
 			break;
 			
-			case'CPMA Year Six':
+			case trim('CPMA Year Five(Activity close out)'):
 			$reportingYearToPeriod="and `sm`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
 			and `sm`.`reportingMonth` between ('2017-10-01') and ('2018-09-30')
 			and `sm`.`year` in (2017,2018)";
@@ -5955,16 +6331,8 @@ $data.="<tr>
 			break;
 		}
 		
-		switch($reporting_period){
-			case'Oct 2012 - Mar 2013':
-			$reportingYearToPeriodCleaned="
-			and `sm`.`reportingPeriod` = 'Oct - Mar' 
-			and `sm`.`reportingMonth` between ('2012-10-01') and ('2013-03-31')
-			and `sm`.`year` in (2012,2013)
-			";
-			break;
-			
-			case'Apr 2013 - Sep 2013':
+		switch(trim($reporting_period)){
+			case trim('Project start up'):
 			$reportingYearToPeriodCleaned="
 			and `sm`.`reportingPeriod` = 'Apr - Sep' 
 			and `sm`.`reportingMonth` between ('2013-04-01') and ('2013-09-30')
@@ -5972,7 +6340,7 @@ $data.="<tr>
 			";
 			break;
 			
-			case'Oct 2013 - Mar 2014':
+			case trim('Oct 2013 - Mar 2014'):
 			$reportingYearToPeriodCleaned="
 			and `sm`.`reportingPeriod` = 'Oct - Mar' 
 			and `sm`.`reportingMonth` between ('2013-10-01') and ('2014-03-31')
@@ -5980,7 +6348,7 @@ $data.="<tr>
 			";
 			break;
 			
-			case'Apr 2014 - Sep 2014':
+			case trim('Apr 2014 - Sep 2014'):
 			$reportingYearToPeriodCleaned="
 			and `sm`.`reportingPeriod` = 'Apr - Sep' 
 			and `sm`.`reportingMonth` between ('2014-04-01') and ('2014-09-30')
@@ -5988,7 +6356,7 @@ $data.="<tr>
 			";
 			break;
 			
-			case'Oct 2014 - Mar 2015':
+			case trim('Oct 2014 - Mar 2015'):
 			$reportingYearToPeriodCleaned="
 			and `sm`.`reportingPeriod` = 'Oct - Mar' 
 			and `sm`.`reportingMonth` between ('2014-10-01') and ('2015-03-31')
@@ -5996,7 +6364,7 @@ $data.="<tr>
 			";
 			break;
 			
-			case'Apr 2015 - Sep 2015':
+			case trim('Apr 2015 - Sep 2015'):
 			$reportingYearToPeriodCleaned="
 			and `sm`.`reportingPeriod` = 'Apr - Sep' 
 			and `sm`.`reportingMonth` between ('2015-04-01') and ('2015-09-30')
@@ -6004,7 +6372,7 @@ $data.="<tr>
 			";
 			break;
 			
-			case'Oct 2015 - Mar 2016':
+			case trim('Oct 2015 - Mar 2016'):
 			$reportingYearToPeriodCleaned="
 			and `sm`.`reportingPeriod` = 'Oct - Mar' 
 			and `sm`.`reportingMonth` between ('2015-10-01') and ('2016-03-31')
@@ -6012,7 +6380,7 @@ $data.="<tr>
 			";
 			break;
 			
-			case'Apr 2016 - Sep 2016':
+			case trim('Apr 2016 - Sep 2016'):
 			$reportingYearToPeriodCleaned="
 			and `sm`.`reportingPeriod` = 'Apr - Sep' 
 			and `sm`.`reportingMonth` between ('2016-04-01') and ('2016-09-30')
@@ -6020,7 +6388,7 @@ $data.="<tr>
 			";
 			break;
 			
-			case'Oct 2016 - Mar 2017':
+			case trim('Oct 2016 - Mar 2017'):
 			$reportingYearToPeriodCleaned="
 			and `sm`.`reportingPeriod` = 'Oct - Mar' 
 			and `sm`.`reportingMonth` between ('2016-10-01') and ('2017-03-31')
@@ -6028,7 +6396,7 @@ $data.="<tr>
 			";
 			break;
 			
-			case'Apr 2017 - Sep 2017':
+			case trim('Apr 2017 - Sep 2017'):
 			$reportingYearToPeriodCleaned="
 			and `sm`.`reportingPeriod` = 'Apr - Sep' 
 			and `sm`.`reportingMonth` between ('2017-04-01') and ('2017-09-30')
@@ -6036,7 +6404,7 @@ $data.="<tr>
 			";
 			break;
 			
-			case'Oct 2017 - Mar 2018':
+			case trim('Oct 2017 – Mar 2018'):
 			$reportingYearToPeriodCleaned="
 			and `sm`.`reportingPeriod` = 'Oct - Mar' 
 			and `sm`.`reportingMonth` between ('2017-10-01') and ('2018-03-31')
@@ -6044,7 +6412,7 @@ $data.="<tr>
 			";
 			break;
 			
-			case'Apr 2018 - Sep 2018':
+			case trim('Apr 2018 – May 2018'):
 			$reportingYearToPeriodCleaned="
 			and `sm`.`reportingPeriod` = 'Apr - Sep' 
 			and `sm`.`reportingMonth` between ('2018-04-01') and ('2018-09-30')
@@ -6052,132 +6420,18 @@ $data.="<tr>
 			";
 			break;
 			
-			
-			break;
-			
 			default:
 			break;
 		}
-	  
 		
-		//determining the number of child records for each row
-			$s_child="SELECT `sm`.*,
+		$s_child="select  `sm`.*,
 		case
-			when `sm`.`reportingPeriod` = 'Oct - Mar' 
-			and `sm`.`reportingMonth` 
-			between ('2012-10-01') and ('2013-03-31') 
-			and `sm`.`year` in (2012,2013) 
-			then 'Oct 2012 - Mar 2013'
-			
-			when `sm`.`reportingPeriod` = 'Apr - Sep' 
-			and `sm`.`reportingMonth` 
-			between ('2013-04-01') and ('2013-09-30') 
-			and `sm`.`year` in (2013) 
-			then 'Apr 2013 - Sep 2013'
-			
-			when `sm`.`reportingPeriod` = 'Oct - Mar' 
-			and `sm`.`reportingMonth` 
-			between ('2013-10-01') and ('2014-03-31') 
-			and `sm`.`year` in (2013,2014) 
-			then 'Oct 2013 - Mar 2014'
-			
-			when `sm`.`reportingPeriod` = 'Apr - Sep' 
-			and `sm`.`reportingMonth` 
-			between ('2014-04-01') and ('2014-09-30') 
-			and `sm`.`year` in (2014) 
-			then 'Apr 2014 - Sep 2014'
-			
-			when `sm`.`reportingPeriod` = 'Oct - Mar' 
-			and `sm`.`reportingMonth` 
-			between ('2014-10-01') and ('2015-03-31') 
-			and `sm`.`year` in (2014,2015) 
-			then 'Oct 2014 - Mar 2015'
-			
-			when `sm`.`reportingPeriod` = 'Apr - Sep' 
-			and `sm`.`reportingMonth` 
-			between ('2015-04-01') and ('2015-09-30') 
-			and `sm`.`year` in (2015) 
-			then 'Apr 2015 - Sep 2015'
-			
-			when `sm`.`reportingPeriod` = 'Oct - Mar' 
-			and `sm`.`reportingMonth` 
-			between ('2015-10-01') and ('2016-03-31') 
-			and `sm`.`year` in (2015,2016) 
-			then 'Oct 2015 - Mar 2016'
-			
-			when `sm`.`reportingPeriod` = 'Apr - Sep' 
-			and `sm`.`reportingMonth` 
-			between ('2016-04-01') and ('2016-09-30') 
-			and `sm`.`year` in (2016) 
-			then 'Apr 2016 - Sep 2016'
-			
-			when `sm`.`reportingPeriod` = 'Oct - Mar' 
-			and `sm`.`reportingMonth` 
-			between ('2016-10-01') and ('2017-03-31') 
-			and `sm`.`year` in (2016,2017) 
-			then 'Oct 2016 - Mar 2017'
-			
-			when `sm`.`reportingPeriod` = 'Apr - Sep' 
-			and `sm`.`reportingMonth` 
-			between ('2017-04-01') and ('2017-09-30') 
-			and `sm`.`year` in (2017) 
-			then 'Apr 2017 - Sep 2017'
-			
-			when `sm`.`reportingPeriod` = 'Oct - Mar' 
-			and `sm`.`reportingMonth` 
-			between ('2017-10-01') and ('2018-03-31') 
-			and `sm`.`year` in (2017,2018) 
-			then 'Oct 2017 - Mar 2018'
-			
-			when `sm`.`reportingPeriod` = 'Apr - Sep' 
-			and `sm`.`reportingMonth` 
-			between ('2018-04-01') and ('2018-09-30') 
-			and `sm`.`year` in (2017) 
-			then 'Apr 2018 - Sep 2018'
-			
-		else `sm`.`reportingPeriod`
-		end 
-		as  `reportingPeriod_cleaned`
-		FROM `tbl_input_sales_meta_data` as `sm`
-		WHERE `sm`.`input_sales_id`='".$row_parent['id']."'";
-		
-		$reporting_period=(!empty($cpma_year))?'':$reporting_period;
-		$cpma_year=(!empty($reporting_period))?'':$cpma_year;
-		$reporting_period=(!empty($reporting_period))?" ".$reportingYearToPeriodCleaned." ":"";
-		$cpma_year=(!empty($cpma_year))?" ".$reportingYearToPeriod." ":"";
-		/* $partnerType=(!empty($partnerType) and ($partnerType !=1))?" AND `s`.`msmeType` = '".$partnerType."' ":""; */
-		$s_child.=$reporting_period.$cpma_year;	
-
-		$s_child.=" order by `sm`.`input_sales_id` ";
-
-		//$q_child=Execute($s_child) or die(http(__line__));		
-		$q_child=Execute($s_child) or die(mysql_error());			
-		$num_child_records=mysql_num_rows($q_child);	
-		//$obj->alert($num_child_records);			
-		$row_span=($num_child_records>1)?"rowspan='".$num_child_records."'":"";
-		$col_span=($num_child_records>1)?"colspan='2'":"";
-		$v=$n+$num_child_records;
-
-	  
-		$data.="<tr>";
-		$data.="<td ".$row_span.">".$n.".</td>";
-		$data.="<td ".$row_span.">".($row_parent['nameOfMiddleValueChainActor'])."</td>";		
-		$data.="<td ".$row_span.">".$qmobj->cleanDirtyDates($row_parent['dateOfStartOfinputsSalesBusiness'])."</td>";
-		//return first row of child records
-		$s_first_child = mysql_query("SELECT `sm`.*,
-		case
-		when `sm`.`reportingPeriod` = 'Oct - Mar' 
-		and `sm`.`reportingMonth` 
-		between ('2012-10-01') and ('2013-03-31') 
-		and `sm`.`year` in (2012,2013) 
-		then 'Oct 2012 - Mar 2013'
-
 		when `sm`.`reportingPeriod` = 'Apr - Sep' 
 		and `sm`.`reportingMonth` 
 		between ('2013-04-01') and ('2013-09-30') 
 		and `sm`.`year` in (2013) 
-		then 'Apr 2013 - Sep 2013'
-
+		then 'Apr 2012 - Sep 2013'
+		
 		when `sm`.`reportingPeriod` = 'Oct - Mar' 
 		and `sm`.`reportingMonth` 
 		between ('2013-10-01') and ('2014-03-31') 
@@ -6235,12 +6489,109 @@ $data.="<tr>
 		when `sm`.`reportingPeriod` = 'Apr - Sep' 
 		and `sm`.`reportingMonth` 
 		between ('2018-04-01') and ('2018-09-30') 
-		and `sm`.`year` in (2017) 
-		then 'Apr 2018 - Sep 2018'
+		and `sm`.`year` in (2018) 
+		then 'Apr 2018 - May 2018'
+		
+	else `sm`.`reportingPeriod`
+	end 
+	as  `reportingPeriod_cleaned`
+		FROM `tbl_input_sales_meta_data` as `sm`
+		WHERE `sm`.`input_sales_id`='".$row_parent['id']."'";
+		
+		$reporting_period=(!empty($cpma_year))?'':$reporting_period;
+		$cpma_year=(!empty($reporting_period))?'':$cpma_year;
+		$reporting_period=(!empty($reporting_period))?" ".$reportingYearToPeriodCleaned." ":"";
+		$cpma_year=(!empty($cpma_year))?" ".$reportingYearToPeriod." ":"";
+		/* $partnerType=(!empty($partnerType) and ($partnerType !=1))?" AND `s`.`msmeType` = '".$partnerType."' ":""; */
+		$s_child.=$reporting_period.$cpma_year;	
 
-		else `sm`.`reportingPeriod`
-		end 
-		as  `reportingPeriod_cleaned`
+		$s_child.=" order by `sm`.`input_sales_id` ";
+
+		//$q_child=Execute($s_child) or die(http(__line__));		
+		$q_child=Execute($s_child) or die(mysql_error()).' on line '.__LINE__;			
+		$num_child_records=mysql_num_rows($q_child);	
+		//$obj->alert($num_child_records);			
+		$row_span=($num_child_records>1)?"rowspan='".$num_child_records."'":"";
+		$col_span=($num_child_records>1)?"colspan='2'":"";
+		$v=$n+$num_child_records;
+
+	  
+		$data.="<tr>";
+		$data.="<td ".$row_span.">".$n.".</td>";
+		$data.="<td ".$row_span.">".($row_parent['nameOfMiddleValueChainActor'])."</td>";		
+		$data.="<td ".$row_span.">".$qmobj->cleanDirtyDates($row_parent['dateOfStartOfinputsSalesBusiness'])."</td>";
+		//return first row of child records
+		$s_first_child = mysql_query("SELECT `sm`.*,
+								case
+								when `sm`.`reportingPeriod` = 'Apr - Sep' 
+								and `sm`.`reportingMonth` 
+								between ('2013-04-01') and ('2013-09-30') 
+								and `sm`.`year` in (2013) 
+								then 'Apr 2012 - Sep 2013'
+								
+								when `sm`.`reportingPeriod` = 'Oct - Mar' 
+								and `sm`.`reportingMonth` 
+								between ('2013-10-01') and ('2014-03-31') 
+								and `sm`.`year` in (2013,2014) 
+								then 'Oct 2013 - Mar 2014'
+
+								when `sm`.`reportingPeriod` = 'Apr - Sep' 
+								and `sm`.`reportingMonth` 
+								between ('2014-04-01') and ('2014-09-30') 
+								and `sm`.`year` in (2014) 
+								then 'Apr 2014 - Sep 2014'
+
+								when `sm`.`reportingPeriod` = 'Oct - Mar' 
+								and `sm`.`reportingMonth` 
+								between ('2014-10-01') and ('2015-03-31') 
+								and `sm`.`year` in (2014,2015) 
+								then 'Oct 2014 - Mar 2015'
+
+								when `sm`.`reportingPeriod` = 'Apr - Sep' 
+								and `sm`.`reportingMonth` 
+								between ('2015-04-01') and ('2015-09-30') 
+								and `sm`.`year` in (2015) 
+								then 'Apr 2015 - Sep 2015'
+
+								when `sm`.`reportingPeriod` = 'Oct - Mar' 
+								and `sm`.`reportingMonth` 
+								between ('2015-10-01') and ('2016-03-31') 
+								and `sm`.`year` in (2015,2016) 
+								then 'Oct 2015 - Mar 2016'
+
+								when `sm`.`reportingPeriod` = 'Apr - Sep' 
+								and `sm`.`reportingMonth` 
+								between ('2016-04-01') and ('2016-09-30') 
+								and `sm`.`year` in (2016) 
+								then 'Apr 2016 - Sep 2016'
+
+								when `sm`.`reportingPeriod` = 'Oct - Mar' 
+								and `sm`.`reportingMonth` 
+								between ('2016-10-01') and ('2017-03-31') 
+								and `sm`.`year` in (2016,2017) 
+								then 'Oct 2016 - Mar 2017'
+
+								when `sm`.`reportingPeriod` = 'Apr - Sep' 
+								and `sm`.`reportingMonth` 
+								between ('2017-04-01') and ('2017-09-30') 
+								and `sm`.`year` in (2017) 
+								then 'Apr 2017 - Sep 2017'
+
+								when `sm`.`reportingPeriod` = 'Oct - Mar' 
+								and `sm`.`reportingMonth` 
+								between ('2017-10-01') and ('2018-03-31') 
+								and `sm`.`year` in (2017,2018) 
+								then 'Oct 2017 - Mar 2018'
+
+								when `sm`.`reportingPeriod` = 'Apr - Sep' 
+								and `sm`.`reportingMonth` 
+								between ('2018-04-01') and ('2018-09-30') 
+								and `sm`.`year` in (2018) 
+								then 'Apr 2018 - May 2018'
+								
+							else `sm`.`reportingPeriod`
+							end 
+							as  `reportingPeriod_cleaned`
 		FROM `tbl_input_sales_meta_data` as `sm`
 		WHERE `sm`.`input_sales_id`='".$row_parent['id']."' limit 0,1")or die(http(__line__));
 		$first_child_row = mysql_fetch_array($s_first_child );	
@@ -6269,7 +6620,7 @@ $data.="<tr>
 					$data.="<td ".$col_span." ".$row_span." >
 						<input type='button' class='formButton2'title='Edit'
 							onclick=\"xajax_edit_inputSales('".$row_parent['id']."');return false;\" value='edit' /> |
-						<input type='button' value='Delete' class='red'
+						<input type='button' value='Delete' class='disabled' disabled='disabled'
 							onclick=\"ConfirmDelete('".$row_parent['id']."','Delete_inputSales');return false;\" align='left'>
 					</td>";
 				$data.="</tr>";
@@ -6279,83 +6630,77 @@ $data.="<tr>
 					//loop thru kid records -1
 					$s_other_children = mysql_query("SELECT `sm`.*,
 						case
-							when `sm`.`reportingPeriod` = 'Oct - Mar' 
-							and `sm`.`reportingMonth` 
-							between ('2012-10-01') and ('2013-03-31') 
-							and `sm`.`year` in (2012,2013) 
-							then 'Oct 2012 - Mar 2013'
-							
 							when `sm`.`reportingPeriod` = 'Apr - Sep' 
 							and `sm`.`reportingMonth` 
 							between ('2013-04-01') and ('2013-09-30') 
 							and `sm`.`year` in (2013) 
-							then 'Apr 2013 - Sep 2013'
+							then 'Apr 2012 - Sep 2013'
 							
 							when `sm`.`reportingPeriod` = 'Oct - Mar' 
 							and `sm`.`reportingMonth` 
 							between ('2013-10-01') and ('2014-03-31') 
 							and `sm`.`year` in (2013,2014) 
 							then 'Oct 2013 - Mar 2014'
-							
+
 							when `sm`.`reportingPeriod` = 'Apr - Sep' 
 							and `sm`.`reportingMonth` 
 							between ('2014-04-01') and ('2014-09-30') 
 							and `sm`.`year` in (2014) 
 							then 'Apr 2014 - Sep 2014'
-							
+
 							when `sm`.`reportingPeriod` = 'Oct - Mar' 
 							and `sm`.`reportingMonth` 
 							between ('2014-10-01') and ('2015-03-31') 
 							and `sm`.`year` in (2014,2015) 
 							then 'Oct 2014 - Mar 2015'
-							
+
 							when `sm`.`reportingPeriod` = 'Apr - Sep' 
 							and `sm`.`reportingMonth` 
 							between ('2015-04-01') and ('2015-09-30') 
 							and `sm`.`year` in (2015) 
 							then 'Apr 2015 - Sep 2015'
-							
+
 							when `sm`.`reportingPeriod` = 'Oct - Mar' 
 							and `sm`.`reportingMonth` 
 							between ('2015-10-01') and ('2016-03-31') 
 							and `sm`.`year` in (2015,2016) 
 							then 'Oct 2015 - Mar 2016'
-							
+
 							when `sm`.`reportingPeriod` = 'Apr - Sep' 
 							and `sm`.`reportingMonth` 
 							between ('2016-04-01') and ('2016-09-30') 
 							and `sm`.`year` in (2016) 
 							then 'Apr 2016 - Sep 2016'
-							
+
 							when `sm`.`reportingPeriod` = 'Oct - Mar' 
 							and `sm`.`reportingMonth` 
 							between ('2016-10-01') and ('2017-03-31') 
 							and `sm`.`year` in (2016,2017) 
 							then 'Oct 2016 - Mar 2017'
-							
+
 							when `sm`.`reportingPeriod` = 'Apr - Sep' 
 							and `sm`.`reportingMonth` 
 							between ('2017-04-01') and ('2017-09-30') 
 							and `sm`.`year` in (2017) 
 							then 'Apr 2017 - Sep 2017'
-							
+
 							when `sm`.`reportingPeriod` = 'Oct - Mar' 
 							and `sm`.`reportingMonth` 
 							between ('2017-10-01') and ('2018-03-31') 
 							and `sm`.`year` in (2017,2018) 
 							then 'Oct 2017 - Mar 2018'
-							
+
 							when `sm`.`reportingPeriod` = 'Apr - Sep' 
 							and `sm`.`reportingMonth` 
 							between ('2018-04-01') and ('2018-09-30') 
-							and `sm`.`year` in (2017) 
-							then 'Apr 2018 - Sep 2018'
+							and `sm`.`year` in (2018) 
+							then 'Apr 2018 - May 2018'
 							
 						else `sm`.`reportingPeriod`
 						end 
 						as  `reportingPeriod_cleaned`
 						FROM `tbl_input_sales_meta_data` as `sm`
-						WHERE `sm`.`input_sales_id`='".$row_parent['id']."' limit 1,100000")or die(http(__line__));
+						WHERE `sm`.`input_sales_id`='".$row_parent['id']."' limit 1,100000")or die(mysql_error().' on line '.__LINE__);
 					while($other_children_row = mysql_fetch_array($s_other_children )){
 						$data.="<tr>";					
 						$data.="<td>".($other_children_row['reportingPeriod_cleaned'])."</td>";						
@@ -6856,12 +7201,12 @@ $data="<form action='".$_SERVER['PHP_SELF']."' name='phhEdit' id='phhEdit' metho
 $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing='1' cellpadding='1'>".phhFilter();
 
 $data.="<tr>
-					<th colspan='15'>
-					Commodity Production and Marketing Activity VALUE CHAIN DATA COLLECTION FORM/PHH</th>
-				</tr>";			
+	<th colspan='15'>
+	Commodity Production and Marketing Activity VALUE CHAIN DATA COLLECTION FORM/PHH</th>
+</tr>";			
 
-				//===================data to be displayed=====================
-				$data.="<tr>
+//===================data to be displayed=====================
+$data.="<tr>
     <th rowspan='3' class='first-cell-header'>#</th>
     <th rowspan='3'>Name of Middle Value Chain Actor</th>    
 	<th rowspan='3' class='small-cell-header'>Date Store was refurbished or Newly constructed/hired</th>
@@ -6887,8 +7232,226 @@ $data.="<tr>
   </thead>
   <tbody>";
   
-	$query_string="select `p`.* from `tbl_phh` as `p` ";	
-	$query_string.=" group by `p`.`id` order by `p`.`id` desc";
+  
+	$table='tbl_phh_meta_data';
+	$name_column_submission_date='dateSubmission';
+	$name_column_rep_period='reportingPeriod';
+	$name_column_year='year';
+	$primary_key_column='phh_id';
+
+	//get expected end of reporting period date
+	$first_three_chars_rp=substr($reporting_period,0,3);
+	//$obj->alert($reporting_period);
+
+	switch($first_three_chars_rp){
+		case 'Oct':
+		$expected_end_date=''.trim(substr($reporting_period,-4)).'-03-31';
+		break;
+
+		case 'Apr':
+		$expected_end_date=''.trim(substr($reporting_period,-4)).'-04-30';
+		break;
+
+		default:
+		break;
+
+	}
+
+	//select records dates with issues
+		$statement_rec_with_issues="select * from ".$table." 
+		where ".$name_column_submission_date." > '".$expected_end_date."'
+		";
+
+		//$obj->alert($statement_rec_with_issues);
+
+		$query_rec_with_issues = Execute($statement_rec_with_issues) or die(mysql_error());
+			while ($row_rec_with_issues = FetchRecords($query_rec_with_issues)) {
+				//update  records with issues
+					$date_submission = $row_rec_with_issues[''.$name_column_submission_date.''];
+					$affected_rec = $row_rec_with_issues[''.$primary_key_column.''];
+
+					//Return statement from method to do the table clean-up
+					$stamentToCleanUp = $qmobj->cleanUpDateSubmissionValues(
+						$date_submission,
+						$reporting_period,
+						$table,
+						$name_column_submission_date,
+						$name_column_rep_period,
+						$name_column_year,
+						$primary_key_column,
+						$affected_rec
+					);
+
+					switch(true){
+						case(!empty($stamentToCleanUp) and ($stamentToCleanUp !=='')):
+						@Execute($stamentToCleanUp) or die(mysql_error());
+						break;
+
+						default:
+						break;
+					}
+			
+			}
+  
+		switch(trim($cpma_year)){
+
+			case trim('Project start up'):
+			$reportingYearToPeriod="and `pm`.`reportingPeriod` in ('Apr - Sep') 
+			and `pm`.`year` in (2013)";
+			break;
+
+			case trim('CPMA Year One'):
+			$reportingYearToPeriod="and `pm`.`reportingPeriod` in ('Oct - Mar','Apr - Sep')
+			and `pm`.`reportingMonth` between ('2013-10-01') and ('2014-09-30') 
+			and `pm`.`year` in (2013,2014)";
+			break;
+			
+			case trim('CPMA Year Two'):
+			$reportingYearToPeriod="and `pm`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
+			and `pm`.`reportingMonth` between ('2014-10-01') and ('2015-09-30')
+			and `pm`.`year` in (2014,2015)";
+			break;
+			
+			case trim('CPMA Year Three'):
+			$reportingYearToPeriod="and `pm`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
+			and `pm`.`reportingMonth` between ('2015-10-01') and ('2016-09-30')
+			and `pm`.`DateSubmission` between ('2015-10-01') and ('2016-09-30')
+			and `pm`.`year` in (2015,2016)";
+			break;
+			
+			case trim('CPMA Year Four'):
+			$reportingYearToPeriod="and `pm`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
+			and `pm`.`reportingMonth` between ('2016-10-01') and ('2017-09-30')
+			and `pm`.`DateSubmission` between ('2016-10-01') and ('2017-09-30')
+			and `pm`.`year` in (2016,2017)";
+			break;
+			
+			case trim('CPMA Year Five(Activity close out)'):
+			$reportingYearToPeriod="and `pm`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
+			and `pm`.`reportingMonth` between ('2017-10-01') and ('2018-09-30')
+			and `pm`.`year` in (2017,2018)";
+			break;
+			
+			default:
+			break;
+		}
+		
+		switch(trim($reporting_period)){
+			case trim('Project start up'):
+			$reportingYearToPeriodCleaned="
+			and `pm`.`reportingPeriod` = 'Apr - Sep' 
+			and `pm`.`reportingMonth` between ('2013-04-01') and ('2013-09-30')
+			and `pm`.`year` in (2013)
+			";
+			break;
+			
+			case trim('Oct 2013 - Mar 2014'):
+			$reportingYearToPeriodCleaned="
+			and `pm`.`reportingPeriod` = 'Oct - Mar' 
+			and `pm`.`reportingMonth` between ('2013-10-01') and ('2014-03-31')
+			and `pm`.`year` in (2013,2014)
+			";
+			break;
+			
+			case trim('Apr 2014 - Sep 2014'):
+			$reportingYearToPeriodCleaned="
+			and `pm`.`reportingPeriod` = 'Apr - Sep' 
+			and `pm`.`reportingMonth` between ('2014-04-01') and ('2014-09-30')
+			and `pm`.`year` in (2014)
+			";
+			break;
+			
+			case trim('Oct 2014 - Mar 2015'):
+			$reportingYearToPeriodCleaned="
+			and `pm`.`reportingPeriod` = 'Oct - Mar' 
+			and `pm`.`reportingMonth` between ('2014-10-01') and ('2015-03-31')
+			and `pm`.`year` in (2014,2015)
+			";
+			break;
+			
+			case trim('Apr 2015 - Sep 2015'):
+			$reportingYearToPeriodCleaned="
+			and `pm`.`reportingPeriod` = 'Apr - Sep' 
+			and `pm`.`reportingMonth` between ('2015-04-01') and ('2015-09-30')
+			and `pm`.`year` in (2015)
+			";
+			break;
+			
+			case trim('Oct 2015 - Mar 2016'):
+			$reportingYearToPeriodCleaned="
+			and `pm`.`reportingPeriod` = 'Oct - Mar' 
+			and `pm`.`reportingMonth` between ('2015-10-01') and ('2016-03-31')
+			and `pm`.`year` in (2015,2016)
+			";
+			break;
+			
+			case trim('Apr 2016 - Sep 2016'):
+			$reportingYearToPeriodCleaned="
+			and `pm`.`reportingPeriod` = 'Apr - Sep' 
+			and `pm`.`reportingMonth` between ('2016-04-01') and ('2016-09-30')
+			and `pm`.`year` in (2016)
+			";
+			break;
+			
+			case trim('Oct 2016 - Mar 2017'):
+			$reportingYearToPeriodCleaned="
+			and `pm`.`reportingPeriod` = 'Oct - Mar' 
+			and `pm`.`reportingMonth` between ('2016-10-01') and ('2017-03-31')
+			and `pm`.`year` in (2016,2017)
+			";
+			break;
+			
+			case trim('Apr 2017 - Sep 2017'):
+			$reportingYearToPeriodCleaned="
+			and `pm`.`reportingPeriod` = 'Apr - Sep' 
+			and `pm`.`reportingMonth` between ('2017-04-01') and ('2017-09-30')
+			and `pm`.`year` in (2017)
+			";
+			break;
+			
+			case trim('Oct 2017 – Mar 2018'):
+			$reportingYearToPeriodCleaned="
+			and `pm`.`reportingPeriod` = 'Oct - Mar' 
+			and `pm`.`reportingMonth` between ('2017-10-01') and ('2018-03-31')
+			and `pm`.`year` in (2017,2018)
+			";
+			break;
+			
+			case trim('Apr 2018 – May 2018'):
+			$reportingYearToPeriodCleaned="
+			and `pm`.`reportingPeriod` = 'Apr - Sep' 
+			and `pm`.`reportingMonth` between ('2018-04-01') and ('2018-09-30')
+			and `pm`.`year` in (2018)
+			";
+			break;
+			
+			default:
+			break;
+		}		
+  
+		$query_string="select
+		`p`.`id`,  
+		`p`.`dateOfStartOfinputsSalesBusiness`,
+		`p`.`nameOfMiddleValueChainActor`,
+		`pm`.`dateSubmission`,
+		`pm`.`reportingPeriod`,
+		`pm`.`year`, 
+		`pm`.`reportingMonth`
+		from `tbl_phh` as `p`
+		join `phh_metadata` as `pr` on (`pr`.`phh_id` = `p`.`id`)
+		join `tbl_phh_meta_data` as `pm` on (`pm`.`id` = `pr`.`metadata_id`)
+		where `pm`.`phh_id`	is not null ";
+		$reporting_period=(!empty($cpma_year))?'':$reporting_period;
+		$cpma_year=(!empty($reporting_period))?'':$cpma_year;
+		$reporting_period=(!empty($reporting_period))?" ".$reportingYearToPeriodCleaned." ":"";
+		$cpma_year=(!empty($cpma_year))?" ".$reportingYearToPeriod." ":"";
+		/* $partnerType=(!empty($partnerType) and ($partnerType !=1))?" AND `p`.`msmeType` = '".$partnerType."' ":""; */
+		$query_string.=$reporting_period.$cpma_year;	
+		$query_string.=" group by `p`.`id` ";
+		$query_string.=" order by `p`.`id` desc";
+	
+	
+	
 	
 	//$obj->alert($query_string);
 
@@ -6910,38 +7473,40 @@ $data.="<tr>
   while($row_parent=mysql_fetch_array($new_query)){
 	  
 	  
-	  switch($cpma_year){
-			case'CPMA Year One':
-			$reportingYearToPeriod="and `pm`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
-			and `pm`.`reportingMonth` between ('2012-10-01') and ('2013-09-30')
-			and `pm`.`year` in (2012,2013)";
+	  switch(trim($cpma_year)){
+
+			case trim('Project start up'):
+			$reportingYearToPeriod="and `pm`.`reportingPeriod` in ('Apr - Sep') 
+			and `pm`.`year` in (2013)";
 			break;
-			
-			case'CPMA Year Two':
-			$reportingYearToPeriod="and `pm`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
-			and `pm`.`reportingMonth` between ('2013-10-01') and ('2014-09-30')
+
+			case trim('CPMA Year One'):
+			$reportingYearToPeriod="and `pm`.`reportingPeriod` in ('Oct - Mar','Apr - Sep')
+			and `pm`.`reportingMonth` between ('2013-10-01') and ('2014-09-30') 
 			and `pm`.`year` in (2013,2014)";
 			break;
 			
-			case'CPMA Year Three':
+			case trim('CPMA Year Two'):
 			$reportingYearToPeriod="and `pm`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
 			and `pm`.`reportingMonth` between ('2014-10-01') and ('2015-09-30')
 			and `pm`.`year` in (2014,2015)";
 			break;
 			
-			case'CPMA Year Four':
+			case trim('CPMA Year Three'):
 			$reportingYearToPeriod="and `pm`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
 			and `pm`.`reportingMonth` between ('2015-10-01') and ('2016-09-30')
+			and `pm`.`DateSubmission` between ('2015-10-01') and ('2016-09-30')
 			and `pm`.`year` in (2015,2016)";
 			break;
 			
-			case'CPMA Year Five':
+			case trim('CPMA Year Four'):
 			$reportingYearToPeriod="and `pm`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
 			and `pm`.`reportingMonth` between ('2016-10-01') and ('2017-09-30')
+			and `pm`.`DateSubmission` between ('2016-10-01') and ('2017-09-30')
 			and `pm`.`year` in (2016,2017)";
 			break;
 			
-			case'CPMA Year Six':
+			case trim('CPMA Year Five(Activity close out)'):
 			$reportingYearToPeriod="and `pm`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
 			and `pm`.`reportingMonth` between ('2017-10-01') and ('2018-09-30')
 			and `pm`.`year` in (2017,2018)";
@@ -6951,16 +7516,8 @@ $data.="<tr>
 			break;
 		}
 		
-		switch($reporting_period){
-			case'Oct 2012 - Mar 2013':
-			$reportingYearToPeriodCleaned="
-			and `pm`.`reportingPeriod` = 'Oct - Mar' 
-			and `pm`.`reportingMonth` between ('2012-10-01') and ('2013-03-31')
-			and `pm`.`year` in (2012,2013)
-			";
-			break;
-			
-			case'Apr 2013 - Sep 2013':
+		switch(trim($reporting_period)){
+			case trim('Project start up'):
 			$reportingYearToPeriodCleaned="
 			and `pm`.`reportingPeriod` = 'Apr - Sep' 
 			and `pm`.`reportingMonth` between ('2013-04-01') and ('2013-09-30')
@@ -6968,7 +7525,7 @@ $data.="<tr>
 			";
 			break;
 			
-			case'Oct 2013 - Mar 2014':
+			case trim('Oct 2013 - Mar 2014'):
 			$reportingYearToPeriodCleaned="
 			and `pm`.`reportingPeriod` = 'Oct - Mar' 
 			and `pm`.`reportingMonth` between ('2013-10-01') and ('2014-03-31')
@@ -6976,7 +7533,7 @@ $data.="<tr>
 			";
 			break;
 			
-			case'Apr 2014 - Sep 2014':
+			case trim('Apr 2014 - Sep 2014'):
 			$reportingYearToPeriodCleaned="
 			and `pm`.`reportingPeriod` = 'Apr - Sep' 
 			and `pm`.`reportingMonth` between ('2014-04-01') and ('2014-09-30')
@@ -6984,7 +7541,7 @@ $data.="<tr>
 			";
 			break;
 			
-			case'Oct 2014 - Mar 2015':
+			case trim('Oct 2014 - Mar 2015'):
 			$reportingYearToPeriodCleaned="
 			and `pm`.`reportingPeriod` = 'Oct - Mar' 
 			and `pm`.`reportingMonth` between ('2014-10-01') and ('2015-03-31')
@@ -6992,7 +7549,7 @@ $data.="<tr>
 			";
 			break;
 			
-			case'Apr 2015 - Sep 2015':
+			case trim('Apr 2015 - Sep 2015'):
 			$reportingYearToPeriodCleaned="
 			and `pm`.`reportingPeriod` = 'Apr - Sep' 
 			and `pm`.`reportingMonth` between ('2015-04-01') and ('2015-09-30')
@@ -7000,7 +7557,7 @@ $data.="<tr>
 			";
 			break;
 			
-			case'Oct 2015 - Mar 2016':
+			case trim('Oct 2015 - Mar 2016'):
 			$reportingYearToPeriodCleaned="
 			and `pm`.`reportingPeriod` = 'Oct - Mar' 
 			and `pm`.`reportingMonth` between ('2015-10-01') and ('2016-03-31')
@@ -7008,7 +7565,7 @@ $data.="<tr>
 			";
 			break;
 			
-			case'Apr 2016 - Sep 2016':
+			case trim('Apr 2016 - Sep 2016'):
 			$reportingYearToPeriodCleaned="
 			and `pm`.`reportingPeriod` = 'Apr - Sep' 
 			and `pm`.`reportingMonth` between ('2016-04-01') and ('2016-09-30')
@@ -7016,7 +7573,7 @@ $data.="<tr>
 			";
 			break;
 			
-			case'Oct 2016 - Mar 2017':
+			case trim('Oct 2016 - Mar 2017'):
 			$reportingYearToPeriodCleaned="
 			and `pm`.`reportingPeriod` = 'Oct - Mar' 
 			and `pm`.`reportingMonth` between ('2016-10-01') and ('2017-03-31')
@@ -7024,7 +7581,7 @@ $data.="<tr>
 			";
 			break;
 			
-			case'Apr 2017 - Sep 2017':
+			case trim('Apr 2017 - Sep 2017'):
 			$reportingYearToPeriodCleaned="
 			and `pm`.`reportingPeriod` = 'Apr - Sep' 
 			and `pm`.`reportingMonth` between ('2017-04-01') and ('2017-09-30')
@@ -7032,7 +7589,7 @@ $data.="<tr>
 			";
 			break;
 			
-			case'Oct 2017 - Mar 2018':
+			case trim('Oct 2017 – Mar 2018'):
 			$reportingYearToPeriodCleaned="
 			and `pm`.`reportingPeriod` = 'Oct - Mar' 
 			and `pm`.`reportingMonth` between ('2017-10-01') and ('2018-03-31')
@@ -7040,15 +7597,12 @@ $data.="<tr>
 			";
 			break;
 			
-			case'Apr 2018 - Sep 2018':
+			case trim('Apr 2018 – May 2018'):
 			$reportingYearToPeriodCleaned="
 			and `pm`.`reportingPeriod` = 'Apr - Sep' 
 			and `pm`.`reportingMonth` between ('2018-04-01') and ('2018-09-30')
 			and `pm`.`year` in (2018)
 			";
-			break;
-			
-			
 			break;
 			
 			default:
@@ -7057,77 +7611,71 @@ $data.="<tr>
   
 	$s_child="select 
 	case
-		when `pm`.`reportingPeriod` = 'Oct - Mar' 
-		and `pm`.`reportingMonth` 
-		between ('2012-10-01') and ('2013-03-31') 
-		and `pm`.`year` in (2012,2013) 
-		then 'Oct 2012 - Mar 2013'
-		
 		when `pm`.`reportingPeriod` = 'Apr - Sep' 
 		and `pm`.`reportingMonth` 
 		between ('2013-04-01') and ('2013-09-30') 
 		and `pm`.`year` in (2013) 
-		then 'Apr 2013 - Sep 2013'
+		then 'Apr 2012 - Sep 2013'
 		
 		when `pm`.`reportingPeriod` = 'Oct - Mar' 
 		and `pm`.`reportingMonth` 
 		between ('2013-10-01') and ('2014-03-31') 
 		and `pm`.`year` in (2013,2014) 
 		then 'Oct 2013 - Mar 2014'
-		
+
 		when `pm`.`reportingPeriod` = 'Apr - Sep' 
 		and `pm`.`reportingMonth` 
 		between ('2014-04-01') and ('2014-09-30') 
 		and `pm`.`year` in (2014) 
 		then 'Apr 2014 - Sep 2014'
-		
+
 		when `pm`.`reportingPeriod` = 'Oct - Mar' 
 		and `pm`.`reportingMonth` 
 		between ('2014-10-01') and ('2015-03-31') 
 		and `pm`.`year` in (2014,2015) 
 		then 'Oct 2014 - Mar 2015'
-		
+
 		when `pm`.`reportingPeriod` = 'Apr - Sep' 
 		and `pm`.`reportingMonth` 
 		between ('2015-04-01') and ('2015-09-30') 
 		and `pm`.`year` in (2015) 
 		then 'Apr 2015 - Sep 2015'
-		
+
 		when `pm`.`reportingPeriod` = 'Oct - Mar' 
 		and `pm`.`reportingMonth` 
 		between ('2015-10-01') and ('2016-03-31') 
 		and `pm`.`year` in (2015,2016) 
 		then 'Oct 2015 - Mar 2016'
-		
+
 		when `pm`.`reportingPeriod` = 'Apr - Sep' 
 		and `pm`.`reportingMonth` 
 		between ('2016-04-01') and ('2016-09-30') 
 		and `pm`.`year` in (2016) 
 		then 'Apr 2016 - Sep 2016'
-		
+
 		when `pm`.`reportingPeriod` = 'Oct - Mar' 
 		and `pm`.`reportingMonth` 
 		between ('2016-10-01') and ('2017-03-31') 
 		and `pm`.`year` in (2016,2017) 
 		then 'Oct 2016 - Mar 2017'
-		
+
 		when `pm`.`reportingPeriod` = 'Apr - Sep' 
 		and `pm`.`reportingMonth` 
 		between ('2017-04-01') and ('2017-09-30') 
 		and `pm`.`year` in (2017) 
 		then 'Apr 2017 - Sep 2017'
-		
+
 		when `pm`.`reportingPeriod` = 'Oct - Mar' 
 		and `pm`.`reportingMonth` 
 		between ('2017-10-01') and ('2018-03-31') 
 		and `pm`.`year` in (2017,2018) 
 		then 'Oct 2017 - Mar 2018'
-		
+
 		when `pm`.`reportingPeriod` = 'Apr - Sep' 
 		and `pm`.`reportingMonth` 
 		between ('2018-04-01') and ('2018-09-30') 
-		and `pm`.`year` in (2017) 
-		then 'Apr 2018 - Sep 2018'
+		and `pm`.`year` in (2018) 
+		then 'Apr 2018 - May 2018'
 		
 	else `pm`.`reportingPeriod`
 	end 
@@ -7161,77 +7709,71 @@ $data.="<tr>
 		//return first row of child records
 		$s_first_child = mysql_query("select 
 	case
-		when `pm`.`reportingPeriod` = 'Oct - Mar' 
-		and `pm`.`reportingMonth` 
-		between ('2012-10-01') and ('2013-03-31') 
-		and `pm`.`year` in (2012,2013) 
-		then 'Oct 2012 - Mar 2013'
-		
 		when `pm`.`reportingPeriod` = 'Apr - Sep' 
 		and `pm`.`reportingMonth` 
 		between ('2013-04-01') and ('2013-09-30') 
 		and `pm`.`year` in (2013) 
-		then 'Apr 2013 - Sep 2013'
+		then 'Apr 2012 - Sep 2013'
 		
 		when `pm`.`reportingPeriod` = 'Oct - Mar' 
 		and `pm`.`reportingMonth` 
 		between ('2013-10-01') and ('2014-03-31') 
 		and `pm`.`year` in (2013,2014) 
 		then 'Oct 2013 - Mar 2014'
-		
+
 		when `pm`.`reportingPeriod` = 'Apr - Sep' 
 		and `pm`.`reportingMonth` 
 		between ('2014-04-01') and ('2014-09-30') 
 		and `pm`.`year` in (2014) 
 		then 'Apr 2014 - Sep 2014'
-		
+
 		when `pm`.`reportingPeriod` = 'Oct - Mar' 
 		and `pm`.`reportingMonth` 
 		between ('2014-10-01') and ('2015-03-31') 
 		and `pm`.`year` in (2014,2015) 
 		then 'Oct 2014 - Mar 2015'
-		
+
 		when `pm`.`reportingPeriod` = 'Apr - Sep' 
 		and `pm`.`reportingMonth` 
 		between ('2015-04-01') and ('2015-09-30') 
 		and `pm`.`year` in (2015) 
 		then 'Apr 2015 - Sep 2015'
-		
+
 		when `pm`.`reportingPeriod` = 'Oct - Mar' 
 		and `pm`.`reportingMonth` 
 		between ('2015-10-01') and ('2016-03-31') 
 		and `pm`.`year` in (2015,2016) 
 		then 'Oct 2015 - Mar 2016'
-		
+
 		when `pm`.`reportingPeriod` = 'Apr - Sep' 
 		and `pm`.`reportingMonth` 
 		between ('2016-04-01') and ('2016-09-30') 
 		and `pm`.`year` in (2016) 
 		then 'Apr 2016 - Sep 2016'
-		
+
 		when `pm`.`reportingPeriod` = 'Oct - Mar' 
 		and `pm`.`reportingMonth` 
 		between ('2016-10-01') and ('2017-03-31') 
 		and `pm`.`year` in (2016,2017) 
 		then 'Oct 2016 - Mar 2017'
-		
+
 		when `pm`.`reportingPeriod` = 'Apr - Sep' 
 		and `pm`.`reportingMonth` 
 		between ('2017-04-01') and ('2017-09-30') 
 		and `pm`.`year` in (2017) 
 		then 'Apr 2017 - Sep 2017'
-		
+
 		when `pm`.`reportingPeriod` = 'Oct - Mar' 
 		and `pm`.`reportingMonth` 
 		between ('2017-10-01') and ('2018-03-31') 
 		and `pm`.`year` in (2017,2018) 
 		then 'Oct 2017 - Mar 2018'
-		
+
 		when `pm`.`reportingPeriod` = 'Apr - Sep' 
 		and `pm`.`reportingMonth` 
 		between ('2018-04-01') and ('2018-09-30') 
-		and `pm`.`year` in (2017) 
-		then 'Apr 2018 - Sep 2018'
+		and `pm`.`year` in (2018) 
+		then 'Apr 2018 - May 2018'
 		
 	else `pm`.`reportingPeriod`
 	end 
@@ -7257,8 +7799,8 @@ $data.="<tr>
 					//end of parent record row
 					$data.="<td ".$col_span." ".$row_span." >
 						<input type='button' class='formButton2'title='Edit'
-							onclick=\"xajax_edit_phh(".$row_parent['id'].");return false;\" value='edit' /> |
-						<input type='button' value='Delete' class='red'
+							onclick=\"xajax_edit_phh('".$row_parent['id']."');return false;\" value='edit' /> |
+						<input type='button' value='Delete' class='disabled' disabled='disabled'
 							onclick=\"ConfirmDelete('".$row_parent['id']."','Delete_phh');return false;\" align='left'>
 					</td>";
 				$data.="</tr>";
@@ -7268,77 +7810,71 @@ $data.="<tr>
 					//loop thru kid records -1
 					$s_other_children = mysql_query("select 
 	case
-		when `pm`.`reportingPeriod` = 'Oct - Mar' 
-		and `pm`.`reportingMonth` 
-		between ('2012-10-01') and ('2013-03-31') 
-		and `pm`.`year` in (2012,2013) 
-		then 'Oct 2012 - Mar 2013'
-		
 		when `pm`.`reportingPeriod` = 'Apr - Sep' 
 		and `pm`.`reportingMonth` 
 		between ('2013-04-01') and ('2013-09-30') 
 		and `pm`.`year` in (2013) 
-		then 'Apr 2013 - Sep 2013'
+		then 'Apr 2012 - Sep 2013'
 		
 		when `pm`.`reportingPeriod` = 'Oct - Mar' 
 		and `pm`.`reportingMonth` 
 		between ('2013-10-01') and ('2014-03-31') 
 		and `pm`.`year` in (2013,2014) 
 		then 'Oct 2013 - Mar 2014'
-		
+
 		when `pm`.`reportingPeriod` = 'Apr - Sep' 
 		and `pm`.`reportingMonth` 
 		between ('2014-04-01') and ('2014-09-30') 
 		and `pm`.`year` in (2014) 
 		then 'Apr 2014 - Sep 2014'
-		
+
 		when `pm`.`reportingPeriod` = 'Oct - Mar' 
 		and `pm`.`reportingMonth` 
 		between ('2014-10-01') and ('2015-03-31') 
 		and `pm`.`year` in (2014,2015) 
 		then 'Oct 2014 - Mar 2015'
-		
+
 		when `pm`.`reportingPeriod` = 'Apr - Sep' 
 		and `pm`.`reportingMonth` 
 		between ('2015-04-01') and ('2015-09-30') 
 		and `pm`.`year` in (2015) 
 		then 'Apr 2015 - Sep 2015'
-		
+
 		when `pm`.`reportingPeriod` = 'Oct - Mar' 
 		and `pm`.`reportingMonth` 
 		between ('2015-10-01') and ('2016-03-31') 
 		and `pm`.`year` in (2015,2016) 
 		then 'Oct 2015 - Mar 2016'
-		
+
 		when `pm`.`reportingPeriod` = 'Apr - Sep' 
 		and `pm`.`reportingMonth` 
 		between ('2016-04-01') and ('2016-09-30') 
 		and `pm`.`year` in (2016) 
 		then 'Apr 2016 - Sep 2016'
-		
+
 		when `pm`.`reportingPeriod` = 'Oct - Mar' 
 		and `pm`.`reportingMonth` 
 		between ('2016-10-01') and ('2017-03-31') 
 		and `pm`.`year` in (2016,2017) 
 		then 'Oct 2016 - Mar 2017'
-		
+
 		when `pm`.`reportingPeriod` = 'Apr - Sep' 
 		and `pm`.`reportingMonth` 
 		between ('2017-04-01') and ('2017-09-30') 
 		and `pm`.`year` in (2017) 
 		then 'Apr 2017 - Sep 2017'
-		
+
 		when `pm`.`reportingPeriod` = 'Oct - Mar' 
 		and `pm`.`reportingMonth` 
 		between ('2017-10-01') and ('2018-03-31') 
 		and `pm`.`year` in (2017,2018) 
 		then 'Oct 2017 - Mar 2018'
-		
+
 		when `pm`.`reportingPeriod` = 'Apr - Sep' 
 		and `pm`.`reportingMonth` 
 		between ('2018-04-01') and ('2018-09-30') 
-		and `pm`.`year` in (2017) 
-		then 'Apr 2018 - Sep 2018'
+		and `pm`.`year` in (2018) 
+		then 'Apr 2018 - May 2018'
 		
 	else `pm`.`reportingPeriod`
 	end 
@@ -12418,1438 +12954,6 @@ $object->assign($div,'innerHTML',$data);
 return $object;
 }
 
-function viewQualiatativeTSOEntered($quarter,$Qyear,$orgname,$intervention){
-$obj = new xajaxResponse();
-
-$n=1; $inc=1;
-$_SESSION['Qquarter']='';
-$_SESSION['Qyear']='';
-
-$_SESSION['intervention']='';
-$_SESSION['Qquarter']=$quarter;
-$_SESSION['Qyear']=$Qyear;
-$_SESSION['intervention']=$intervention;
-$data.="<form name='organization' id='organization'   action='".$PHP_SELF."' method='post'>";
-
-
-$data.="<table cellspacing='0'  width='100%' border='0'> ".filter_tsoQualitative()." 
-	  <tr class='evenrow'>
- 
-<td colspan=8><input type='button' class='formButton2'   id='button' onclick=\"multiCheckBox('checked');return false;\" value='check all' /> |<input type='button' class='formButton2'   id='button' onclick=\"multiCheckBox('');\" value='uncheck all' /> | <input type='button' class='formButton2'   id='button' title='Edit'  onclick=\"xajax_edit_TSOqualitativeReporting(xajax.getFormValues('organization'),'".$_SESSION['quarter']."');return false;\" value='edit' />| <input type='button' class='formButton2'   id='button' title='Delete'  onclick=\"ConfirmDelete(xajax.getFormValues('organization'),'delete_QualiatativeTSOEntered','');return false;\" value='Delete' class='redhdrs' /></td>
-
-	 <td></td>
-<td></td>
-
-   
-
-  </tr><tr>
-<th colspan='10' ><div align='center' class=''>TECHNICAL SERVICES ORGANIZATIONS (TSO) QUALITATIVE REPORT</div></th>
-</tr>
-  
-  <tr>
-	  <th ><b class=''>NO.</th><th><b class=''>SELECT</th>
-	  <th width='' colspan=''><strong class=''>INTERVENTION NAME</strong></th>
-	 
-<th width='' colspAN='3'><strong class=''>PLANNED ACTIVITIES</strong></th>
-
-		<th width=''><strong class=''>IMPLEMENTATION</strong></th>
-		<th width=''><strong class=''>ACHIEVEMENTS</strong></th>
-		<th width=''><strong class=''>DEVIATIONS</strong></th>
-		
-	
-		<th  width=''><strong class=''>ACTION</strong></th>
-		
-
-  </tr>";
-
-$query_string="select t.narrative_id,t.org_code,o.orgName,t.intervention,l.code,l.codeName as interventionName,t.reportingPeriod,t.year,t.plannedActivities,t.implementation,t.achievements,t.deviations,t.challenges,
-t.next_quarter,t.lessons,t.report,t.report2,t.updatedby,t.display from tbl_tsoqualitative t inner join tbl_organization o on(o.org_code=t.org_code) inner join tbl_lookup l on(l.code=t.intervention) where classCode='5' and t.display='Yes' and l.codeName like '".$_SESSION['intervention']."%' and o.org_code='".$_SESSION['org_code']."'  and t.year like '".$_SESSION['Qyear']."%' and t.reportingPeriod like '".$_SESSION['Qquarter']."%'  order by o.org_code,t.year,t.reportingPeriod Asc";
-#$obj->addAlert($query_string);
-
-$query_=mysql_query($query_string)or die(http(__line__));
-
-	  while($row=mysql_fetch_array($query_)){
-
-	
-	  $color=$n%2==1?"evenrow3":"white1";
- $data.="<tr class=$color '>
-	 <td>".$inc++."</td>
-	 <td><input name='narrative_id[]' id='narrative_id' type='checkbox' value='".$row['narrative_id']."' />
-	 <input type='hidden' name='loopkey[]' id='loopkey' value='1'></td>
-	 <td>".mysql_real_escape_string($row['interventionName'])."</td>
-	 
-	 <td COLSPan='3' >".$row['plannedActivities']."</td>
-	 <td>".$row['implementation']."</td>
-	 <td>".$row['achievements']."</td>
-	  <td>".$row['deviations']."</td> 
-	  
-
-<td><input name='details' type='button' class='formButton2'   id='button' onclick=\" xajax_TSO_Details('".$row['narrative_id']."');\" value='Details' /></td>
-	  </tr>";
-	  $n++;
-	  }
-$data.="<tr class='evenrow'>
- 
-<td colspan=8><input type='button' class='formButton2'   id='button' onclick=\"multiCheckBox('checked');return false;\" value='check all' /> |<input type='button' class='formButton2'   id='button' onclick=\"multiCheckBox('');\" value='uncheck all' /> | <input type='button' class='formButton2'   id='button' title='Edit'  onclick=\"xajax_edit_TSOqualitativeReporting(xajax.getFormValues('organization'),'".$_SESSION['quarter']."');return false;\" value='edit' />| <input type='button' class='formButton2'   id='button' title='Delete'  onclick=\"ConfirmDelete(xajax.getFormValues('organization'),'delete_QualiatativeTSOEntered','');return false;\" value='Delete' class='redhdrs' /></td>
-
-	 <td></td>
-<td></td>
-
-   
-
-  </tr>";
-$data.="</table></form>";
-
-$obj->assign('bodyDisplay','innerHTML',$data);
-return $obj;
-}
-#---------------------staff reporting--------------------------------
-function view_TrainingParticipants($organization,$quarter,$year){
-$obj = new xajaxResponse();
-
-$n=1; $inc=1;
-$_SESSION['region']='';
-$_SESSION['staffyear']='';
-$_SESSION['staffQuarter']='';
-$_SESSION['region']=$region;
-$_SESSION['staffyear']=$year;
-$_SESSION['staffQuarter']=$quarter;
-
-
-$data="<form action=\"".$PHP_SELF."\" name='projects' id='projects' method='post'>
-<table width='800' id='report'>";
- 
-  $data.="
-  
-  <tr class=''>
-  <td colspan=8>
-  <div id='status'></div>
- </td>
-</tr>
-  
-  
-	  
-	 
-<tr class='evenrow3'>
-  <td width='30%' colspan='12'><div id='' style='float:right;'><input type='button' class='formButton2'   id='button' value='New Entry' onclick=\"xajax_new_TrainingParticipants('');return false;\" /> |  <a href='export_to_excel_word.php?linkvar=Export Training Participants&&organization=".$organization."&&quarter=".$quarter."&&year=".$year."&&format=excel' > <input type='button' class='formButton2'   id='button' onclick=\"multiCheckBox('');\" value='Export to Excel' /></a> | <a href='print_version2.php?linkvar=Print Training Participants&&organization=".$organization."&&quarter=".$quarter."&&year=".$year."&&format=Print' target='_blank'><input type='button' class='formButton2'   id='button' value='Print Version'  /> </a></td></tr>
-	<tr class='evenrow3'>
-  <td width='30%' colspan='3'>
-  <div align='left'><strong>Organization</strong></div></td>
-  <td colspan=9><select name='project' style='width:300px;'  onchange=\"xajax_view_TrainingParticipants(this.value,'','');return false;\"><option value=''>-ALL-</option>";
-		  $sql="select * from tbl_organization order by orgName asc";
-		  #$obj->addAlert($sql);
-		  $query=mysql_query($sql) or die(http(4371)); 
-		  while($ROW=mysql_fetch_array($query)){
-		$selected=($organization==$ROW['org_code'])?"SELECTED":"";
-		  $data.="<option value=\"".$ROW['org_code']."\" ".$selected." >".substr($ROW['orgName'],0,500)."</option>";}
-		  $data.="</select></td>
-</tr><tr class='evenrow'>
- 
-<td colspan='12'><input type='button' class='formButton2'   id='button' onclick=\"multiCheckBox('checked');return false;\" value='check all' /> |<input type='button' class='formButton2'   id='button' onclick=\"multiCheckBox('');\" value='uncheck all' /> | <input type='button' class='formButton2'   id='button' title='Edit'  onclick=\"xajax_edit_TrainingParticipants(xajax.getFormValues('projects'));return false;\" value='edit' />| <input type='button' class='formButton2'   id='button' title='Delete'  onclick=\"ConfirmDelete(xajax.getFormValues('projects'),'delete_StaffQualitativeReport','');return false;\" value='Delete' class='redhdrs' /></td>
-
-	
-</tr>
- <tr CLASS='evenrow'>
- 
-<th colspan='12' ><center>PARTICPANTS TRAINING  RECORDs</center></th>
-	
-  </tr>
-	
-	
-	<tr>
-	<th colspan=2>NO</th>
-	<th>organization</th>
-	<th>DISTRICT</th>
-	<th>subcounty</th>
-	<th>parish</th>
-	<th>VILLAGE/LOCATION</th>
-	<th>training AREA</th>
-	<th>trainees</th>
-	<th>naME</th>
-	<th>SEX</th>
-	<th>NUMBER OF TIMES<br> TRAINED ON <br>THIS TOPIC</th>
-	</tr>";
-	$sql="select t.`training_id`, t.`org_code`,o.orgName, t.`village`, t.`semi_annual`, t.`year`, t.`training_topic`,c.topic, t.`trainer`, 
-	 t.`typeofparticipants`, t.`name_oftrainee`,tr.Name as NameofParticipants, t.`gender`, t.`number_of_times`,l.codeName, t.`organizing_date`, t.`updatedby`, t.`status`, t.`district`, d.districtName,
-	 t.`subcounty`,s.subcountyName, t.`parish`,p.ParishName, t.`task`,t.village 
-	 from tbl_training t left join tbl_trainees tr on(tr.code=t.typeofparticipants)
-	 left join tbl_district d on(d.districtCode=t.district)
-	 
-	 left join tbl_subcounty s on (s.subcountyCode=t.subcounty)
-	 left join tbl_parish p on(p.parishCode=t.parish)
-	 left join tbl_organization o on(o.org_code=t.org_code)
-	 left join tbl_trainingtopic c on(c.code=t.training_topic)
-	 left join tbl_trainees e on(e.code=t.typeofparticipants)
-	 left join tbl_lookup l on(l.code=t.number_of_times)
-	 where t.status like 'Yes%' && t.org_code like '".$organization."%'";
-	 $query=mysql_query($sql)or die(http("PR-310"));
-  while($row=mysql_fetch_array($query)){
-  $orgdate="org_date".$n;
-  $color=($n%2==1)?"evenrow3":"white1";
-$data.="<tr class='$color'>
-	".loop_key('training_id',$row['training_id'])."
-  <td>".$n."</td>
-<td>".$row['orgName']."</td>
-<td>".$row['districtName']."</td>
-<td>".$row['subcountyName']."</td>
-<td align='left'>".$row['ParishName']."</td>
- <td align='left'>".$row['village']."</td>
- <td align='left'>".$row['topic']."</td>
- <td align='left'>".$row['NameofParticipants']."</td>
-  <td align='left'>".$row['name_oftrainee']."</td>
-  <td align='left'>".$row['gender']."</td>
-  <td align='left'>".$row['codeName']."</td>
-  </tr>";
-  $n++;
-  }
-  
-
-
- $data.="".noRecordsFound($query,18)."<tr class='evenrow'>
- <td colspan='12'><input type='button' class='formButton2'   id='button' onclick=\"multiCheckBox('checked');return false;\" value='check all' /> |<input type='button' class='formButton2'   id='button' onclick=\"multiCheckBox('');\" value='uncheck all' /> | <input type='button' class='formButton2'   id='button' title='Edit'  onclick=\"xajax_edit_TrainingParticipants(xajax.getFormValues('projects'));return false;\" value='edit' />| <input type='button' class='formButton2'   id='button' title='Delete'  onclick=\"ConfirmDelete(xajax.getFormValues('projects'),'delete_StaffQualitativeReport','');return false;\" value='Delete' class='redhdrs' /></td>
-
-	
-</tr>";
-$data.="</table></form>";
-
-$obj->assign('bodyDisplay','innerHTML',$data);
-return $obj;
-}
-function ViewCFTechnicalTrainingActivities($region,$district,$indicator,$subcomponent,$output,$year,$quarter,$indicatorCode,$indicator,$organization,$cur_page=1,$records_per_page=20){
-$obj = new xajaxResponse();
-
-
-$n=1; $inc=1;
-$_SESSION['zoneID']='';
-$_SESSION['semiAnnual']='';
-$_SESSION['zoneID']=$region;
-$_SESSION['organization']=$organization;
-$_SESSION['districtID']=$district;
-$quarter=($quarter==NULL)?$_SESSION['quarter']:$quarter;
-$_SESSION['semiAnnual']=$quarter;
-$year=($year==NULL)?currFinancialYear($_SESSION['Activeyear'],'YearRange'):$year;
-$_SESSION['fyear']=$year;
-
-$data="<form action=\"".$PHP_SELF."\" name='projects' id='projects' method='post'>
-<table width='100%' id='report' cellspacing='1'>";
- 
-  $data.=filter_CFTechnicalTrainingActivities('ViewCFTechnicalTrainingActivities');
-	  if($_GET['action']=='Reports'){
- $data.="";
- }else{
-$data.="<tr class='evenrow'>
-<td colspan='14'><input type='button' class='formButton2'   id='button' onclick=\"multiCheckBox('checked');return false;\" value='check all' /> |<input type='button' class='formButton2'   id='button' onclick=\"multiCheckBox('');\" value='uncheck all' /> | <input type='button' class='formButton2'   id='button' title='Edit'  onclick=\"xajax_edit_CFTechnicalTrainingActivities(xajax.getFormValues('projects'),'".$region."');return false;\" value='edit' /> <input type='hidden' class='formButton2'   id='button' title='Delete'  onclick=\"ConfirmDelete(xajax.getFormValues('projects'),'delete_StaffQualitativeReport','');return false;\" value='Delete' class='redhdrs' /></td>
- </tr>";
- }
- 
- $data.="<tr CLASS='evenrow'>
- 
-<th colspan='14' ><center>TECHNICAL TRAINING ACTIVITIES</center></th>
-	
-  </tr>
-	
-	
-	<tr><th colspan='2' ROWSPAN='2'>No/Select</th>
-	
-	<th ROWSPAN='2' colspan='1'>DISTRICT</th>
-	<th colspan='2'><center>CF HOE</center></th>
-	<th colspan='2'><center>CF ADP</center></th>
-	<th colspan='2'><center>CF Mechanized</center></th>
-	<th colspan='2'><center>CF Herbicise Safety and Use</center>
-	<img src='images/spacer2.png' width='100' height='0.1'></th>
-	<th colspan='2'><center>Tree Planting</center></th>
-	<th rowspan='2'>Action</th>
-		</tr>
-	<tr>
-	
-	
-	<th>Male</th>
-	<th>Female</th>
-	<th>Male</th>
-	<th>Female</th>
-	<th>Male</th>
-	<th>Female</th>
-	<th>Male</th>
-	<th>Female</th>
-	<th>Male</th>
-	<th>Female</th>
-	</tr>";  
-	
-	$querytrainees=mysql_query("select * from tbl_trainees order by code asc")or die(http("PR-403"));
-  while($rowparticipants=mysql_fetch_array($querytrainees)){
-  
-$data.="<tr class='evenrow'>
-
-  <td colspan='14'><strong>".$rowparticipants['Name']."</strong></td></tr>";
-	  
-	$sql=QueryManager::ViewCFTechnicalTrainingActivities($_SESSION['zoneID'],$_SESSION['districtID'],$_SESSION['organization'],$_SESSION['fyear'],$_SESSION['semiAnnual'],$rowparticipants['code']);   
-	   //$obj->alert($sql);
-	   
-	 $query=mysql_query($sql)or die(http("PR-413"));
-  while($row=mysql_fetch_array($query)){
-  $orgdate="org_date".$n;
-  $color=($n%2==1)?"evenrow3":"white1";
-$data.="<tr class='$color'>
-	".loop_key('training_id',$row['training_id'])."
-  <td>".$n."</td>
-   
-<td colspan='1'>
-	<input name='districtCode[]' type='hidden' id='districtCode' value='".$row['district']."'>
-	<input name='region[]' type='hidden' id='region' value='".$row['zone']."'>
-	<input name='participants[]' type='hidden' id='participants' value='".$row['typeofparticipants']."'>
-		<input name='org_code[]' type='hidden' id='org_code' value='".$row['org_code']."'>
-		<input name='semiAnnual[]' type='hidden' id='semiAnnual' value='".$row['semi_annual']."'>
-		<input name='year[]' type='hidden' id='year' value='".$row['year']."'>
-	".$row['districtName']."</td>
-<td>".$row['MaleHoebasin']."</td>
-<td align='right'>".$row['FemaleHoebasin']."</td>
- <td align='right'>".$row['MaleADPRipping']."</td>
- <td align='right'>".$row['FemaleADPRipping']."</td>
- <td align='right'>".$row['MaleMechanizedRipping']."</td>
-  <td align='right'>".$row['FemaleMechanizedRipping']."</td>
-  <td align='right'>".$row['MaleHerbicide']."</td>
-  <td align='right'>".$row['FemaleHerbicide']."</td>
-   <td align='right'>".$row['MaleTreePlanting']."</td>
-   <td align='right'>".$row['FemaleTreePlanting']."</td>
- <td  align='center'><img src='icons/trash.png' title='Move to Trash' onclick=\"xajax_delete_TechnicalTraining('".$row['year']."',
-  
-  '".$row['semi_annual']."','".$row['zone']."','".$row['district']."','".$row['typeofparticipants']."','".$row['training_topic']."','tbl_technicaltraining','delete_ViewCFTechnicalTrainingActivities');return false;\" ></td>
-  </tr>";
-$n++;
-  }
-  
-  $sqlTotal=QueryManager::ViewCFTechnicalTrainingActivitiesTotals($_SESSION['zoneID'],$_SESSION['districtID'],$_SESSION['organization'],$_SESSION['fyear'],$_SESSION['semiAnnual'],$rowparticipants['code']); 
-  
-  $queryTotal=Execute($sqlTotal) or die(http("PR-446"));
-		$rowTotal=FetchRecords($queryTotal);
-  
-   $data.="<tr class='$color'>
-<td colspan='3'><strong>Total ".$rowparticipants['Name']."</strong></td>
-<td><strong>".$rowTotal['MaleHoebasin']."</strong></td>
-<td align='right'><strong>".$rowTotal['FemaleHoebasin']."</strong></td>
- <td align='right'><strong>".$rowTotal['MaleADPRipping']."</strong></td>
- <td align='right'><strong>".$rowTotal['FemaleADPRipping']."</strong></td>
- <td align='right'><strong>".$rowTotal['MaleMechanizedRipping']."</strong></td>
-  <td align='right'><strong>".$rowTotal['FemaleMechanizedRipping']."</strong></td>
-  <td align='right'><strong>".$rowTotal['MaleHerbicide']."</strong></td>
-  <td align='right'><strong>".$rowTotal['FemaleHerbicide']."</strong></td>
-   <td align='right'><strong>".$rowTotal['MaleTreePlanting']."</strong></td>
-   <td align='right'><strong>".$rowTotal['FemaleTreePlanting']."</strong></td>
- 
-  </tr>";
-  
-  
-  		}
-
-
- $data.="".noRecordsFound($query,14);
-	
-	if($_GET['action']=='Reports'){
- $data.="";
- }else{
-$data.="<tr class='evenrow'>
-<td colspan='14'><input type='button' class='formButton2'   id='button' onclick=\"multiCheckBox('checked');return false;\" value='check all' /> |<input type='button' class='formButton2'   id='button' onclick=\"multiCheckBox('');\" value='uncheck all' /> | <input type='button' class='formButton2'   id='button' title='Edit'  onclick=\"xajax_edit_CFTechnicalTrainingActivities(xajax.getFormValues('projects'),'".$region."');return false;\" value='edit' /> <input type='hidden' class='formButton2'   id='button' title='Delete'  onclick=\"ConfirmDelete(xajax.getFormValues('projects'),'delete_StaffQualitativeReport','');return false;\" value='Delete' class='redhdrs' /></td>
- </tr>";
- }
-$data.="</table></form>";
-
-$obj->assign('bodyDisplay','innerHTML',$data);
-return $obj;
-}
-//--------------------View Other Trainings----------------------
-function ViewOtherTrainingActivities($region,$district,$indicator,$subcomponent,$output,$year,$quarter,$indicatorCode,$indicator,$organization,$cur_page=1,$records_per_page=20){
-$obj = new xajaxResponse();
-
-
-$n=1; $inc=1;
-$_SESSION['zoneID']='';
-$_SESSION['semiAnnual']='';
-$_SESSION['zoneID']=$region;
-$_SESSION['organization']=$organization;
-$_SESSION['districtID']=$district;
-$quarter=($quarter==NULL)?$_SESSION['quarter']:$quarter;
-$_SESSION['semiAnnual']=$quarter;
-$year=($year==NULL)?currFinancialYear($_SESSION['Activeyear'],'YearRange'):$year;
-$_SESSION['fyear']=$year;
-
-$data="<form action=\"".$PHP_SELF."\" name='projects' id='projects' method='post'>
-<table width='800' id='report' cellspacing='1'>";
- 
-  $data.=filter_OtherTrainingActivities('ViewOtherTrainingActivities');
-	 
-if($_GET['action']=='Reports'){
- $data.="";
- }else{
- $data.="<tr class='evenrow'>
- <td colspan='21'><input type='button' class='formButton2'   id='button' onclick=\"multiCheckBox('checked');return false;\" value='check all' /> |<input type='button' class='formButton2'   id='button' onclick=\"multiCheckBox('');\" value='uncheck all' />  <input type='hidden' class='formButton2'   id='button' title='Edit'  onclick=\"xajax_edit_OtherTrainingActivities(xajax.getFormValues('projects'),'".$region."');return false;\" value='edit' />| <input type='button' class='formButton2'   id='button' title='Delete'  onclick=\"ConfirmDelete(xajax.getFormValues('projects'),'delete_StaffQualitativeReport','');return false;\" value='Delete' class='redhdrs' /></td>
-
-	
-</tr>";
-}
-	
-
-	
-	
-	$data.="<tr><th colspan='2' ROWSPAN='2'>No/Select</th>
-	
-	<th ROWSPAN='2' colspan='1'>DISTRICT</th>
-	<th colspan='2'><center>Training in IPM</center></th>
-	<th colspan='2'><center>Training in Post Harvest Handling </center></th>
-	<th colspan='2'><center>Business Training</center></th>
-	<th colspan='2'><center>Seedling beneficiaries</center>
-	<img src='images/spacer2.png' width='100' height='0.1'></th>
-	<th colspan='2' rowspan='2'><center>No. of seedlings given out</center></th>
-	<th colspan='3'><center>Inputs procured Kg/Litres</center></th>
-	<th colspan='4'><center>Kg of produce bulked</center></th>
-	<th rowspan='2'><center>Action</center></th>
-		</tr>
-	<tr>
-	<th>Male</th>
-	<th>Female</th>
-	<th>Male</th>
-	<th>Female</th>
-	<th>Male</th>
-	<th>Female</th>
-	<th>Male</th>
-	<th>Female</th>
-	
-
-	<th>Seed</th>
-	<th>Fertilizer</th>
-	<th>Herbicide</th>
-	<th>Maize</th>
-	<th>Beans</th>
-	<th>Sunflower</th>
-	<th>SoyaBean</th>
-	</tr>";  
-	
-	
-	  
-	$sql=QueryManager::ViewOtherTrainingActivities($_SESSION['zoneID'],$_SESSION['districtID'],$_SESSION['fyear'],$_SESSION['semiAnnual']);   
-	   //$obj->alert($sql);
-	   
-	 $query=mysql_query($sql)or die(http("PR-528"));
-  while($row=mysql_fetch_array($query)){
-  $orgdate="org_date".$n;
-  $color=($n%2==1)?"evenrow3":"white1";
-$data.="<tr class='$color'>
-	".loop_key('training_id',$row['training_id'])."
-  <td>".$n."</td>
-   
-<td colspan='1'>
-	<input name='districtCode[]' type='hidden' id='districtCode' value='".$row['district']."'>
-	<input name='region[]' type='hidden' id='region' value='".$row['zone']."'>
-	<input name='participants[]' type='hidden' id='participants' value='".$row['typeofparticipants']."'>
-		<input name='org_code[]' type='hidden' id='org_code' value='".$row['org_code']."'>
-		<input name='semiAnnual[]' type='hidden' id='semiAnnual' value='".$row['semi_annual']."'>
-		<input name='year[]' type='hidden' id='year' value='".$row['year']."'>
-	".$row['districtName']."</td>
-<td align='right'>".$row['MaleTraininginIPM']."</td>
-<td align='right'>".$row['FemaleTraininginIPM']."</td>
- <td align='right'>".$row['MalePostHarvest']."</td>
- <td align='right'>".$row['FemalePostHarvest']."</td>
- <td align='right'>".$row['MaleBulkMrktng']."</td>
-  <td align='right'>".$row['FemaleBulkMrktng']."</td>
-  <td align='right'>".$row['MaleSeedBen']."</td>
-  <td align='right'>".$row['FemaleSeedBen']."</td>
-   <td align='right' colspan='2'>".$row['seedlingsgivenout']."</td>
-   <td align='right'>".$row['SeedInputProcured']."</td>
- <td align='right'>".$row['FertilizerInputProcured']."</td>
- <td align='right'>".$row['HerbicideInputProcured']."</td>
- 
-   <td align='right'>".$row['maizeproducebulked']."</td>
-   <td align='right'>".$row['beansproducebulked']."</td>
- <td align='right'>".$row['sunflowerproducebulked']."</td>
- <td align='right'>".$row['soyaproducebulked']."</td>
-  <td  align='center'><img src='icons/trash.png' title='Move to Trash' onclick=\"xajax_delete_OtherTechnicalTraining('".$row['year']."',
-'".$row['semi_annual']."','".$row['zone']."','".$row['district']."','".$row['typeofparticipants']."','".$row['training_topic']."','tbl_othertrainingsandseeddistribution','delete_OtherTechnicalTraining');return false;\" ></td>
-  </tr>";
-$n++;
-  }
-
-		$sqlTotal=QueryManager::ViewOtherTrainingActivitiesTotals($_SESSION['zoneID'],$_SESSION['districtID'],$_SESSION['fyear'],$_SESSION['semiAnnual']); 
-		 #$obj->alert($sqlTotal);
-		$queryTotal=Execute($sqlTotal) or die(http("PR-597"));
-		$rowTotal=FetchRecords($queryTotal);
-
- $data.="<tr class='$color'>
-
-  <td colspan='3'><strong>Total</strong></td>
-<td align='right'><strong>".$rowTotal['MaleTraininginIPM']."</strong></td>
-<td align='right'><strong>".$rowTotal['FemaleTraininginIPM']."</strong></td>
- <td align='right'><strong>".$rowTotal['MalePostHarvest']."</strong></td>
- <td align='right'><strong>".$rowTotal['FemalePostHarvest']."</strong></td>
- <td align='right'><strong>".$rowTotal['MaleBulkMrktng']."</strong></td>
-  <td align='right'><strong>".$rowTotal['FemaleBulkMrktng']."</strong></td>
-  <td align='right'><strong>".$rowTotal['MaleSeedBen']."</strong></td>
-  <td align='right'><strong>".$rowTotal['FemaleSeedBen']."</strong></td>
-   <td align='right' colspan='2'><strong>".$rowTotal['seedlingsgivenout']."</strong></td>
-   <td align='right'><strong>".$rowTotal['SeedInputProcured']."</strong></td>
- <td align='right'><strong>".$rowTotal['FertilizerInputProcured']."</strong></td>
- <td align='right'><strong>".$rowTotal['HerbicideInputProcured']."</strong></td>
-<td align='right'><strong>".$rowTotal['maizeproducebulked']."</strong></td>
-   <td align='right'><strong>".$rowTotal['beansproducebulked']."</strong></td>
- <td align='right'><strong>".$rowTotal['sunflowerproducebulked']."</strong></td>
- <td align='right'><strong>".$rowTotal['soyaproducebulked']."</strong></td>
-  <td align='right'></td>
-  </tr>";
-
-
-
- $data.="".noRecordsFound($query,14);
- if($_GET['action']=='Reports'){
- $data.="";
- }else{
- $data.="<tr class='evenrow'>
- <td colspan='21'><input type='button' class='formButton2'   id='button' onclick=\"multiCheckBox('checked');return false;\" value='check all' /> |<input type='button' class='formButton2'   id='button' onclick=\"multiCheckBox('');\" value='uncheck all' /> | <input type='button' class='formButton2'   id='button' title='Edit'  onclick=\"xajax_edit_OtherTrainingActivities(xajax.getFormValues('projects'),'".$region."');return false;\" value='edit' />| <input type='button' class='formButton2'   id='button' title='Delete'  onclick=\"ConfirmDelete(xajax.getFormValues('projects'),'delete_StaffQualitativeReport','');return false;\" value='Delete' class='redhdrs' /></td>
-
-	
-</tr>";
-}
-$data.="</table></form>";
-
-$obj->assign('bodyDisplay','innerHTML',$data);
-return $obj;
-}
-function new_OtherTrainingActivities($region,$district,$organization,$fyear){
-$obj=new xajaxResponse();
-if($_SESSION['user_id']==''){
-$obj->redirect('index.php');
-return $obj;
-}
-if(($_SESSION['quarter']=='Closed')||($_SESSION['Activeyear']=='Closed')){
-$obj->alert("Please Your Reporting Period is Closed Please Open the Reporting period and Try Again!");
-return $obj;
-}
-
-if($region==NULL){
-$obj->alert("Please select a region you are Entering Data for!");
-return $obj;
-}
-
-
-$n=1;
-$inc=1;
-$_SESSION['nhh']=1;
-$_SESSION['nhh']=$nhh;
-$_SESSION['subcountyCode']=$subcounty;
-#$obj->alert($_SESSION['subcountyCode']);
-$_SESSION['ParishName']=$parishName;
-$_SESSION['parishCode']=$parish;
-$fyear=($fyear==NULL)?currFinancialYear($_SESSION['Activeyear'],'YearRange'):$fyear;
-#$obj->alert($_SESSION['parishCode']);
-//$n=1;
-$data="<form action=\"".$PHP_SELF."\" name='projects' id='projects' method='post'>
-<table width='100%' id='report'>";
- 
-  $data.="
-  
-  			<tr class='evenrow'>
-  <td width='30%' colspan='3'>
-  <div align='left'><strong>Region</strong></div></td>
-  <td colspan='18'><select name='region' id='region' onchange=\"xajax_new_OtherTrainingActivities(this.value,'','".$organization."','".$fyear."');return false;\" style='width:300px;'><option value=''>-select-</option>";
-			$data.=QueryManager::ZoneFilter($region);
-		  $data.="</select></td>
-</tr>
-	<tr class='evenrow3'>
-  <td width='30%' colspan='3'>
-  <div align='left'>Field Supervisor Responsible</div></td>
-  <td colspan='18'><input type='text' name='fieldofficer' id='fieldofficer' size='55' ></td>
-</tr>
-<tr class='evenrow3'><td colspan='3'>Project Year:</td>
-	<td colspan='18'><select name='year' id='year'   style='width:300px;'><option value=''>-select-</option>";
-				$data.=QueryManager::FinancialYearFilter($fyear);
-				  $data.="</select></td>
-	</tr>
-	<tr class='evenrow'><td colspan='3'>Reporting Period</td>
-	 <td colspan='18'><select name='semiAnnual' id='semiAnnual' style='width:300px;'><option value=''>-select-</option>";
-				$data.=QueryManager::ReportingPeriodFilter($period=$_SESSION['quarter']);
-				  $data.="</select></td></tr>
-	<tr class='display_none'>
-  <td>Organizing Date</td>
-  <td><a href='javascript:void(0)' onClick=\"if(self.gfPop)gfPop.fPopCalendar(document.projects.orgdate);return false;\" hidefocus=''>
-<input name='orgdate' type='text'  size='50' value='' id='orgdate' readonly='readonly' />
-<img name='popcal' src='WeekPicker/calbtn.gif' alt='' align='absmiddle' border='0' height='22' width='25'></a></td>
-  </tr>
-	 <tr CLASS='evenrow'>
- 
-<th colspan='21' ><center>Other Famer Training and Tree Seedling Distribution conducted in each district</center></th>
-	
-  </tr>
-	
-
-	
-	
-	<tr><th colspan='1' ROWSPAN='2'>No</th>
-	
-	<th ROWSPAN='2' colspan='1'>DISTRICT</th>
-	<th colspan='2'><center>Training in IPM</center></th>
-	<th colspan='2'><center>Training in Post Harvest Handling </center></th>
-	<th colspan='2'><center>Training in Bulk Marketing</center></th>
-	<th colspan='2'><center>Seedling beneficiaries</center>
-	<img src='images/spacer2.png' width='100' height='0.1'></th>
-	<th colspan='1' rowspan='2'><center>No. of seedlings given out</center></th>
-	<th colspan='3'><center>Inputs procured Kg/Litres</center></th>
-	<th colspan='4'><center>Kg of produce bulked</center></th>
-		</tr>
-	<tr>
-	<th>Male</th>
-	<th>Female</th>
-	<th>Male</th>
-	<th>Female</th>
-	<th>Male</th>
-	<th>Female</th>
-	<th>Male</th>
-	<th>Female</th>
-	<th>Seed</th>
-	<th>Fertilizer</th>
-	<th>Herbicide</th>
-	<th>Maize</th>
-	<th>Beans</th>
-	<th>Sunflower</th>
-	<th>SoyaBean</th>
-	</tr>";  
-
-	
-	for($x=0;$x<10;$x++){
-	$data.="<tr class='evenrow'>
-	<td><input name='loopkey[]' size='10'  type='hidden' id='loopkey".$n."' value='1'  />".$n."</td>
-	
-	<td colspan=''><select name='district[]' id='district' style='width:100px;'><option value=''>-select-</option>";
-	
-	 	$data.=QueryManager::DistrictFilter($region,$district);
-	
-	$data.="</select></td>
-	
-	<td>
-	
-	
-	
-	<input name='loopkey1[]' size='10'  type='hidden' id='loopkey' value='1'  />
-	<input name='trainingtopic1[]' size='10' type='hidden' id='trainingtopic1".$n."' value='1'  />
-	<input name='malehoe[]' size='10'  type='text' id='malehoe".$n."' onKeyPress='return numbersonly(event, false)'  /></td>
-	<td><input name='femalehoe[]' size='10'  type='text' id='malehoe".$n."' onKeyPress='return numbersonly(event, false)'  /></td>
-	<td> <input name='loopkey2[]' size='10'  type='hidden' id='loopkey2' value='1'  />
-	<input name='trainingtopic2[]' size='10'  type='hidden' id='trainingtopic2".$n."' value='2'  />
-	<input name='maleadp[]' size='10'  type='text' id='maleadp".$n."' onKeyPress='return numbersonly(event, false)' /></td>
-	<td><input name='femaleadp[]' size='10'  type='text' id='femaleadp".$n."'
-		onKeyPress='return numbersonly(event, false)'
-	onKeyUp=\"xajax_calc_trainingSemiAnnual(
-		getElementById('malehoe".$n."').value,getElementById('femalehoe".$n."').value,
-		getElementById('maleadp".$n."').value,getElementById('femaleadp".$n."').value,
-		getElementById('malemechanized".$n."').value,getElementById('femalemechanized".$n."').value,
-		getElementById('maleherbicide".$n."').value,getElementById('femaleherbicide".$n."').value,
-		getElementById('maletreeplanting".$n."').value,getElementById('femaletreeplanting".$n."').value,
-		'total".$n."');\"
-	  /></td>
-	<td>
-	<input name='loopkey3[]' size='10'  type='hidden' id='loopkey3' value='1'  />
-	<input name='trainingtopic3[]' size='10'  type='hidden' id='trainingtopic3".$n."' value='3'  />
-	<input name='malemechanized[]' size='10'  type='text' id='malemechanized".$n."' 
-		
-		onKeyPress='return numbersonly(event, false)'
-		
-onKeyUp=\"xajax_calc_trainingSemiAnnual(
-		getElementById('malehoe".$n."').value,getElementById('femalehoe".$n."').value,
-		getElementById('maleadp".$n."').value,getElementById('femaleadp".$n."').value,
-		getElementById('malemechanized".$n."').value,getElementById('femalemechanized".$n."').value,
-		getElementById('maleherbicide".$n."').value,getElementById('femaleherbicide".$n."').value,
-		getElementById('maletreeplanting".$n."').value,getElementById('femaletreeplanting".$n."').value,
-		'total".$n."');\"
-	
-	 /></td>
-	<td><input name='femalemechanized[]' size='10'  type='text' id='femalemechanized".$n."'
-		onKeyPress='return numbersonly(event, false)'
-	onKeyUp=\"xajax_calc_trainingSemiAnnual(
-		getElementById('malehoe".$n."').value,getElementById('femalehoe".$n."').value,
-		getElementById('maleadp".$n."').value,getElementById('femaleadp".$n."').value,
-		getElementById('malemechanized".$n."').value,getElementById('femalemechanized".$n."').value,
-		getElementById('maleherbicide".$n."').value,getElementById('femaleherbicide".$n."').value,
-		getElementById('maletreeplanting".$n."').value,getElementById('femaletreeplanting".$n."').value,
-		'total".$n."');\"
-	  /></td>
-	<td>
-		<input name='loopkey4[]' size='10'  type='hidden' id='loopkey4' value='1'  />
-		<input name='trainingtopic4[]' size='10'  type='hidden' id='trainingtopic4".$n."' value='4'  />
-	<input name='maleseedling[]' size='10'  type='text' id='maleherbicide".$n."' 
-		onKeyPress='return numbersonly(event, false)'	 /></td>
-	<td><input name='femaleseedling[]' size='10'  type='text' id='femaleherbicide".$n."'
-		onKeyPress='return numbersonly(event, false)'/></td>
-		<td>
-		
-		<input name='loopkey5[]' size='10'  type='hidden' id='loopkey5' value='1'  />
-		<input name='trainingtopic5[]' size='10'  type='hidden' id='trainingtopic5".$n."' value='5'  />
-		<input name='seedlingsgivenout[]' size='10' type='text' id='seedlingsgivenout".$n."'  onKeyPress='return numbersonly(event, false)' /></td>
-		
-		
-		<td>
-		<input name='loopkey6[]' size='10'  type='hidden' id='loopkey6' value='1'  />
-		<input name='trainingtopic6[]' size='10'  type='hidden' id='trainingtopic6".$n."' value='6'  />
-		<input name='seed[]' size='10' type='text' id='seed".$n."'  onKeyPress='return numbersonly(event, false)' /></td>
-		<td><input name='fertilizer[]' size='10' type='text' id='fertilizer".$n."'  onKeyPress='return numbersonly(event, false)' /></td>
-		<td><input name='herbicide[]' size='10' type='text' id='herbicide".$n."'  onKeyPress='return numbersonly(event, false)' /></td>
-		<td>
-		
-		<input name='loopkey7[]' size='10'  type='hidden' id='loopkey7' value='1'  />
-		<input name='trainingtopic7[]' size='10'  type='hidden' id='trainingtopic7".$n."' value='7'  />
-		<input name='maize[]' size='10' type='text' id='maize".$n."'  onKeyPress='return numbersonly(event, false)' /></td>
-		<td><input name='beans[]' size='10' type='text' id='beans".$n."'  onKeyPress='return numbersonly(event, false)' /></td>
-		<td><input name='sunflower[]' size='10' type='text' id='sunflower".$n."'  onKeyPress='return numbersonly(event, false)' /></td>
-		<td><input name='soyabean[]' size='10' type='text' id='soyabean".$n."'  onKeyPress='return numbersonly(event, false)' /></td>
-		</tr>";
-	
-	$n++;
-	
-	}
-	
-	
-
-  $data.=" 
- <tr style='display:none'>
-  <td>Attach Minutes</td>
-  <td><input name='' size='50' type='file'></td>
-  </tr>
-  <tr style='display:none'>
-  <td>Attach Attendance Sheet/List</td>
-  <td><input name='' size='50' type='file'></td>
-  </tr>
-  ";
- 
- 
- $data.="<tr class='evenrow'><td></td><td colspan='21' align='right'><div align='right'>
-<button type='button' class='formButton2'   id='button' name='save' id='save' style='width:100px;' value='Save' onclick=\"xajax_update_OtherTrainingActivities(xajax.getFormValues('projects')); return false;\" />Save</button>
-</div></td></tr>
-</table>
-
-
-
-</form>";
-
-$obj->assign('bodyDisplay','innerHTML',$data);
-return $obj;
-}
-//----------------------Field Days and Demos--------------------
-function ViewFieldDaysandDemonstrations($region,$district,$indicator,$subcomponent,$output,$year,$quarter,$indicatorCode,$indicator,$organization,$cur_page=1,$records_per_page=20){
-$obj = new xajaxResponse();
-
-
-$n=1; $inc=1;
-$_SESSION['zoneID']='';
-$_SESSION['semiAnnual']='';
-$_SESSION['zoneID']=$region;
-$_SESSION['organization']=$organization;
-$_SESSION['districtID']=$district;
-$quarter=($quarter==NULL)?$_SESSION['quarter']:$quarter;
-$_SESSION['semiAnnual']=$quarter;
-$year=($year==NULL)?currFinancialYear($_SESSION['Activeyear'],'YearRange'):$year;
-$_SESSION['fyear']=$year;
-
-$data="<form action=\"".$PHP_SELF."\" name='projects' id='projects' method='post'>
-<table width='100%' id='report' cellspacing='1'>";
- 
-  $data.=filter_FieldDaysandDemonstrations('ViewFieldDaysandDemonstrations');
-	 
- if($_GET['action']=='Reports'){
- $data.="";
- }else{
- $data.="<tr class='evenrow'>
- <td colspan='18'><input type='button' class='formButton2'   id='button' onclick=\"multiCheckBox('checked');return false;\" value='check all' /> |<input type='button' class='formButton2'   id='button' onclick=\"multiCheckBox('');\" value='uncheck all' /> | <input type='button' class='formButton2'   id='button' title='Edit'  onclick=\"xajax_edit_FieldDaysandDemonstrations(xajax.getFormValues('projects'),'".$region."');return false;\" value='edit' /> <input type='hidden' class='formButton2'   id='button' title='Delete'  onclick=\"ConfirmDelete(xajax.getFormValues('projects'),'delete_StaffQualitativeReport','');return false;\" value='Delete' class='redhdrs' />  | <a href='project_crosstab.php?linkvar=Aggregate Field Days and Demonstrations&&region=".$region."&&year=".$year."&&quarter=".$quarter."'  > <input type='button' class='formButton2'   id='button' title='Cross tab'   value='Cross tab' class='' /></a></td>
-
-	
-</tr>";
-}
- 
- $data.="<tr CLASS='evenrow'>
- 
-<th colspan='18' ><center>Field days and demonstrations </center></th>
-	
-  </tr>
-	
-	
-	<tr>
-	<th colspan='2' ROWSPAN='3'>No/Select</th>
-	<th ROWSPAN='3' colspan='1'>DISTRICT</th>
-	<th  colspan='9'><center>Field days conducted<center></th>
-	<th colspan='3' rowspan='2'><center>demonstrations</center></th>
-	<th rowspan='3'>Action</th>
-		</tr>
-		
-		<tr>
-		<th  colspan='3'>District (Major) Field days</th>
-		<th  colspan='3'>DC (Regular) Field days</th>
-		<th  colspan='3'>PO (Specific) Field days</th>
-
-	
-		</tr>
-	
-	<tr>
-	
-	
-	<th>Male</th>
-	<th>Female</th>
-	<th>No. of F/days</th>
-	<th>Male</th>
-	<th>Female</th>
-	<th>No. of F/days</th>
-	<th>Male</th>
-	<th>Female</th>
-	<th>No. of F/days</th>
-	<th>Male</th>
-		<th>Female</th>
-		<th>No. of Demos</th>
-		</tr>";  
-	
-	
-	$sql=QueryManager::ViewFieldDaysandDemonstrations($_SESSION['zoneID'],$_SESSION['districtID'],$_SESSION['organization'],$_SESSION['fyear'],$_SESSION['semiAnnual']);   
-	   //$obj->alert($sql);
-	   
-	 $query=Execute($sql)or die(http("PR-866"));
-  while($row=FetchRecords($query)){
-  $orgdate="org_date".$n;
-  $color=($n%2==1)?"evenrow3":"white1";
-$data.="<tr class='$color'>
-	".loop_key('training_id',$row['training_id'])."
-  <td>".$n."</td>
-   
-<td colspan='1'>
-	<input name='districtCode[]' type='hidden' id='districtCode' value='".$row['district']."'>
-	<input name='region[]' type='hidden' id='region' value='".$row['zone']."'>
-	<input name='fielddayIndicator[]' type='hidden' id='fielddayIndicator' value='".$row['fielddayIndicator']."'>
-		<input name='org_code[]' type='hidden' id='org_code' value='".$row['org_code']."'>
-		<input name='semiAnnual[]' type='hidden' id='semiAnnual' value='".$row['semi_annual']."'>
-		<input name='year[]' type='hidden' id='year' value='".$row['year']."'>
-	".$row['districtName']."</td>
- <td align='right'>".$row['MaleDMajor']."</td>
-<td align='right'>".$row['FemaleDMajor']."</td>
-	<td align='right'>".$row['numberofDMFieldDays']."</td>
-	   <td align='right'>".$row['MaleDRegular']."</td>
-	  <td align='right'>".$row['FemaleDRegular']."</td>
-		   <td align='right'>".$row['numberofDRFieldDays']."</td>
-<td align='right'>".$row['MalePOSpecific']."</td>
- <td align='right'>".$row['FemalePOSpecific']."</td>
- <td align='right'>".$row['numberofPOFieldDays']."</td>
-  <td align='right'>".$row['MaleDemo']."</td>
-  <td align='right'>".$row['FemaleDemo']."</td>
-  <td align='right'>".$row['numberofDemonstrationsEstablished']."</td>
-  
-  <td  align='center'><img src='icons/trash.png' title='Move to Trash' onclick=\"xajax_delete_CarpFieldDaysandDemonstrations('".$row['year']."',
-  
-  '".$row['semi_annual']."','".$row['zone']."','".$row['district']."','".$row['fielddayIndicator']."','tbl_fielddaysanddemonstrations','delete_ViewFieldDaysandDemonstrations');return false;\" ></td>
-  
-  
-  
-</tr>";
-$n++;
-  }
-  //-------Gerrating Totals
-  
-  
-  	$sqlTotal=QueryManager::ViewFieldDaysandDemonstrationsTotals($_SESSION['zoneID'],$_SESSION['districtID'],$_SESSION['organization'],
-	$_SESSION['fyear'],$_SESSION['semiAnnual']);
-	
-	//$obj->alert($sqlTotal);
-  
-	$queryTotal=Execute($sqlTotal) or die(http("PR-934"));
-		$rowTotal=FetchRecords($queryTotal);
-   $data.="<tr class='$color'>
-	
-<td colspan='3'>
-	<strong>Total</strong></td>
- <td align='right'><strong>".$rowTotal['MaleDMajor']."</strong></td>
-<td align='right'><strong>".$rowTotal['FemaleDMajor']."</strong></td>
-	<td align='right'>".$rowTotal['numberofDMFieldDays']."</td>
-	   <td align='right'><strong>".$rowTotal['MaleDRegular']."</strong></td>
-	  <td align='right'><strong>".$rowTotal['FemaleDRegular']."</strong></td>
-		  <td align='right'>".$rowTotal['numberofDRFieldDays']."</td>
-<td align='right'><strong>".$rowTotal['MalePOSpecific']."</strong></td>
- <td align='right'><strong>".$rowTotal['FemalePOSpecific']."</strong></td>
- <td align='right'>".$rowTotal['numberofPOFieldDays']."</td>
-  <td align='right'><strong>".$rowTotal['MaleDemo']."</strong></td>
-  <td align='right'><strong>".$rowTotal['FemaleDemo']."</strong></td>
-  <td align='right'>".$rowTotal['numberofDemonstrationsEstablished']."</td>
-  <td  align='center'><img src='icons/trash.png' title='Move to Trash' onclick=\"ConfirmDeletionCompletely('".$rowWP['workplan_id']."','workplan_id','tbl_workplan','delete_AnnualTargets');return false;\" ></td>
-</tr>";
-  
-  
-
-
- $data.="".noRecordsFound($query,14);
- if($_GET['action']=='Reports'){
- $data.="";
- }
- else {
- $data.="<tr class='evenrow'>
- <td colspan='18'><input type='button' class='formButton2'   id='button' onclick=\"multiCheckBox('checked');return false;\" value='check all' /> |<input type='button' class='formButton2'   id='button' onclick=\"multiCheckBox('');\" value='uncheck all' /> | <input type='button' class='formButton2'   id='button' title='Edit'  onclick=\"xajax_edit_FieldDaysandDemonstrations(xajax.getFormValues('projects'),'".$region."');return false;\" value='edit' /> <input type='hidden' class='formButton2'   id='button' title='Delete'  onclick=\"ConfirmDelete(xajax.getFormValues('projects'),'delete_StaffQualitativeReport','');return false;\" value='Delete' class='redhdrs' /> | <a href='project_crosstab.php?linkvar=Aggregate Field Days and Demonstrations&&region=".$region."&&year=".$year."&&quarter=".$quarter."'  > <input type='button' class='formButton2'   id='button' title='Cross tab'   value='Cross tab' class='' /></a></td>
-
-	
-</tr>";
-}
-$data.="</table></form>";
-
-$obj->assign('bodyDisplay','innerHTML',$data);
-return $obj;
-}
-//-------------Adoption rates-----------------------
-function ViewAdoptionRates($region,$district,$indicator,$subcomponent,$output,$year,$quarter,$indicatorCode,$indicator,$organization,$cur_page=1,$records_per_page=20){
-$obj = new xajaxResponse();
-
-
-$n=1; $inc=1;
-$_SESSION['zoneID']='';
-$_SESSION['semiAnnual']='';
-$_SESSION['zoneID']=$region;
-$_SESSION['organization']=$organization;
-$_SESSION['districtID']=$district;
-$quarter=($quarter==NULL)?$_SESSION['quarter']:$quarter;
-$_SESSION['semiAnnual']=$quarter;
-$year=($year==NULL)?currFinancialYear($_SESSION['Activeyear'],'YearRange'):$year;
-$_SESSION['fyear']=$year;
-
-$data="<form action=\"".$PHP_SELF."\" name='projects' id='projects' method='post'>
-<table width='800' id='report'>";
- 
-  $data.=filter_AdoptionRates('ViewAdoptionRates');
-	 if($_GET['action']=='Reports'){
- $data.="";
- }else{
-$data.="<tr class='evenrow'>
-<td colspan='22'><input type='button' class='formButton2'   id='button' onclick=\"multiCheckBox('checked');return false;\" value='check all' /> |<input type='button' class='formButton2'   id='button' onclick=\"multiCheckBox('');\" value='uncheck all' /> | <input type='button' class='formButton2'   id='button' title='Edit'  onclick=\"xajax_edit_AdoptionRates(xajax.getFormValues('projects'),'".$region."','".$year."');return false;\" value='edit' /> | <a href='project_crosstab.php?linkvar=Aggregate Adoption Rates&&region=".$region."&&year=".$year."&&quarter=".$quarter."'  > <input type='button' class='formButton2'   id='button' title='Cross tab'   value='Cross tab' class='' /></a></td>
- </tr>";
- }
- 
- $data.="<tr CLASS='evenrow'>
- 
-<th colspan='22' ><center>CF/CA Adoption Rates (M=Male,F=Female,CF=Conservation Farming,CA=Conservation Agriculture)</center></th>
-	
-  </tr>
-	
-	
-	<tr><th colspan='2' ROWSPAN='3'>No/Select</th>
-	
-	<th ROWSPAN='3' colspan='1'>DISTRICT</th>
-	<th colspan='6'><center>No. of farmers adopting</center></th>
-	<th colspan='6'><center>Area under adoption</center></th>
-	<th colspan='2' ROWSPAN='2'><center>Area under legumes</center>
-	</th>
-	<th colspan='2' ROWSPAN='2' ><center>Herbicide use</center></th>
-	<th colspan='2' ROWSPAN='2' ><center>Not burning residue</center></th>
-		<th colspan='1' ROWSPAN='3' ><center>Action</center></th>
-	
-		</tr>
-		
-		
-		<tr>
-	
-
-	<th colspan='2'><center>CF HOE</center></th>
-	<th colspan='2'><center>CF ADP</center></th>
-	<th colspan='2'><center>CF Mechanized</center></th>
-	<th colspan='2'><center>CF HOE</center></th>
-	<th colspan='2'><center>CF ADP</center></th>
-	<th colspan='2'><center>CF Mechanized</center></th>
-		</tr>
-	<tr>";
-	for($x=0;$x<9;$x++){
-	$data.="<th>M</th><th>F</th>";
-	}
-	
-	$data.="</tr>";  
-	
-	$querytrainees=mysql_query("select * from tbl_trainees order by code asc")or die(http("PR-432"));
-  while($rowparticipants=mysql_fetch_array($querytrainees)){
-  
-$data.="<tr class='evenrow'>
-
-  <td colspan='22'><strong>".$rowparticipants['Name']."</strong></td></tr>";
-	  
-	$sql=QueryManager::ViewAdoptionRates($_SESSION['zoneID'],$_SESSION['districtID'],$_SESSION['organization'],$_SESSION['fyear'],$_SESSION['semiAnnual'],$rowparticipants['code']);   
-	   #$obj->alert($sql);
-	   
-	 $query=@mysql_query($sql)or die(http("PR-1000"));
-  while($row=@mysql_fetch_array($query)){
-  $orgdate="org_date".$n;
-  $color=($n%2==1)?"evenrow3":"white1";
-$data.="<tr class='$color'>
-	".loop_key('adoption_id',$row['adoption_id'])."
-<td>".$n."</td>
-<td colspan='1'>
-	<input name='loopkey[]' type='hidden' id='loopkey' value='1'>
-	<input name='districtCode[]' type='hidden' id='districtCode' value='".$row['district']."'>
-	<input name='region[]' type='hidden' id='region' value='".$row['zone']."'>
-	<input name='participants[]' type='hidden' id='participants' value='".$row['typeofparticipants']."'>
-		<input name='org_code[]' type='hidden' id='org_code' value='".$row['org_code']."'>
-		<input name='semiAnnual[]' type='hidden' id='semiAnnual' value='".$row['semi_annual']."'>
-		<input name='AdoptionTopic[]' type='hidden' id='AdoptionTopic' value='".$row['adoption_topic']."'>
-		<input name='year[]' type='hidden' id='year' value='".$row['year']."'>
-	".$row['districtName']."</td>
-<td align='right'>".$row['MaleHoebasin']."</td>
-<td align='right'>".$row['FemaleHoebasin']."</td>
- <td align='right'>".$row['MaleADPRipping']."</td>
- <td align='right'>".$row['FemaleADPRipping']."</td>
- <td align='right'>".$row['MaleMechanizedRipping']."</td>
-  <td align='right'>".$row['FemaleMechanizedRipping']."</td>
-  <td align='right'>".$row['MaleAreaHoebasin']."</td>
-  <td align='right'>".$row['FemaleAreaHoebasin']."</td>
-<td align='right'>".$row['MaleAreaADPRipping']."</td>
-  <td align='right'>".$row['FemaleAreaADPRipping']."</td>
-   <td align='right'>".$row['MaleAreaMechanizedRipping']."</td>
-   <td align='right'>".$row['FemaleAreaMechanizedRipping']."</td>
-   <td align='right'>".$row['MaleLegumes']."</td>
-  <td align='right'>".$row['FemaleLegumes']."</td>
-  <td align='right'>".$row['MaleHerbicide']."</td>
-  <td align='right'>".$row['FemaleHerbicide']."</td>
-  <td align='right'>".$row['MaleResidues']."</td>
-  <td align='right'>".$row['FemaleResidues']."</td>";
- 
-  //$obj->alert($code);
-  
-  /* xajax_delete_CarpAdoptionRates('".$row['year']."',
-  
-  '".$row['semi_annual']."','".$row['zone']."','".$row['district']."','".$row['typeofparticipants']."'
-  'tbl_adoptionrates','delete_AdoptionRates');return false;\" */
- // $year,$semi_annual,$zone,$district,$typeofparticipants
-  $data.="<td  align='center'><img src='icons/trash.png' title='Move to Trash' onclick=\"xajax_delete_CarpAdoptionRates('".$row['year']."',
-  
-  '".$row['semi_annual']."','".$row['zone']."','".$row['district']."','".$row['typeofparticipants']."','tbl_adoptionrates','delete_AdoptionRates');return false;\" ></td>
-  </tr>";
-$n++; }
-	
-	$sqlTotal=QueryManager::ViewAdoptionRatesTotals($_SESSION['zoneID'],$_SESSION['districtID'],$_SESSION['organization'],$_SESSION['fyear'],$_SESSION['semiAnnual'],$rowparticipants['code']);   
-		$queryTotal=Execute($sqlTotal) or die(http("PR-1025"));
-		$rowTotal=FetchRecords($queryTotal);
-	$data.="<tr class='$color'>
-	<td colspan=3><strong>Total ".$rowparticipants['Name']."</strong></td>
-<td align='right'><strong>".$rowTotal['MaleHoebasinTotal']."</strong></td>
-<td align='right'><strong>".$rowTotal['FemaleHoebasinTotal']."</strong></td>
-<td align='right'><strong>".$rowTotal['MaleADPRippingTotal']."</strong></td>
-<td align='right'><strong>".$rowTotal['FemaleADPRippingTotal']."</strong></td>
- 	<td align='right'><strong>".$rowTotal['MaleMechanizedRippingTotal']."</strong></td>
-  	<td align='right'><strong>".$rowTotal['FemaleMechanizedRippingTotal']."</strong></td>
-<td align='right'><strong>".$rowTotal['MaleAreaHoebasinTotal']."</strong></td>
-<td align='right'><strong>".$rowTotal['FemaleAreaHoebasinTotal']."</strong></td>
-<td align='right'><strong>".$rowTotal['MaleAreaADPRippingTotal']."</strong></td>
-<td align='right'><strong>".$rowTotal['FemaleAreaADPRippingTotal']."</strong></td>
-<td align='right'><strong>".$rowTotal['MaleAreaMechanizedRippingTotal']."</strong></td>
-<td align='right'><strong>".$rowTotal['FemaleAreaMechanizedRippingTotal']."</strong></td>
-<td align='right'><strong>".$rowTotal['MaleLegumesTotal']."</strong></td>
-<td align='right'><strong>".$rowTotal['FemaleLegumesTotal']."</strong></td>
-<td align='right'><strong>".$rowTotal['MaleHerbicideTotal']."</strong></td>
-<td align='right'><strong>".$rowTotal['FemaleHerbicideTotal']."</strong></td>
-<td align='right'><strong>".$rowTotal['MaleResiduesTotal']."</strong></td>
-<td align='right'><strong>".$rowTotal['FemaleResiduesTotal']."</strong></td>
-	 <td align='right'></strong></td>
-</tr>";
- 
-  
-  
-  
-  
-  
-  		}
-		//Generating Totals---------
-
- $data.="".noRecordsFound($query,22);
- 
- if($_GET['action']=='Reports'){
- $data.="";
- }else{
- $data.="<tr class='evenrow'>
- <td colspan='22'><input type='button' class='formButton2'   id='button' onclick=\"multiCheckBox('checked');return false;\" value='check all' /> |<input type='button' class='formButton2'   id='button' onclick=\"multiCheckBox('');\" value='uncheck all' /> | <input type='button' class='formButton2'   id='button' title='Edit'  onclick=\"xajax_edit_AdoptionRates(xajax.getFormValues('projects'),'".$region."','".$year."');return false;\" value='edit' />  | <a href='project_crosstab.php?linkvar=Aggregate Adoption Rates&&region=".$region."&&year=".$year."&&quarter=".$quarter."' > <input type='button' class='formButton2'   id='button' title='Cross tab'   value='Cross tab' class='' /></a></td>
-
-	
-</tr>";
-}
-$data.="</table></form>";
-
-$obj->assign('bodyDisplay','innerHTML',$data);
-return $obj;
-}
- #-======new training Particpants===================
-function new_AdoptionRates($region,$district,$organization,$fyear){
-$obj=new xajaxResponse();
-if($_SESSION['user_id']==''){
-$obj->redirect('index.php');
-return $obj;
-}
-if(($_SESSION['quarter']=='Closed')||($_SESSION['Activeyear']=='Closed')){
-$obj->alert("Please Your Reporting Period is Closed Please Open the Reporting period and Try Again!");
-return $obj;
-}
-
-$n=1;
-$inc=1;
-$_SESSION['nhh']=1;
-$_SESSION['nhh']=$nhh;
-$_SESSION['subcountyCode']=$subcounty;
-#$obj->alert($_SESSION['subcountyCode']);
-$_SESSION['ParishName']=$parishName;
-$_SESSION['parishCode']=$parish;
-$fyear=($fyear==NULL)?currFinancialYear($_SESSION['Activeyear'],'YearRange'):$fyear;
-#$obj->alert($_SESSION['parishCode']);
-//$n=1;
-$data="<form action=\"".$PHP_SELF."\" name='projects' id='projects' method='post'>
-<table width='100%' id='report'>";
- 
-  $data.="
-  
-  			<tr class='evenrow'>
-  <td width='30%' colspan='3'>
-  <div align='left'><strong>Region</strong></div></td>
-  <td colspan='18'><select name='region' id='region' onchange=\"xajax_new_AdoptionRates(this.value,'','".$organization."','".$fyear."');return false;\" style='width:300px;'><option value=''>-select-</option>";
-			$data.=QueryManager::ZoneFilter($region);
-		  $data.="</select></td>
-</tr>
-	<tr class='evenrow3'>
-  <td width='30%' colspan='3'>
-  <div align='left'><strong>Field Supervisor Responsible</strong></div></td>
-  <td colspan='18'><input type='text' name='fieldofficer' id='fieldofficer' size='48' ></td>
-</tr>
-<tr class='evenrow3'><td colspan='3'>Project Year:</td>
-	<td colspan='18'><select name='year' id='year'   style='width:300px;'><option value=''>-select-</option>";
-				$data.=QueryManager::FinancialYearFilter($fyear);
-				  $data.="</select></td>
-	</tr>
-	<tr class='evenrow'><td colspan='3'>Reporting Period</td>
-	 <td colspan='18'><select name='semiAnnual' id='semiAnnual' style='width:300px;'><option value=''>-select-</option>";
-				$data.=QueryManager::ReportingPeriodFilter($period=$_SESSION['quarter']);
-				  $data.="</select></td></tr>
-	<tr class='display_none'>
-  <td>Organizing Date</td>
-  <td><a href='javascript:void(0)' onClick=\"if(self.gfPop)gfPop.fPopCalendar(document.projects.orgdate);return false;\" hidefocus=''>
-<input name='orgdate' type='text'  size='50' value='' id='orgdate' readonly='readonly' />
-<img name='popcal' src='WeekPicker/calbtn.gif' alt='' align='absmiddle' border='0' height='22' width='25'></a></td>
-  </tr>
-	<tr CLASS='evenrow'>
- 
-<th colspan='21' ><center>CF/CA Adoption Rates</center></th>
-	
-  </tr>
-	
-	<tr><th colspan='' ROWSPAN='3'>No</th>
-		<th ROWSPAN='3' colspan='1'>category</th>
-	<th ROWSPAN='3' colspan='1'>DISTRICT</th>
-	
-	<th colspan='6'><center>No. of farmers adopting</center></th>
-	<th colspan='6'><center>Area under adoption</center></th>
-	<th rowspan='2' colspan='2'><center>Area under legumes</center></th>
-	<th rowspan='2' colspan='2'><center>Herbicide use</center></th>
-	<th rowspan='2' colspan='2'><center>Not burning residue</center></th>
-	
-	</tr>
-	
-	<tr>
-	<th colspan='2'><center>CF HOE</center></th>
-	<th colspan='2'><center>CF ADP</center></th>
-	<th colspan='2'><center>CF Mechanized</center></th>
-	<th colspan='2'><center>CF HOE</center></th>
-	<th colspan='2'><center>CF ADP</center></th>
-	<th colspan='2'><center>CF Mechanized</center></th>
-		</tr>
-	<tr>
-	<th>Male</th>
-	<th>Female</th>
-	<th>Male</th>
-	<th>Female</th>
-	<th>Male</th>
-	<th>Female</th>
-	<th>Male</th>
-	<th>Female</th>
-	<th>Male</th>
-	<th>Female</th>
-	<th>Male</th>
-	<th>Female</th>
-	<th>Male</th>
-	<th>Female</th>
-	<th>Male</th>
-	<th>Female</th>
-	<th>Male</th>
-	<th>Female</th>
-
-	</tr>";
-	
-	for($x=0;$x<10;$x++){
-	$data.="<tr class='evenrow'>
-	<td><input name='loopkey[]' size='10'  type='hidden' id='loopkey".$n."' value='1'  />".$n."</td>
-	<td colspan=''><select name='trainees[]' id='trainees' style='width:100px;'>
-	".funct_dropDown('tbl_trainees', 'Name', 'code', 'code')."</select></td>
-	<td colspan=''><select name='district[]' id='district' style='width:100px;'><option value=''>-select-</option>";
-	
-	 	$data.=QueryManager::DistrictFilter($region,$district);
-	
-	$data.="</select></td>
-	
-	<td>
-	
-	
-	
-	<input name='loopkey1[]' size='10'  type='hidden' id='loopkey' value='1'  />
-	<input name='trainingtopic1[]' size='10' type='hidden' id='trainingtopic1".$n."' value='1'  />
-	<input name='malehoe[]' size='10'  type='text' id='malehoe".$n."'
-	
-	onKeyPress='return numbersonly(event, false)'
-	
-
-	onKeyUp=\"xajax_calc_trainingSemiAnnual(
-		getElementById('malehoe".$n."').value,getElementById('femalehoe".$n."').value,
-		getElementById('maleadp".$n."').value,getElementById('femaleadp".$n."').value,
-		getElementById('malemechanized".$n."').value,getElementById('femalemechanized".$n."').value,
-		getElementById('maleherbicide".$n."').value,getElementById('femaleherbicide".$n."').value,
-		getElementById('maletreeplanting".$n."').value,getElementById('femaletreeplanting".$n."').value,
-		'total".$n."');\"
-	
-	  /></td>
-	<td><input name='femalehoe[]' size='10'  type='text' id='femalehoe".$n."' 
-		onKeyPress='return numbersonly(event, false)'
-	
-	onKeyUp=\"xajax_calc_trainingSemiAnnual(
-		getElementById('malehoe".$n."').value,getElementById('femalehoe".$n."').value,
-		getElementById('maleadp".$n."').value,getElementById('femaleadp".$n."').value,
-		getElementById('malemechanized".$n."').value,getElementById('femalemechanized".$n."').value,
-		getElementById('maleherbicide".$n."').value,getElementById('femaleherbicide".$n."').value,
-		getElementById('maletreeplanting".$n."').value,getElementById('femaletreeplanting".$n."').value,
-		'total".$n."');\"
-	
-	 /></td>
-	<td>
-		<input name='loopkey2[]' size='10'  type='hidden' id='loopkey2' value='1'  />
-	<input name='trainingtopic2[]' size='10'  type='hidden' id='trainingtopic2".$n."' value='2'  />
-	<input name='maleadp[]' size='10'  type='text' id='maleadp".$n."'
-	onKeyUp=\"xajax_calc_trainingSemiAnnual(
-		getElementById('malehoe".$n."').value,getElementById('femalehoe".$n."').value,
-		getElementById('maleadp".$n."').value,getElementById('femaleadp".$n."').value,
-		getElementById('malemechanized".$n."').value,getElementById('femalemechanized".$n."').value,
-		getElementById('maleherbicide".$n."').value,getElementById('femaleherbicide".$n."').value,
-		getElementById('maletreeplanting".$n."').value,getElementById('femaletreeplanting".$n."').value,
-		'total".$n."');\"
-	
-	  /></td>
-	<td><input name='femaleadp[]' size='10'  type='text' id='femaleadp".$n."'
-		onKeyPress='return numbersonly(event, false)'
-	onKeyUp=\"xajax_calc_trainingSemiAnnual(
-		getElementById('malehoe".$n."').value,getElementById('femalehoe".$n."').value,
-		getElementById('maleadp".$n."').value,getElementById('femaleadp".$n."').value,
-		getElementById('malemechanized".$n."').value,getElementById('femalemechanized".$n."').value,
-		getElementById('maleherbicide".$n."').value,getElementById('femaleherbicide".$n."').value,
-		getElementById('maletreeplanting".$n."').value,getElementById('femaletreeplanting".$n."').value,
-		'total".$n."');\"
-	  /></td>
-	<td>
-	<input name='loopkey3[]' size='10'  type='hidden' id='loopkey3' value='1'  />
-	<input name='trainingtopic3[]' size='10'  type='hidden' id='trainingtopic3".$n."' value='3'  />
-	<input name='malemechanized[]' size='10'  type='text' id='malemechanized".$n."' 
-		
-		onKeyPress='return numbersonly(event, false)'
-		
-onKeyUp=\"xajax_calc_trainingSemiAnnual(
-		getElementById('malehoe".$n."').value,getElementById('femalehoe".$n."').value,
-		getElementById('maleadp".$n."').value,getElementById('femaleadp".$n."').value,
-		getElementById('malemechanized".$n."').value,getElementById('femalemechanized".$n."').value,
-		getElementById('maleherbicide".$n."').value,getElementById('femaleherbicide".$n."').value,
-		getElementById('maletreeplanting".$n."').value,getElementById('femaletreeplanting".$n."').value,
-		'total".$n."');\"
-	
-	 /></td>
-	<td><input name='femalemechanized[]' size='10'  type='text' id='femalemechanized".$n."'
-		onKeyPress='return numbersonly(event, false)'
-	onKeyUp=\"xajax_calc_trainingSemiAnnual(
-		getElementById('malehoe".$n."').value,getElementById('femalehoe".$n."').value,
-		getElementById('maleadp".$n."').value,getElementById('femaleadp".$n."').value,
-		getElementById('malemechanized".$n."').value,getElementById('femalemechanized".$n."').value,
-		getElementById('maleherbicide".$n."').value,getElementById('femaleherbicide".$n."').value,
-		getElementById('maletreeplanting".$n."').value,getElementById('femaletreeplanting".$n."').value,
-		'total".$n."');\"
-	  /></td>
-	<td>
-		<input name='loopkey4[]' size='10'  type='hidden' id='loopkey4' value='1'  />
-		<input name='trainingtopic4[]' size='10'  type='hidden' id='trainingtopic4".$n."' value='4'  />
-	<input name='maleherbicide[]' size='10'  type='text' id='maleherbicide".$n."' 
-		onKeyPress='return numbersonly(event, false)'
-	onKeyUp=\"xajax_calc_trainingSemiAnnual(
-		getElementById('malehoe".$n."').value,getElementById('femalehoe".$n."').value,
-		getElementById('maleadp".$n."').value,getElementById('femaleadp".$n."').value,
-		getElementById('malemechanized".$n."').value,getElementById('femalemechanized".$n."').value,
-		getElementById('maleherbicide".$n."').value,getElementById('femaleherbicide".$n."').value,
-		getElementById('maletreeplanting".$n."').value,getElementById('femaletreeplanting".$n."').value,
-		'total".$n."');\"
-	 /></td>
-	<td><input name='femaleherbicide[]' size='10'  type='text' id='femaleherbicide".$n."'
-		onKeyPress='return numbersonly(event, false)'
-onKeyUp=\"xajax_calc_trainingSemiAnnual(
-		getElementById('malehoe".$n."').value,getElementById('femalehoe".$n."').value,
-		getElementById('maleadp".$n."').value,getElementById('femaleadp".$n."').value,
-		getElementById('malemechanized".$n."').value,getElementById('femalemechanized".$n."').value,
-		getElementById('maleherbicide".$n."').value,getElementById('femaleherbicide".$n."').value,
-		getElementById('maletreeplanting".$n."').value,getElementById('femaletreeplanting".$n."').value,
-		'total".$n."');\"  /></td>
-	<td>
-	
-	
-		<input name='loopkey5[]' size='10'  type='hidden' id='loopkey5' value='1'  />
-	<input name='trainingtopic5[]' size='10'  type='hidden' id='trainingtopic5".$n."' value='5'  />
-	<input name='maletreeplanting[]' size='10'  type='text' id='maletreeplanting".$n."'
-		onKeyPress='return numbersonly(event, false)'
-	onKeyUp=\"xajax_calc_trainingSemiAnnual(
-		getElementById('malehoe".$n."').value,getElementById('femalehoe".$n."').value,
-		getElementById('maleadp".$n."').value,getElementById('femaleadp".$n."').value,
-		getElementById('malemechanized".$n."').value,getElementById('femalemechanized".$n."').value,
-		getElementById('maleherbicide".$n."').value,getElementById('femaleherbicide".$n."').value,
-		getElementById('maletreeplanting".$n."').value,getElementById('femaletreeplanting".$n."').value,
-		'total".$n."');\"
-	  /></td>
-	<td><input name='femaletreeplanting[]' size='10'  type='text' id='femaletreeplanting".$n."' 
-		onKeyPress='return numbersonly(event, false)'
-	onKeyUp=\"xajax_calc_trainingSemiAnnual(
-		getElementById('malehoe".$n."').value,getElementById('femalehoe".$n."').value,
-		getElementById('maleadp".$n."').value,getElementById('femaleadp".$n."').value,
-		getElementById('malemechanized".$n."').value,getElementById('femalemechanized".$n."').value,
-		getElementById('maleherbicide".$n."').value,getElementById('femaleherbicide".$n."').value,
-		getElementById('maletreeplanting".$n."').value,getElementById('femaletreeplanting".$n."').value,
-		'total".$n."');\"
-	 /></td>
-	 <td>
-	
-	
-		<input name='loopkey6[]' size='10'  type='hidden' id='loopkey6' value='1'  />
-	<input name='trainingtopic6[]' size='10'  type='hidden' id='trainingtopic6".$n."' value='6'  />
-	<input name='malearea[]' size='10'  type='text' id='malearea".$n."'
-		onKeyPress='return numbersonly(event, false)'
-	onKeyUp=\"xajax_calc_trainingSemiAnnual(
-		getElementById('malehoe".$n."').value,getElementById('femalehoe".$n."').value,
-		getElementById('maleadp".$n."').value,getElementById('femaleadp".$n."').value,
-		getElementById('malemechanized".$n."').value,getElementById('femalemechanized".$n."').value,
-		getElementById('maleherbicide".$n."').value,getElementById('femaleherbicide".$n."').value,
-		getElementById('maletreeplanting".$n."').value,getElementById('femaletreeplanting".$n."').value,
-		'total".$n."');\"
-	  /></td>
-	<td><input name='femalearea[]' size='10'  type='text' id='femalearea".$n."' 
-		onKeyPress='return numbersonly(event, false)'
-	onKeyUp=\"xajax_calc_trainingSemiAnnual(
-		getElementById('malehoe".$n."').value,getElementById('femalehoe".$n."').value,
-		getElementById('maleadp".$n."').value,getElementById('femaleadp".$n."').value,
-		getElementById('malemechanized".$n."').value,getElementById('femalemechanized".$n."').value,
-		getElementById('maleherbicide".$n."').value,getElementById('femaleherbicide".$n."').value,
-		getElementById('maletreeplanting".$n."').value,getElementById('femaletreeplanting".$n."').value,
-		'total".$n."');\"
-	 /></td>
-	 
-	 
-	 
-	 <td>
-	
-	
-		<input name='loopkey7[]' size='10'  type='hidden' id='loopkey7' value='1'  />
-	<input name='trainingtopic7[]' size='10'  type='hidden' id='trainingtopic7".$n."' value='7'  />
-	<input name='malelegumes[]' size='10'  type='text' id='malelegumes".$n."'
-		onKeyPress='return numbersonly(event, false)'
-	onKeyUp=\"xajax_calc_trainingSemiAnnual(
-		getElementById('malehoe".$n."').value,getElementById('femalehoe".$n."').value,
-		getElementById('maleadp".$n."').value,getElementById('femaleadp".$n."').value,
-		getElementById('malemechanized".$n."').value,getElementById('femalemechanized".$n."').value,
-		getElementById('maleherbicide".$n."').value,getElementById('femaleherbicide".$n."').value,
-		getElementById('maletreeplanting".$n."').value,getElementById('femaletreeplanting".$n."').value,
-		'total".$n."');\"
-	  /></td>
-	<td><input name='femalelegumes[]' size='10'  type='text' id='femalelegumes".$n."' 
-		onKeyPress='return numbersonly(event, false)'
-	onKeyUp=\"xajax_calc_trainingSemiAnnual(
-		getElementById('malehoe".$n."').value,getElementById('femalehoe".$n."').value,
-		getElementById('maleadp".$n."').value,getElementById('femaleadp".$n."').value,
-		getElementById('malemechanized".$n."').value,getElementById('femalemechanized".$n."').value,
-		getElementById('maleherbicide".$n."').value,getElementById('femaleherbicide".$n."').value,
-		getElementById('maletreeplanting".$n."').value,getElementById('femaletreeplanting".$n."').value,
-		'total".$n."');\"
-	 /></td>
-	 
-	  <td>
-	
-		<input name='loopkey9[]' size='10'  type='hidden' id='loopkey9' value='1'  />
-	<input name='trainingtopic9[]' size='10'  type='hidden' id='trainingtopic9".$n."' value='9'  />
-	<input name='maleherbs[]' size='10'  type='text' id='maleherbs".$n."'
-		onKeyPress='return numbersonly(event, false)'
-	onKeyUp=\"xajax_calc_trainingSemiAnnual(
-		getElementById('malehoe".$n."').value,getElementById('femalehoe".$n."').value,
-		getElementById('maleadp".$n."').value,getElementById('femaleadp".$n."').value,
-		getElementById('malemechanized".$n."').value,getElementById('femalemechanized".$n."').value,
-		getElementById('maleherbicide".$n."').value,getElementById('femaleherbicide".$n."').value,
-		getElementById('maletreeplanting".$n."').value,getElementById('femaletreeplanting".$n."').value,
-		'total".$n."');\"
-	  /></td>
-	<td><input name='femaleherbs[]' size='10'  type='text' id='femaleherbs".$n."' 
-		onKeyPress='return numbersonly(event, false)'
-	onKeyUp=\"xajax_calc_trainingSemiAnnual(
-		getElementById('malehoe".$n."').value,getElementById('femalehoe".$n."').value,
-		getElementById('maleadp".$n."').value,getElementById('femaleadp".$n."').value,
-		getElementById('malemechanized".$n."').value,getElementById('femalemechanized".$n."').value,
-		getElementById('maleherbicide".$n."').value,getElementById('femaleherbicide".$n."').value,
-		getElementById('maletreeplanting".$n."').value,getElementById('femaletreeplanting".$n."').value,
-		'total".$n."');\"
-	 /></td>
-	 
-	 
-	 
-	 <td>
-	
-	
-		<input name='loopkey8[]' size='10'  type='hidden' id='loopkey8' value='1'  />
-	<input name='trainingtopic8[]' size='10'  type='hidden' id='trainingtopic8".$n."' value='8'  />
-	<input name='maleresidues[]' size='10'  type='text' id='maleresidues".$n."'
-		onKeyPress='return numbersonly(event, false)'
-	onKeyUp=\"xajax_calc_trainingSemiAnnual(
-		getElementById('malehoe".$n."').value,getElementById('femalehoe".$n."').value,
-		getElementById('maleadp".$n."').value,getElementById('femaleadp".$n."').value,
-		getElementById('malemechanized".$n."').value,getElementById('femalemechanized".$n."').value,
-		getElementById('maleherbicide".$n."').value,getElementById('femaleherbicide".$n."').value,
-		getElementById('maletreeplanting".$n."').value,getElementById('femaletreeplanting".$n."').value,
-		'total".$n."');\"
-	  /></td>
-	<td><input name='femaleresidues[]' size='10'  type='text' id='femaleresidues".$n."' 
-		onKeyPress='return numbersonly(event, false)'
-	onKeyUp=\"xajax_calc_trainingSemiAnnual(
-		getElementById('malehoe".$n."').value,getElementById('femalehoe".$n."').value,
-		getElementById('maleadp".$n."').value,getElementById('femaleadp".$n."').value,
-		getElementById('malemechanized".$n."').value,getElementById('femalemechanized".$n."').value,
-		getElementById('maleherbicide".$n."').value,getElementById('femaleherbicide".$n."').value,
-		getElementById('maletreeplanting".$n."').value,getElementById('femaletreeplanting".$n."').value,
-		'total".$n."');\"
-	 /></td>
-	 	 
-	 
-	</tr>";
-	
-	
-	
-	/**/
-	
-	$n++;
-	
-	}
-	
-	
-
-  $data.=" 
- <tr style='display:none'>
-  <td>Attach Minutes</td>
-  <td><input name='' size='50' type='file'></td>
-  </tr>
-  <tr style='display:none'>
-  <td>Attach Attendance Sheet/List</td>
-  <td><input name='' size='50' type='file'></td>
-  </tr>
-  ";
- 
- 
- $data.="<tr class='evenrow'><td></td><td colspan='21' align='right'><div align='right'>
-<button type='button' class='formButton2'   id='button' name='save' id='save' style='width:100px;' value='Save' onclick=\"xajax_update_AdoptionRates(xajax.getFormValues('projects')); return false;\" />Save</button>
-</div></td></tr>
-</table>
-
-
-
-</form>";
-
-$obj->assign('bodyDisplay','innerHTML',$data);
-return $obj;
-}
 function getRecordId($semi_annual,$year,$org_code,$div){
 $obj= new xajaxResponse();
 $n=1;
@@ -13870,7 +12974,7 @@ return $obj;
 } */
  $sql="select narrative_id from tbl_tsoqualitative where org_code='".$org_code."' and year='".$year."' and semi_annual='".$semi_annual."' ";
 //$obj->alert($sql);
-$query=mysql_query($sql)or die(http(0941));
+$query=mysql_query($sql)or die(mysql_error());
 while($queryRecord=mysql_fetch_array($query)){
 //$obj->alert($queryRecord['narrative_id']."---narr----- ".$semi_annual."-semi-----  ----".$div."--div------".$project_id."-prj_id-----".$year."----year");
 if($queryRecord['narrative_id']<>0){
@@ -13901,7 +13005,7 @@ return $obj;
 } */
  $sql="select * from tbl_farmerproductionrecords where org_code='".$org_code."' and year='".$year."' and quarter='".$semi_annual."' ";
 //$obj->alert($sql);
-$query=mysql_query($sql)or die(http(0941));
+$query=mysql_query($sql)or die(mysql_error());
 while($queryRecord=mysql_fetch_array($query)){
 //$obj->alert($queryRecord['narrative_id']."---narr----- ".$semi_annual."-semi-----  ----".$div."--div------".$project_id."-prj_id-----".$year."----year");
 if($queryRecord['org_code']<>0){
@@ -14315,7 +13419,7 @@ $data="<form   method='post' name='formUploadIndividual' id='formUploadIndividua
 <td><textarea name='activity[]' cols=50 rows=3></textarea></td>
 <td><textarea name='milestone[]' cols=18 rows=3></textarea></td>
 <td><select name='quarter[]' size='1'><option value='' >-select-</option>";
-	$s=@mysql_query("select britishSemiannual from tbl_quarters group by britishSemiannual asc") or die(http(0789)); 
+	$s=@mysql_query("select britishSemiannual from tbl_quarters group by britishSemiannual asc") or die(mysql_error()); 
 	while($rr=@mysql_fetch_array($s)){
 	$data.="<option value=\"".$rr['britishSemiannual']."\" >".$rr['britishSemiannual']."</option>";
 	}
@@ -15080,7 +14184,7 @@ $query_string="select * from tbl_lookup  where classCode='5' order by code Asc";
 #where lower(orgName) like '".strtolower($_SESSION['orgname1'])."%'&& lower(organization_type) like '".strtolower($_SESSION['orgtype1'])."%'&& lower(district) like '".strtolower($_SESSION['district1'])."%$feedback->addAlert($query_string);'
 
 
-$query_=mysql_query($query_string)or die(http(0186));
+$query_=mysql_query($query_string)or die(mysql_error());
 
 	  while($row=mysql_fetch_array($query_)){
 

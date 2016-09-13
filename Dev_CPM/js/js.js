@@ -95,6 +95,7 @@ function loadingIcon(Keys,Component) {
 	if(Component=='update_bds')xajax_update_bds(Keys,Component);
 	if(Component=='update_bankLoans')xajax_update_bankLoans(Keys,Component);
 	if(Component=='update_inputSales')xajax_update_inputSales(Keys,Component);
+	if(Component=='update_phh')xajax_update_phh(Keys,Component);
 	if(Component=='update_mediaPrograms')xajax_update_mediaPrograms(Keys,Component);
 	if(Component=='update_youthApprentice')xajax_update_youthApprentice(Keys,Component);
 	

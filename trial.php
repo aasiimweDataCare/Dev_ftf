@@ -1,46 +1,70 @@
-<?php
+case
+		when `pm`.`reportingPeriod` = 'Apr - Sep' 
+		and `pm`.`reportingMonth` 
+		between ('2013-04-01') and ('2013-09-30') 
+		and `pm`.`year` in (2013) 
+		then 'Apr 2012 - Sep 2013'
+		
+		when `pm`.`reportingPeriod` = 'Oct - Mar' 
+		and `pm`.`reportingMonth` 
+		between ('2013-10-01') and ('2014-03-31') 
+		and `pm`.`year` in (2013,2014) 
+		then 'Oct 2013 - Mar 2014'
 
-$date_submission='2016-04-1';
-$reporting_period='Oct 2015 - Mar 2016';
-$table='tbl_laboursavingtech';
-$name_column_submission_date='DateSubmission';
-$name_column_rep_period='reportingPeriod';
-$name_column_year='year';
+		when `pm`.`reportingPeriod` = 'Apr - Sep' 
+		and `pm`.`reportingMonth` 
+		between ('2014-04-01') and ('2014-09-30') 
+		and `pm`.`year` in (2014) 
+		then 'Apr 2014 - Sep 2014'
 
+		when `pm`.`reportingPeriod` = 'Oct - Mar' 
+		and `pm`.`reportingMonth` 
+		between ('2014-10-01') and ('2015-03-31') 
+		and `pm`.`year` in (2014,2015) 
+		then 'Oct 2014 - Mar 2015'
 
+		when `pm`.`reportingPeriod` = 'Apr - Sep' 
+		and `pm`.`reportingMonth` 
+		between ('2015-04-01') and ('2015-09-30') 
+		and `pm`.`year` in (2015) 
+		then 'Apr 2015 - Sep 2015'
 
+		when `pm`.`reportingPeriod` = 'Oct - Mar' 
+		and `pm`.`reportingMonth` 
+		between ('2015-10-01') and ('2016-03-31') 
+		and `pm`.`year` in (2015,2016) 
+		then 'Oct 2015 - Mar 2016'
 
-function cleanUpDateSubmissionValues($date_submission,$reporting_period,$table,$name_column_submission_date,$name_column_rep_period,$name_column_year){
-	
-	$reporting_period_month_two=trim(substr($reporting_period,11,3));
-	$reporting_period_month_one=trim((substr($reporting_period,0,3)));
-	$year_values=''.trim(substr($reporting_period,-4)).'';
-	$reporting_period_values=''.$reporting_period_month_one.' - '.$reporting_period_month_two.'';
-	$expected_start_date=''.((trim(substr($reporting_period,-4)))-1).'-10-01';
-	$expected_end_date=''.trim(substr($reporting_period,-4)).'-03-31';
+		when `pm`.`reportingPeriod` = 'Apr - Sep' 
+		and `pm`.`reportingMonth` 
+		between ('2016-04-01') and ('2016-09-30') 
+		and `pm`.`year` in (2016) 
+		then 'Apr 2016 - Sep 2016'
 
+		when `pm`.`reportingPeriod` = 'Oct - Mar' 
+		and `pm`.`reportingMonth` 
+		between ('2016-10-01') and ('2017-03-31') 
+		and `pm`.`year` in (2016,2017) 
+		then 'Oct 2016 - Mar 2017'
 
-	switch(true){
-		case((strtotime($date_submission) <= strtotime($expected_end_date))  and (strtotime($date_submission) >= strtotime($expected_start_date))):
-			$queryStatement='';
-		break;
+		when `pm`.`reportingPeriod` = 'Apr - Sep' 
+		and `pm`.`reportingMonth` 
+		between ('2017-04-01') and ('2017-09-30') 
+		and `pm`.`year` in (2017) 
+		then 'Apr 2017 - Sep 2017'
 
-		case((strtotime($date_submission) > strtotime($expected_end_date))):
-		$queryStatement="update `".$table."` 
-		set `".$name_column_submission_date."` = '".$expected_end_date."'
-		where `".$name_column_rep_period."` = '".$reporting_period_values."'
-		and	`".$name_column_year."` in (".$year_values.") ";
-		break;
+		when `pm`.`reportingPeriod` = 'Oct - Mar' 
+		and `pm`.`reportingMonth` 
+		between ('2017-10-01') and ('2018-03-31') 
+		and `pm`.`year` in (2017,2018) 
+		then 'Oct 2017 - Mar 2018'
 
-		default:
-		break;
-	}
-	
-	return 	$queryStatement;
-}
-
-
-	
-
-
-echo cleanUpDateSubmissionValues($date_submission,$reporting_period,$table,$name_column_submission_date,$name_column_rep_period,$name_column_year);
+		when `pm`.`reportingPeriod` = 'Apr - Sep' 
+		and `pm`.`reportingMonth` 
+		between ('2018-04-01') and ('2018-09-30') 
+		and `pm`.`year` in (2018) 
+		then 'Apr 2018 - May 2018'
+		
+	else `pm`.`reportingPeriod`
+	end 
+	as  `reportingPeriod_cleaned`
