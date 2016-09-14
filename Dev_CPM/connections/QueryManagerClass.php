@@ -2625,6 +2625,10 @@ order by p.prog_id asc";
         $q_ex = Execute($s_exporter) or die(http(__line__));
 		$q_tr = Execute($s_trader) or die(http(__line__));
 		$q_va = Execute($s_vAgent) or die(http(__line__));
+
+
+
+
         while ($row_ex = FetchRecords($q_ex)) {
 
             $selected = ($partnerId == $row_ex['exporterName']) ? "selected" : "";
@@ -12153,6 +12157,144 @@ function cleanDirtyDates_Form2Edits($date){
 		return $result;
 	}
 
+
+	function get_phh_nameValuchainPartnerTypeAndId($partnerId,$partnerType,$nameMiddleChainValueActor){
+
+		switch(true){
+			case(($partnerId !== '') and ($partnerType !== '') and ($nameMiddleChainValueActor !== '')):
+			$partner_id=$partnerId;
+			$partner_type=$partnerType;
+			break;
+
+			case(($partnerId=='') and ($nameMiddleChainValueActor !=='') and ((strpos($nameMiddleChainValueActor, '(') !== false))):
+			$partner_id=QueryManager::get_string_part($nameMiddleChainValueActor,'(',')');
+			$partner_type=($partnerType=='')?'Trader':$partnerType;
+			break;
+
+			default:
+			break;
+		}
+		
+		return array($partner_id,$partner_type);
+	}
+
+function get_form2_partner_filter($partnerId,$partnerType)
+    {
+        $s_exporter = "
+		SELECT `tbl_exportersId`, `exporterName`
+		FROM `tbl_exporters` 
+		WHERE `display`='Yes'
+		order by `exporterName` asc";
+		
+		$s_trader= "
+		SELECT `tbl_tradersId`, `traderName`
+		FROM `tbl_traders` 
+		WHERE `display`='Yes'
+		order by `traderName` asc";
+		
+		$s_vAgent = "
+		SELECT `tbl_villageAgentId`, `vAgentName`
+		FROM `tbl_villageagents` 
+		WHERE `display`='Yes'
+		order by `vAgentName` asc";
+		
+		
+        $q_ex = Execute($s_exporter) or die(http(__line__));
+		$q_tr = Execute($s_trader) or die(http(__line__));
+		$q_va = Execute($s_vAgent) or die(http(__line__));
+
+
+
+		
+        
+           
+		   switch(true){
+				case(trim($partnerType)=='Exporter'):				
+				while ($row_ex = FetchRecords($q_ex)) {
+					$selected = (trim($partnerId) == $row_ex['tbl_exportersId']) ? "selected" : "";
+					$exporterName=$row_ex['exporterName']." |EXP-".$row_ex['tbl_exportersId']."";
+					$data.= "<option value=\"" . $exporterName . "\" " . $selected . ">" . $exporterName . "</option>";
+				}
+				while ($row_tr = FetchRecords($q_tr)) {
+					$traderNameString=$row_tr['traderName']." |T-".$row_tr['tbl_tradersId']."";
+					$data.= "<option value=\"" . $traderNameString . "\">" .  $traderNameString . "</option>";
+
+				}
+				while ($row_va = FetchRecords($q_va)) {
+					$vAgentNameString=$row_va['vAgentName']." |V.A-".$row_va['tbl_villageAgentId']."";            
+					$data.= "<option value=\"" . $vAgentNameString . "\">" . $vAgentNameString . "</option>";
+
+				}
+				break;
+
+
+							
+				
+
+				case(trim($partnerType)=='Trader'):
+				while ($row_ex = FetchRecords($q_ex)) {
+					$exporterName=$row_ex['exporterName']." |EXP-".$row_ex['tbl_exportersId']."";
+					$data.= "<option value=\"" . $exporterName . "\">" . $exporterName . "</option>";
+				}				
+				while ($row_tr = FetchRecords($q_tr)) {
+					$selected = (trim($partnerId) == $row_tr['tbl_tradersId']) ? "selected" : "";
+					$traderNameString=$row_tr['traderName']." |T-".$row_tr['tbl_tradersId']."";
+					$data.= "<option value=\"" . $traderNameString . "\" " . $selected . ">" .  $traderNameString . "</option>";
+
+				}
+				while ($row_va = FetchRecords($q_va)) {
+					$vAgentNameString=$row_va['vAgentName']." |V.A-".$row_va['tbl_villageAgentId']."";            
+					$data.= "<option value=\"" . $vAgentNameString . "\">" . $vAgentNameString . "</option>";
+
+				}
+				break;
+
+
+
+
+				case(trim($partnerType)=='VillageAgent'):
+				while ($row_ex = FetchRecords($q_ex)) {
+					$exporterName=$row_ex['exporterName']." |EXP-".$row_ex['tbl_exportersId']."";
+					$data.= "<option value=\"" . $exporterName . "\">" . $exporterName . "</option>";
+				}
+				while ($row_tr = FetchRecords($q_tr)) {
+					$traderNameString=$row_tr['traderName']." |T-".$row_tr['tbl_tradersId']."";
+					$data.= "<option value=\"" . $traderNameString . "\">" .  $traderNameString . "</option>";
+
+				}				
+				while ($row_va = FetchRecords($q_va)) {
+					$selected = (trim($partnerId) == $row_va['tbl_villageAgentId']) ? "selected" : "";
+					$vAgentNameString=$row_va['vAgentName']." |V.A-".$row_va['tbl_villageAgentId']."";            
+					$data.= "<option value=\"" . $vAgentNameString . "\" " . $selected . ">" . $vAgentNameString . "</option>";
+
+				}
+				break;
+
+
+
+
+				default:
+				while ($row_ex = FetchRecords($q_ex)) {
+					$exporterName=$row_ex['exporterName']." |EXP-".$row_ex['tbl_exportersId']."";
+					$data.= "<option value=\"" . $exporterName . "\">" . $exporterName . "</option>";
+				}
+				while ($row_tr = FetchRecords($q_tr)) {
+					$traderNameString=$row_tr['traderName']." |T-".$row_tr['tbl_tradersId']."";
+					$data.= "<option value=\"" . $traderNameString . "\">" .  $traderNameString . "</option>";
+
+				}				
+				while ($row_va = FetchRecords($q_va)) {
+					$vAgentNameString=$row_va['vAgentName']." |V.A-".$row_va['tbl_villageAgentId']."";            
+					$data.= "<option value=\"" . $vAgentNameString . "\" " . $selected . ">" . $vAgentNameString . "</option>";
+
+				}
+				break;
+			}
+
+        return $data;
+
+    }
+	
 
 
 }//end of class QueryManager();

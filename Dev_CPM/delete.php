@@ -554,7 +554,7 @@ $obj=new xajaxResponse();
 $sql="
 DELETE `l`.*,`ls`.* 
 FROM `tbl_laboursavingtech` as `l`
-INNER JOIN `tbl_laboursavingtech_jobholder` as `ls` 
+INNER JOIN `tbl_labourSavingTech_jobHolder` as `ls` 
 ON (`ls`.`labour_saving_tech_id`=`l`.`tbl_laboursavingtechId`)
 Where  `l`.`tbl_laboursavingtechId`='".$id."'
 ";
@@ -593,7 +593,7 @@ $obj=new xajaxResponse();
 $sql="
 DELETE `y`.*,`yj`.* 
 FROM `tbl_youthapprentice` as `y`
-INNER JOIN `tbl_apprenticeship_jobholder` as `yj` 
+INNER JOIN `tbl_apprenticeship_jobHolder` as `yj` 
 ON (`yj`.`apprenticeship_id` = `y`.`tbl_youthapprenticeId`)
 Where  `y`.`tbl_youthapprenticeId`='".$id."'
 ";
@@ -651,7 +651,7 @@ $obj=new xajaxResponse();
 $sql="
 DELETE `s`.*,`sr`.*,`sm`.* 
 from `tbl_input_sales` as `s`
-join `inputsales_metadata` as `sr` on (`sr`.`sales_id` = `s`.`id`)
+join `inputSales_metaData` as `sr` on (`sr`.`sales_id` = `s`.`id`)
 join `tbl_input_sales_meta_data` as `sm` on (`sm`.`id` = `sr`.`metadata_id`)
 Where  `s`.`id`='".$id."'
 ";
@@ -670,7 +670,7 @@ $obj=new xajaxResponse();
 $sql="
 DELETE `p`.*,`pr`.*,`pm`.* 
 from `tbl_phh` as `p`
-join `phh_metadata` as `pr` on (`pr`.`phh_id` = `p`.`id`)
+join `phh_metaData` as `pr` on (`pr`.`phh_id` = `p`.`id`)
 join `tbl_phh_meta_data` as `pm` on (`pm`.`id` = `pr`.`metadata_id`)
 Where  `s`.`id`='".$id."'
 ";

@@ -657,7 +657,7 @@ $query_string.=" order by t.`tbl_techadoptionId` DESC";
 
   
 	$n=1;
-	//$query_=mysql_query($query_string)or die(mysql_error());
+	//$query_=mysql_query($query_string)or die(http(__line__));
 	
 	$query_=mysql_query($query_string)or die(mysql_error());
 	 /**************
@@ -668,14 +668,14 @@ $query_string.=" order by t.`tbl_techadoptionId` DESC";
 	 $num_pages=ceil($max_records/$records_per_page);
 	 $offset = ($cur_page-1)*$records_per_page;
 	 $n=$offset+1;
-	 $new_query=mysql_query($query_string." limit ".$offset.",".$records_per_page) or die(mysql_error());
+	 $new_query=mysql_query($query_string." limit ".$offset.",".$records_per_page) or die(http(__line__));
 	
   
   while($row_parent=mysql_fetch_array($new_query)){
 	  
 	  //determining the number of child records for each row
-			$s_child="SELECT * FROM `tbl_tech_adoption_jobHolder` WHERE `techAdoption_id`=".$row_parent['tbl_techadoptionId']."";
-			$q_child=Execute($s_child) or die(mysql_error());			
+			$s_child="SELECT * FROM `tbl_tech_adoption_jobholder` WHERE `techAdoption_id`=".$row_parent['tbl_techadoptionId']."";
+			$q_child=Execute($s_child) or die(http(__line__));			
 			$num_child_records=mysql_num_rows($q_child);	
 			//$obj->alert($num_child_records);			
 			$row_span=($num_child_records>1)?"rowspan='".$num_child_records."'":"";
@@ -700,8 +700,8 @@ $query_string.=" order by t.`tbl_techadoptionId` DESC";
 			$data.="<td ".$row_span." align='right'>".(number_format($row_parent['amountInvestedInTechAdoption']))."</td>";
 			
 			//return first row of child records
-			$s_first_child = mysql_query("SELECT * FROM `tbl_tech_adoption_jobHolder` 
-			WHERE `techAdoption_id`=".$row_parent['tbl_techadoptionId']." limit 0,1")or die(mysql_error());
+			$s_first_child = mysql_query("SELECT * FROM `tbl_tech_adoption_jobholder` 
+			WHERE `techAdoption_id`=".$row_parent['tbl_techadoptionId']." limit 0,1")or die(http(__line__));
 			$first_child_row = mysql_fetch_array($s_first_child );
 			$data.="<td>".$first_child_row['nameOfJobHolder']."</td>
 			<td>".$first_child_row['sexOfJobHolder']."</td>";
@@ -721,8 +721,8 @@ $query_string.=" order by t.`tbl_techadoptionId` DESC";
 				switch(true){
 					case $num_child_records>1:
 					//loop thru kid records -1
-					$s_other_children = mysql_query("SELECT * FROM `tbl_tech_adoption_jobHolder` 
-					WHERE `techAdoption_id`=".$row_parent['tbl_techadoptionId']." limit 1,100000")or die(mysql_error());
+					$s_other_children = mysql_query("SELECT * FROM `tbl_tech_adoption_jobholder` 
+					WHERE `techAdoption_id`=".$row_parent['tbl_techadoptionId']." limit 1,100000")or die(http(__line__));
 					while($other_children_row = mysql_fetch_array($s_other_children )){
 					$data.="<tr>";
 						$data.="<td>".$other_children_row['nameOfJobHolder']."</td>
@@ -1606,7 +1606,7 @@ $data.="
 		
 
 	$n=1;
-	$query_=mysql_query($query_string)or die(mysql_error());
+	$query_=mysql_query($query_string)or die(http(__line__));
 	 /**************
 	 *paging parameters
 	 *
@@ -1615,14 +1615,14 @@ $data.="
 	 $num_pages=ceil($max_records/$records_per_page);
 	 $offset = ($cur_page-1)*$records_per_page;
 	 $n=$offset+1;
-	 $new_query=mysql_query($query_string." limit ".$offset.",".$records_per_page) or die(mysql_error());
+	 $new_query=mysql_query($query_string." limit ".$offset.",".$records_per_page) or die(http(__line__));
 	
   
 	while($row_parent=mysql_fetch_array($new_query)){
 		
 		//determining the number of child records for each row
 			$s_child="SELECT * FROM `tbl_labourSavingTech_jobHolder` WHERE `labour_saving_tech_id`=".$row_parent['tbl_laboursavingtechId']."";
-			$q_child=Execute($s_child) or die(mysql_error());			
+			$q_child=Execute($s_child) or die(http(__line__));			
 			$num_child_records=mysql_num_rows($q_child);	
 			//$obj->alert($num_child_records);			
 			$row_span=($num_child_records>1)?"rowspan='".$num_child_records."'":"";
@@ -1642,7 +1642,7 @@ $data.="
 				
 				//return first row of child records
 					$s_first_child = mysql_query("SELECT * FROM `tbl_labourSavingTech_jobHolder` 
-					WHERE `labour_saving_tech_id`=".$row_parent['tbl_laboursavingtechId']." limit 0,1")or die(mysql_error());
+					WHERE `labour_saving_tech_id`=".$row_parent['tbl_laboursavingtechId']." limit 0,1")or die(http(__line__));
 					$first_child_row = mysql_fetch_array($s_first_child );
 					$data.="<td>".$first_child_row['nameOfJobHolder']."</td>
 					<td>".$first_child_row['sexOfJobHolder']."</td>";
@@ -1663,7 +1663,7 @@ $data.="
 					case $num_child_records>1:
 					//loop thru kid records -1
 					$s_other_children = mysql_query("SELECT * FROM `tbl_labourSavingTech_jobHolder` 
-					WHERE `labour_saving_tech_id`=".$row_parent['tbl_laboursavingtechId']." limit 1,100000")or die(mysql_error());
+					WHERE `labour_saving_tech_id`=".$row_parent['tbl_laboursavingtechId']." limit 1,100000")or die(http(__line__));
 					while($other_children_row = mysql_fetch_array($s_other_children )){
 					$data.="<tr>";
 						$data.="<td>".$other_children_row['nameOfJobHolder']."</td>
@@ -2462,7 +2462,7 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 				$query_string.=" order by `m`.`tbl_mediaprogramsId` desc";
 
 				$n=1;
-				$query_=mysql_query($query_string)or die(mysql_error());
+				$query_=mysql_query($query_string)or die(http(__line__));
 				/**************
 				*paging parameters
 				*
@@ -2471,12 +2471,12 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 				$num_pages=ceil($max_records/$records_per_page);
 				$offset = ($cur_page-1)*$records_per_page;
 				$n=$offset+1;
-				$new_query=mysql_query($query_string." limit ".$offset.",".$records_per_page) or die(mysql_error());
+				$new_query=mysql_query($query_string." limit ".$offset.",".$records_per_page) or die(http(__line__));
 		
 		while($row_parent=mysql_fetch_array($new_query)){
 			//determining the number of child records for each row
 			$s_child="SELECT * FROM `tbl_mediaprogram_jobholder` WHERE `media_program_id`=".$row_parent['tbl_mediaprogramsId']."";
-			$q_child=Execute($s_child) or die(mysql_error());			
+			$q_child=Execute($s_child) or die(http(__line__));			
 			$num_child_records=mysql_num_rows($q_child);	
 			//$obj->alert($num_child_records);			
 			$row_span=($num_child_records>1)?"rowspan='".$num_child_records."'":"";
@@ -2496,7 +2496,7 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 					$a = mysql_query("SELECT l . * FROM `tbl_lookup` l 
 					WHERE l.`classCode`='33' 
 					AND l.`status` = 'Yes' 
-					ORDER BY l.`code` ASC")or die(mysql_error());
+					ORDER BY l.`code` ASC")or die(http(__line__));
 					while($b = mysql_fetch_array($a)){
 					$display=(strpos($typeOfMedia, $b['codeName']) !==false)?"".$b['codeName']."":"";
 					if($display<>'') {
@@ -2515,7 +2515,7 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 					
 					//return first row of child records
 					$s_first_child = mysql_query("SELECT * FROM `tbl_mediaprogram_jobholder` 
-					WHERE `media_program_id`=".$row_parent['tbl_mediaprogramsId']." limit 0,1")or die(mysql_error());
+					WHERE `media_program_id`=".$row_parent['tbl_mediaprogramsId']." limit 0,1")or die(http(__line__));
 					$first_child_row = mysql_fetch_array($s_first_child );
 					$data.="<td>".$first_child_row['nameOfJobHolder']."</td>
 					<td>".$first_child_row['sexOfJobHolder']."</td>";
@@ -2536,7 +2536,7 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 					case $num_child_records>1:
 					//loop thru kid records -1
 					$s_other_children = mysql_query("SELECT * FROM `tbl_mediaprogram_jobholder` 
-					WHERE `media_program_id`=".$row_parent['tbl_mediaprogramsId']." limit 1,100000")or die(mysql_error());
+					WHERE `media_program_id`=".$row_parent['tbl_mediaprogramsId']." limit 1,100000")or die(http(__line__));
 					while($other_children_row = mysql_fetch_array($s_other_children )){
 					$data.="<tr>";
 						$data.="<td>".$other_children_row['nameOfJobHolder']."</td>
@@ -2726,7 +2726,7 @@ $data.="<table  width='100%' border='0' cellspacing='2' cellpadding='2'>";
 
 
     $data.="<table cellspacing='0'>";
-    $a = mysql_query("SELECT l . * FROM `tbl_lookup` l WHERE l.`classCode`='33' AND l.`status` = 'Yes' ORDER BY l.`code` ASC")or die(mysql_error());
+    $a = mysql_query("SELECT l . * FROM `tbl_lookup` l WHERE l.`classCode`='33' AND l.`status` = 'Yes' ORDER BY l.`code` ASC")or die(http(__line__));
     while($b = mysql_fetch_array($a)){
     //$div="status_".$b['countryCode'];
     //$checked=(strpos($actorServiced, $b['codeName']) !==false)?"CHECKED":"";
@@ -2750,7 +2750,7 @@ $data.="<table  width='100%' border='0' cellspacing='2' cellpadding='2'>";
     
     
     $data.="<table cellspacing='0'>";
-    $a = mysql_query("SELECT * FROM `tbl_zone` z  ORDER BY  z.`zoneName` ASC")or die(mysql_error());
+    $a = mysql_query("SELECT * FROM `tbl_zone` z  ORDER BY  z.`zoneName` ASC")or die(http(__line__));
     while($b = mysql_fetch_array($a)){
     //$div="status_".$b['countryCode'];
     //$checked=(strpos($actorServiced, $b['codeName']) !==false)?"CHECKED":"";
@@ -2854,7 +2854,7 @@ $data.="<tr class='evenrow' height='80'>
     
 
     $data.="<table cellspacing='0'>";
-    $a = mysql_query("SELECT l . * FROM `tbl_lookup` l WHERE l.`classCode`='33' AND l.`status` = 'Yes' ORDER BY l.`code` ASC")or die(mysql_error());
+    $a = mysql_query("SELECT l . * FROM `tbl_lookup` l WHERE l.`classCode`='33' AND l.`status` = 'Yes' ORDER BY l.`code` ASC")or die(http(__line__));
     while($b = mysql_fetch_array($a)){
     //$div="status_".$b['countryCode'];
     //$checked=(strpos($actorServiced, $b['codeName']) !==false)?"CHECKED":"";
@@ -2884,7 +2884,7 @@ $data.="<tr class='evenrow' height='80'>
     
 
 $data.="<table cellspacing='0'>";
-    $a = mysql_query("SELECT * FROM `tbl_zone` z  ORDER BY  z.`zoneName` ASC")or die(mysql_error());
+    $a = mysql_query("SELECT * FROM `tbl_zone` z  ORDER BY  z.`zoneName` ASC")or die(http(__line__));
     while($b = mysql_fetch_array($a)){
     //$div="status_".$b['countryCode'];
     //$checked=(strpos($actorServiced, $b['codeName']) !==false)?"CHECKED":"";
@@ -3140,8 +3140,6 @@ $obj->redirect('index.php');
 return $obj;
 }
 
-//$obj->alert('Reached Method');
-
 $n=1;
 $inc=1;
 
@@ -3166,6 +3164,7 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 					</th>
 		</tr>";
 
+		//===================data to be displayed=====================
 		$data.="<tr>
 			<th rowspan='4' class='first-cell-header'>#</th>
 			<th rowspan='4'>Name of Business incorporating the youth apprenticeship</th>
@@ -3207,9 +3206,9 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 	$name_column_year='year';
 	$primary_key_column='tbl_youthapprenticeId';
 
-
+	//get expected end of reporting period date
 	$first_three_chars_rp=substr($reporting_period,0,3);
-	
+	//$obj->alert($reporting_period);
 
 	switch($first_three_chars_rp){
 		case 'Oct':
@@ -3225,20 +3224,20 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 
 	}
 
-	
+	//select records dates with issues
 		$statement_rec_with_issues="select * from ".$table." 
 		where ".$name_column_submission_date." > '".$expected_end_date."'
 		";
 
-		
+		//$obj->alert($statement_rec_with_issues);
 
 		$query_rec_with_issues = Execute($statement_rec_with_issues) or die(mysql_error());
 			while ($row_rec_with_issues = FetchRecords($query_rec_with_issues)) {
-				
+				//update  records with issues
 					$date_submission = $row_rec_with_issues[''.$name_column_submission_date.''];
 					$affected_rec = $row_rec_with_issues[''.$primary_key_column.''];
 
-					
+					//Return statement from method to do the table clean-up
 					$stamentToCleanUp = $qmobj->cleanUpDateSubmissionValues(
 						$date_submission,
 						$reporting_period,
@@ -3484,21 +3483,25 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 					$query_string.=" order BY `y`.`tbl_youthapprenticeId` desc";
 
 			$n=1;
-			$query_=mysql_query($query_string)or die(mysql_error());
+			$query_=mysql_query($query_string)or die(http(__line__));
+			 /**************
+			 *paging parameters
+			 *
+			 ****/
 			 $max_records = mysql_num_rows($query_);
 			 $num_pages=ceil($max_records/$records_per_page);
 			 $offset = ($cur_page-1)*$records_per_page;
 			 $n=$offset+1;
-			 $new_query=mysql_query($query_string." limit ".$offset.",".$records_per_page) or die(mysql_error());
+			 $new_query=mysql_query($query_string." limit ".$offset.",".$records_per_page) or die(http(__line__));
 			
 		  
 		  while($row_parent=mysql_fetch_array($new_query)){
 			  
-			
-				$s_child="SELECT * FROM `tbl_apprenticeship_jobHolder` WHERE `apprenticeship_id`=".$row_parent['tbl_youthapprenticeId']."";
-				$q_child=Execute($s_child) or die(mysql_error());			
+			  //determining the number of child records for each row
+				$s_child="SELECT * FROM `tbl_apprenticeship_jobholder` WHERE `apprenticeship_id`=".$row_parent['tbl_youthapprenticeId']."";
+				$q_child=Execute($s_child) or die(http(__line__));			
 				$num_child_records=mysql_num_rows($q_child);	
-						
+				//$obj->alert($num_child_records);			
 				$row_span=($num_child_records>1)?"rowspan='".$num_child_records."'":"";
 				$col_span=($num_child_records>1)?"colspan='2'":"";
 				$v=$n+$num_child_records;
@@ -3520,9 +3523,9 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 					$data.="<td ".$row_span.">".($row_parent['anticipatedOutcome'])."</td>";
 					
 					
-				
-					$s_first_child = mysql_query("SELECT * FROM `tbl_apprenticeship_jobHolder` 
-					WHERE `apprenticeship_id`=".$row_parent['tbl_youthapprenticeId']." limit 0,1")or die(mysql_error());
+					//return first row of child records
+					$s_first_child = mysql_query("SELECT * FROM `tbl_apprenticeship_jobholder` 
+					WHERE `apprenticeship_id`=".$row_parent['tbl_youthapprenticeId']." limit 0,1")or die(http(__line__));
 					$first_child_row = mysql_fetch_array($s_first_child );
 					$data.="<td>".$first_child_row['nameOfJobHolder']."</td>
 					<td>".$first_child_row['sexOfJobHolder']."</td>";
@@ -3530,7 +3533,7 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 					$data.="<td>".$dateOfEngagement."</td>
 					<td>".$first_child_row['timeSpentOnJob']."</td>";
 					
-				
+					//end of parent record row
 					$data.="<td ".$col_span." ".$row_span." >
 						<input type='button' class='formButton2'title='Edit'
 							onclick=\"xajax_edit_youthApprentice('".$row_parent['tbl_youthapprenticeId']."');return false;\" value='edit' /> |
@@ -3541,8 +3544,9 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 				
 				switch(true){
 					case $num_child_records>1:
-					$s_other_children = mysql_query("SELECT * FROM `tbl_apprenticeship_jobHolder` 
-					WHERE `apprenticeship_id`=".$row_parent['tbl_youthapprenticeId']." limit 1,100000")or die(mysql_error());
+					//loop thru kid records -1
+					$s_other_children = mysql_query("SELECT * FROM `tbl_apprenticeship_jobholder` 
+					WHERE `apprenticeship_id`=".$row_parent['tbl_youthapprenticeId']." limit 1,100000")or die(http(__line__));
 					while($other_children_row = mysql_fetch_array($s_other_children )){
 					$data.="<tr>";
 						$data.="<td>".$other_children_row['nameOfJobHolder']."</td>
@@ -3563,7 +3567,10 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 		}
 		$data.="".noRecordsFound($new_query,14)."";	
 		
-		
+		/*
+		*display pages
+		*/
+
 
 		$data.="<tr align='right'>
 		<td colspan=17>";
@@ -4130,7 +4137,6 @@ $obj->assign('bodyDisplay','innerHTML',congMsg("Record has been added successful
 $obj->call('xajax_view_youthApprentice','','','',1,20);
 return $obj;
 }
-
 function view_bds($reporting_period,$cpma_year,$valueChain,$cur_page=1,$records_per_page=20){
 $obj =new xajaxResponse();
 $qmobj = new QueryManager('');
@@ -4474,7 +4480,7 @@ $data.="<tr>
 	//$obj->alert($query_string);
 
 	 $n=1;
-	$query_=mysql_query($query_string)or die(mysql_error());
+	$query_=mysql_query($query_string)or die(http(__line__));
 	 /**************
 	 *paging parameters
 	 *
@@ -4483,7 +4489,7 @@ $data.="<tr>
 	 $num_pages=ceil($max_records/$records_per_page);
 	 $offset = ($cur_page-1)*$records_per_page;
 	 $n=$offset+1;
-	 $new_query=mysql_query($query_string." limit ".$offset.",".$records_per_page) or die(mysql_error());
+	 $new_query=mysql_query($query_string." limit ".$offset.",".$records_per_page) or die(http(__line__));
 	
   
   while($row_parent=mysql_fetch_array($new_query)){
@@ -4492,7 +4498,7 @@ $data.="<tr>
 		
 		//determining the number of child records for each row
 			$s_child="SELECT * FROM `tbl_bds_jobHolder` WHERE `bds_id`=".$row_parent['tbl_businessdevId']."";
-			$q_child=Execute($s_child) or die(mysql_error());			
+			$q_child=Execute($s_child) or die(http(__line__));			
 			$num_child_records=mysql_num_rows($q_child);	
 			//$obj->alert($num_child_records);			
 			$row_span=($num_child_records>1)?"rowspan='".$num_child_records."'":"";
@@ -4513,7 +4519,7 @@ $data.="<tr>
 			$actorServiced=$row_parent['typeOfActorServiced'];
 			$data.="<td ".$row_span.">";
 			$data.="<div>";
-			$a = mysql_query("SELECT l . * FROM `tbl_lookup` l WHERE l.`classCode`='31' AND l.`status` = 'Yes' ORDER BY l.`code` ASC")or die(mysql_error());
+			$a = mysql_query("SELECT l . * FROM `tbl_lookup` l WHERE l.`classCode`='31' AND l.`status` = 'Yes' ORDER BY l.`code` ASC")or die(http(__line__));
 
 			while($b = mysql_fetch_array($a)){
 			$display=(strpos($actorServiced, $b['codeName']) !==false)?"".$b['codeName']."":"";
@@ -4534,7 +4540,7 @@ $data.="<tr>
 			
 				//return first row of child records
 					$s_first_child = mysql_query("SELECT * FROM `tbl_bds_jobHolder` 
-					WHERE `bds_id`=".$row_parent['tbl_businessdevId']." limit 0,1")or die(mysql_error());
+					WHERE `bds_id`=".$row_parent['tbl_businessdevId']." limit 0,1")or die(http(__line__));
 					$first_child_row = mysql_fetch_array($s_first_child );
 					$data.="<td>".$first_child_row['nameOfJobHolder']."</td>
 					<td>".$first_child_row['sexOfJobHolder']."</td>";
@@ -4555,7 +4561,7 @@ $data.="<tr>
 					case $num_child_records>1:
 					//loop thru kid records -1
 					$s_other_children = mysql_query("SELECT * FROM `tbl_bds_jobHolder` 
-					WHERE `bds_id`=".$row_parent['tbl_businessdevId']." limit 1,100000")or die(mysql_error());
+					WHERE `bds_id`=".$row_parent['tbl_businessdevId']." limit 1,100000")or die(http(__line__));
 					while($other_children_row = mysql_fetch_array($s_other_children )){
 					$data.="<tr>";
 						$data.="<td>".$other_children_row['nameOfJobHolder']."</td>
@@ -4727,7 +4733,7 @@ $data.="
     
  
     $data.="<table cellspacing='0'>";
-    $a = mysql_query("SELECT l . * FROM `tbl_lookup` l WHERE l.`classCode`='31' AND l.`status` = 'Yes' ORDER BY l.`code` ASC")or die(mysql_error());
+    $a = mysql_query("SELECT l . * FROM `tbl_lookup` l WHERE l.`classCode`='31' AND l.`status` = 'Yes' ORDER BY l.`code` ASC")or die(http(__line__));
     while($b = mysql_fetch_array($a)){
     //$div="status_".$b['countryCode'];
     //$checked=(strpos($actorServiced, $b['codeName']) !==false)?"CHECKED":"";
@@ -4829,7 +4835,7 @@ $data.="<tr class='evenrow' id='report'>
     
 
     $data.="<table cellspacing='0'>";
-    $a = mysql_query("SELECT l . * FROM `tbl_lookup` l WHERE l.`classCode`='31' AND l.`status` = 'Yes' ORDER BY l.`code` ASC")or die(mysql_error());
+    $a = mysql_query("SELECT l . * FROM `tbl_lookup` l WHERE l.`classCode`='31' AND l.`status` = 'Yes' ORDER BY l.`code` ASC")or die(http(__line__));
     while($b = mysql_fetch_array($a)){
     //$div="status_".$b['countryCode'];
     //$checked=(strpos($actorServiced, $b['codeName']) !==false)?"CHECKED":"";
@@ -5460,14 +5466,14 @@ $query_string.=" order by `b`.`tbl_bankLoanId` desc";
 	 $num_pages=ceil($max_records/$records_per_page);
 	 $offset = ($cur_page-1)*$records_per_page;
 	 $n=$offset+1;
-	 $new_query=mysql_query($query_string." limit ".$offset.",".$records_per_page) or die(mysql_error());
+	 $new_query=mysql_query($query_string." limit ".$offset.",".$records_per_page) or die(http(__line__));
 	
 	/* $obj->alert(($query_string." limit ".$offset.",".$records_per_page)); */
   
   while($row_parent=mysql_fetch_array($new_query)){
 	  //determining the number of child records for each row
 			$s_child="SELECT * FROM `tbl_bank_loans_jobHolder` WHERE `bankLoan_id`=".$row_parent['tbl_bankLoanId']."";
-			$q_child=Execute($s_child) or die(mysql_error());			
+			$q_child=Execute($s_child) or die(http(__line__));			
 			$num_child_records=mysql_num_rows($q_child);	
 			//$obj->alert($num_child_records);			
 			$row_span=($num_child_records>1)?"rowspan='".$num_child_records."'":"";
@@ -5498,7 +5504,7 @@ $query_string.=" order by `b`.`tbl_bankLoanId` desc";
 			
 		//return first row of child records
 					$s_first_child = mysql_query("SELECT * FROM `tbl_bank_loans_jobHolder` 
-					WHERE `bankLoan_id`=".$row_parent['tbl_bankLoanId']." limit 0,1")or die(mysql_error());
+					WHERE `bankLoan_id`=".$row_parent['tbl_bankLoanId']." limit 0,1")or die(http(__line__));
 					$first_child_row = mysql_fetch_array($s_first_child );
 					$data.="<td>".$first_child_row['nameOfJobHolder']."</td>
 					<td>".$first_child_row['sexOfJobHolder']."</td>";
@@ -5519,7 +5525,7 @@ $query_string.=" order by `b`.`tbl_bankLoanId` desc";
 					case $num_child_records>1:
 					//loop thru kid records -1
 					$s_other_children = mysql_query("SELECT * FROM `tbl_bank_loans_jobHolder` 
-					WHERE `bankLoan_id`=".$row_parent['tbl_bankLoanId']." limit 1,100000")or die(mysql_error());
+					WHERE `bankLoan_id`=".$row_parent['tbl_bankLoanId']." limit 1,100000")or die(http(__line__));
 					while($other_children_row = mysql_fetch_array($s_other_children )){
 					$data.="<tr>";
 						$data.="<td>".$other_children_row['nameOfJobHolder']."</td>
@@ -5965,7 +5971,7 @@ if($DateSubmission==NULL){
  '".$SubmittedBy."', '".$DateSubmission."','".$_SESSION['username']."')";
 //$obj->alert($reportingPeriod);
 //$obj->alert($stmnt);
-@mysql_query($stmnt)or die(mysql_error());
+@mysql_query($stmnt)or die(http(__line__));
 
  }
 }
@@ -6250,7 +6256,7 @@ $data.="<tr>
 		`sm`.`year`, 
 		`sm`.`reportingMonth`
 		from `tbl_input_sales` as `s`
-		join `inputSales_metaData` as `sr` on (`sr`.`sales_id` = `s`.`id`)
+		join `inputsales_metadata` as `sr` on (`sr`.`sales_id` = `s`.`id`)
 		join `tbl_input_sales_meta_data` as `sm` on (`sm`.`id` = `sr`.`metadata_id`)
 		where `sm`.`input_sales_id`	is not null ";
 		$reporting_period=(!empty($cpma_year))?'':$reporting_period;
@@ -6267,7 +6273,7 @@ $data.="<tr>
 
 
 	$x=1;
-	$query_=mysql_query($query_string)or die(mysql_error());
+	$query_=mysql_query($query_string)or die(http(__line__));
 	 /**************
 	 *paging parameters
 	 *
@@ -6276,7 +6282,7 @@ $data.="<tr>
 	 $num_pages=ceil($max_records/$records_per_page);
 	 $offset = ($cur_page-1)*$records_per_page;
 	 $n=$offset+1;
-	 $new_query=mysql_query($query_string." limit ".$offset.",".$records_per_page) or die(mysql_error());
+	 $new_query=mysql_query($query_string." limit ".$offset.",".$records_per_page) or die(http(__line__));
 	
   
   while($row_parent=mysql_fetch_array($new_query)){
@@ -6501,7 +6507,7 @@ $data.="<tr>
 
 		$s_child.=" order by `sm`.`input_sales_id` ";
 
-		//$q_child=Execute($s_child) or die(mysql_error());		
+		//$q_child=Execute($s_child) or die(http(__line__));		
 		$q_child=Execute($s_child) or die(mysql_error()).' on line '.__LINE__;			
 		$num_child_records=mysql_num_rows($q_child);	
 		//$obj->alert($num_child_records);			
@@ -6587,7 +6593,7 @@ $data.="<tr>
 							end 
 							as  `reportingPeriod_cleaned`
 		FROM `tbl_input_sales_meta_data` as `sm`
-		WHERE `sm`.`input_sales_id`='".$row_parent['id']."' limit 0,1")or die(mysql_error());
+		WHERE `sm`.`input_sales_id`='".$row_parent['id']."' limit 0,1")or die(http(__line__));
 		$first_child_row = mysql_fetch_array($s_first_child );	
 					
 					$data.="<td>".($first_child_row['reportingPeriod_cleaned'])."</td>";					
@@ -7432,7 +7438,7 @@ $data.="<tr>
 		`pm`.`year`, 
 		`pm`.`reportingMonth`
 		from `tbl_phh` as `p`
-		join `phh_metaData` as `pr` on (`pr`.`phh_id` = `p`.`id`)
+		join `phh_metadata` as `pr` on (`pr`.`phh_id` = `p`.`id`)
 		join `tbl_phh_meta_data` as `pm` on (`pm`.`id` = `pr`.`metadata_id`)
 		where `pm`.`phh_id`	is not null ";
 		$reporting_period=(!empty($cpma_year))?'':$reporting_period;
@@ -7452,7 +7458,7 @@ $data.="<tr>
 
 
 	$x=1;
-	$query_=mysql_query($query_string)or die(mysql_error());
+	$query_=mysql_query($query_string)or die(http(__line__));
 	 /**************
 	 *paging parameters
 	 *
@@ -7461,7 +7467,7 @@ $data.="<tr>
 	 $num_pages=ceil($max_records/$records_per_page);
 	 $offset = ($cur_page-1)*$records_per_page;
 	 $n=$offset+1;
-	 $new_query=mysql_query($query_string." limit ".$offset.",".$records_per_page) or die(mysql_error());
+	 $new_query=mysql_query($query_string." limit ".$offset.",".$records_per_page) or die(http(__line__));
 	
   
   while($row_parent=mysql_fetch_array($new_query)){
@@ -7687,7 +7693,7 @@ $data.="<tr>
 
 		$s_child.=" order by `pm`.`phh_id` ";
 
-		//$q_child=Execute($s_child) or die(mysql_error());		
+		//$q_child=Execute($s_child) or die(http(__line__));		
 		$q_child=Execute($s_child) or die(mysql_error());			
 		$num_child_records=mysql_num_rows($q_child);	
 		//$obj->alert($num_child_records);			
@@ -7774,7 +7780,7 @@ $data.="<tr>
 	as  `reportingPeriod_cleaned`,
 	 `pm`.* 
 	from `tbl_phh_meta_data` as `pm`
-		where `pm`.`phh_id`='".$row_parent['id']."' limit 0,1")or die(mysql_error());
+		where `pm`.`phh_id`='".$row_parent['id']."' limit 0,1")or die(http(__line__));
 		$first_child_row = mysql_fetch_array($s_first_child );	
 					
 					$data.="<td>".($first_child_row['reportingPeriod_cleaned'])."</td>";				
@@ -7875,7 +7881,7 @@ $data.="<tr>
 	as  `reportingPeriod_cleaned`,
 	 `pm`.* 
 	from `tbl_phh_meta_data` as `pm`
-		where `pm`.`phh_id`='".$row_parent['id']."' limit 1,100000")or die(mysql_error());
+		where `pm`.`phh_id`='".$row_parent['id']."' limit 1,100000")or die(http(__line__));
 					while($other_children_row = mysql_fetch_array($s_other_children )){
 						$data.="<tr>";					
 							$data.="<td>".($other_children_row['reportingPeriod_cleaned'])."</td>";				
@@ -8632,7 +8638,7 @@ $data.="<tr>
 		$query_string.=" order by `p`.`tbl_partnershipId` desc";
 
  $n=1;
-	$query_=mysql_query($query_string)or die(mysql_error());
+	$query_=mysql_query($query_string)or die(http(__line__));
 	 /**************
 	 *paging parameters
 	 *
@@ -8641,13 +8647,13 @@ $data.="<tr>
 	 $num_pages=ceil($max_records/$records_per_page);
 	 $offset = ($cur_page-1)*$records_per_page;
 	 $n=$offset+1;
-	 $new_query=mysql_query($query_string." limit ".$offset.",".$records_per_page) or die(mysql_error());
+	 $new_query=mysql_query($query_string." limit ".$offset.",".$records_per_page) or die(http(__line__));
 	
   
   while($row_parent=mysql_fetch_array($new_query)){
 	  //determining the number of child records for each row
 			$s_child="SELECT * FROM `tbl_partnership_jobHolder` WHERE `partnership_id`=".$row_parent['tbl_partnershipId']."";
-			$q_child=Execute($s_child) or die(mysql_error());			
+			$q_child=Execute($s_child) or die(http(__line__));			
 			$num_child_records=mysql_num_rows($q_child);	
 			//$obj->alert($num_child_records);			
 			$row_span=($num_child_records>1)?"rowspan='".$num_child_records."'":"";
@@ -8668,7 +8674,7 @@ $data.="<tr>
 			
 			//return first row of child records
 					$s_first_child = mysql_query("SELECT * FROM `tbl_partnership_jobHolder` 
-					WHERE `partnership_id`=".$row_parent['tbl_partnershipId']." limit 0,1")or die(mysql_error());
+					WHERE `partnership_id`=".$row_parent['tbl_partnershipId']." limit 0,1")or die(http(__line__));
 					$first_child_row = mysql_fetch_array($s_first_child );
 					$data.="<td>".$first_child_row['nameOfJobHolder']."</td>
 					<td>".$first_child_row['sexOfJobHolder']."</td>";
@@ -8689,7 +8695,7 @@ $data.="<tr>
 					case $num_child_records>1:
 					//loop thru kid records -1
 					$s_other_children = mysql_query("SELECT * FROM `tbl_partnership_jobHolder` 
-					WHERE `partnership_id`=".$row_parent['tbl_partnershipId']." limit 1,100000")or die(mysql_error());
+					WHERE `partnership_id`=".$row_parent['tbl_partnershipId']." limit 1,100000")or die(http(__line__));
 					while($other_children_row = mysql_fetch_array($s_other_children )){
 					$data.="<tr>";
 						$data.="<td>".$other_children_row['nameOfJobHolder']."</td>
@@ -9270,56 +9276,82 @@ $data="<form action=\"".$PHP_SELF."\" name='form4' id='form4' method='post'>
 
 
 
-		$data.="<tr>
-    <td class='offwhite' COLSPAN='11' align='left'><input type='button' class='formButton2'title='Edit'  onclick=\"xajax_edit_traders_form4(xajax.getFormValues('form4'));return false;\" value='edit' /> ";
-        $data.=" <input type='button' value='Delete' class='red' onclick=\"ConfirmDelete(xajax.getFormValues('form4'),'Delete_traders_form4');return false;\" align='left'></td>";
-    $data.="</td>
-</tr> </table>"; 
-
-
-
 
 
 		//===================data to be displayed=====================
 
+		$data.="<tr class='evenrow'>
+			<th rowspan='3' class='first-cell-header'>#</th>
+			<th rowspan='3'>Name of Business/Trader</th>
+			<th rowspan='3'>Reporting Period</th>
+			<th rowspan='3'>Trader Gender</th>
+			<th rowspan='3'>Trader Code</th>
+			<th rowspan='3'>Trader Age</th>
+
+			<th rowspan='3'>Trader District</th>
+			<th rowspan='3'>Trader Sub-county</th>
+			<th rowspan='3'>Trader Village</th>
+			<th colspan='14'><center>Performance Indicator</center></th>
+		</tr>
+
+		<tr>
+			<th rowspan='2' >Number of VAs in the supply chain</th>
+			<th rowspan='2' >Number of CBOs/unions/societies  in the supply Chain</th>
+			<th colspan='3' >Volume of produce purchased (Kgs)</th>
+			<th colspan='2' >Maize Exports: Volumes and Values</th>
+			<th colspan='2' >Coffee Exports: Volumes and Values</th>
+			<th colspan='2' >Bean Exports: <br/> volumes and values</th>
+			<th rowspan='2' >Number of e-payments received</th>
+			<th rowspan='2' >Number of e-payments made</th>
+			<th rowspan='2'>Action</th>
+		</tr>
+
+		<tr>
+			<th >Maize</th>
+			<th >Coffee</th>
+			<th >Beans</th>
+			<th >Volume(Kg)</th>
+			<th >Value(UGX)</th>
+			<th >Volume(Kg)</th>
+			<th >Value(UGX)</th>
+			<th >Volume(Kg)</th>
+			<th >Value(UGX)</th>
+		</tr>
+		</thead>
+		<tbody>";
+
 		
-	switch(trim($cpma_year)){
+			switch(trim($cpma_year)){
       case trim('Project start up'):
       $reportingYearToPeriod="and `w`.`reportingPeriod` in ('Apr - Sep') 
       and `w`.`year` in (2013)";
-       $monthsArray=array('10','11','12','1','2','3','4','5','6','7','8','9');
       break;
 	  
 	  case trim('CPMA Year One'):
       $reportingYearToPeriod="and `w`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
       and `w`.`year` in (2013,2014)";
-       $monthsArray=array('10','11','12','1','2','3','4','5','6','7','8','9');
       break;
       
       case trim('CPMA Year Two'):
       $reportingYearToPeriod="and `w`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
       and `w`.`year` in (2014,2015)";
-       $monthsArray=array('10','11','12','1','2','3','4','5','6','7','8','9');
       break;
       
       case trim('CPMA Year Three'):
       $reportingYearToPeriod="and `w`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
       and `w`.`year` in (2015,2016)
       and `w`.`DateSubmission` between ('2015-10-01') and ('2016-03-31')";
-       $monthsArray=array('10','11','12','1','2','3','4','5','6','7','8','9');
       break;
       
       case trim('CPMA Year Four'):
       $reportingYearToPeriod="and `w`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
       and `w`.`year` in (2016,2017)
       and `w`.`DateSubmission` between ('2016-10-01') and ('2017-03-31')";
-       $monthsArray=array('10','11','12','1','2','3','4','5','6','7','8','9');
       break;      
       
       case trim('CPMA Year Five(Activity close out)'):
       $reportingYearToPeriod="and `w`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
       and `w`.`year` in (2017,2018)";
-       $monthsArray=array('10','11','12','1','2','3','4','5','6','7','8','9');
       break;
       
       default:
@@ -9329,18 +9361,15 @@ $data="<form action=\"".$PHP_SELF."\" name='form4' id='form4' method='post'>
 			switch($reporting_period){
 
 			case trim('Project start up'):
-		      $reportingYearToPeriodCleaned="
-		      and `w`.`reportingPeriod` = 'Apr - Sep' 
-		      and `w`.`year` in (2013)
-		      ";
-		      $monthsArray=array('4','5','6','7','8','9');
-		      break;
+      $reportingYearToPeriodCleaned="
+      and `w`.`reportingPeriod` = 'Apr - Sep' 
+      and `w`.`year` in (2013)
+      ";
 			case'Oct 2012 - Mar 2013':
 			$reportingYearToPeriodCleaned="
 			and `w`.`reportingPeriod` = 'Oct - Mar' 
 			and `w`.`year` in (2012,2013)
 			";
-			$monthsArray=array('10','11','12','1','2','3');
 			break;
 
 			case'Apr 2013 - Sep 2013':
@@ -9348,7 +9377,6 @@ $data="<form action=\"".$PHP_SELF."\" name='form4' id='form4' method='post'>
 			and `w`.`reportingPeriod` = 'Apr - Sep' 
 			and `w`.`year` in (2013)
 			";
-			$monthsArray=array('4','5','6','7','8','9');
 			break;
 
 			case'Oct 2013 - Mar 2014':
@@ -9356,7 +9384,6 @@ $data="<form action=\"".$PHP_SELF."\" name='form4' id='form4' method='post'>
 			and `w`.`reportingPeriod` = 'Oct - Mar' 
 			and `w`.`year` in (2013,2014)
 			";
-			$monthsArray=array('10','11','12','1','2','3');
 			break;
 
 			case'Apr 2014 - Sep 2014':
@@ -9364,7 +9391,6 @@ $data="<form action=\"".$PHP_SELF."\" name='form4' id='form4' method='post'>
 			and `w`.`reportingPeriod` = 'Apr - Sep' 
 			and `w`.`year` in (2014)
 			";
-			$monthsArray=array('4','5','6','7','8','9');
 			break;
 
 			case'Oct 2014 - Mar 2015':
@@ -9372,7 +9398,6 @@ $data="<form action=\"".$PHP_SELF."\" name='form4' id='form4' method='post'>
 			and `w`.`reportingPeriod` = 'Oct - Mar' 
 			and `w`.`year` in (2014,2015)
 			";
-			 $monthsArray=array('10','11','12','1','2','3');
 			break;
 
 			case'Apr 2015 - Sep 2015':
@@ -9380,7 +9405,6 @@ $data="<form action=\"".$PHP_SELF."\" name='form4' id='form4' method='post'>
 			and `w`.`reportingPeriod` = 'Apr - Sep' 
 			and `w`.`year` in (2015)
 			";
-			$monthsArray=array('4','5','6','7','8','9');
 			break;
 
 			case'Oct 2015 - Mar 2016':
@@ -9389,7 +9413,6 @@ $data="<form action=\"".$PHP_SELF."\" name='form4' id='form4' method='post'>
 			and `w`.`year` in (2015,2016)
 			and `w`.`DateSubmission` between ('2015-10-01') and ('2016-03-31')
 			";
-			 $monthsArray=array('10','11','12','1','2','3');
 			break;
 
 			case'Apr 2016 - Sep 2016':
@@ -9397,7 +9420,6 @@ $data="<form action=\"".$PHP_SELF."\" name='form4' id='form4' method='post'>
 			and `w`.`reportingPeriod` = 'Apr - Sep' 
 			and `w`.`year` in (2016)
 			";
-			$monthsArray=array('4','5','6','7','8','9');
 			break;
 
 			case'Oct 2016 - Mar 2017':
@@ -9406,7 +9428,6 @@ $data="<form action=\"".$PHP_SELF."\" name='form4' id='form4' method='post'>
 			and `w`.`year` in (2016,2017)
 			and `w`.`DateSubmission` between ('2016-10-01') and ('2017-03-31')
 			";
-			 $monthsArray=array('10','11','12','1','2','3');
 			break;
 
 			case'Apr 2017 - Sep 2017':
@@ -9414,7 +9435,6 @@ $data="<form action=\"".$PHP_SELF."\" name='form4' id='form4' method='post'>
 			and `w`.`reportingPeriod` = 'Apr - Sep' 
 			and `w`.`year` in (2017)
 			";
-			$monthsArray=array('4','5','6','7','8','9');
 			break;
 
 			case'Oct 2017 – Mar 2018':
@@ -9422,7 +9442,6 @@ $data="<form action=\"".$PHP_SELF."\" name='form4' id='form4' method='post'>
 			and `w`.`reportingPeriod` = 'Oct - Mar' 
 			and `w`.`year` in (2017,2018)
 			";
-			 $monthsArray=array('10','11','12','1','2','3');
 			break;
 
 			case'Apr 2018 – May 2018':
@@ -9430,11 +9449,12 @@ $data="<form action=\"".$PHP_SELF."\" name='form4' id='form4' method='post'>
 			and `w`.`reportingPeriod` = 'Apr - Sep' 
 			and `w`.`year` in (2018)
 			";
-			$monthsArray=array('4','5','6','7','8','9');
+			break;
+
+
 			break;
 
 			default:
-			$monthsArray=array('10','11','12','1','2','3','4','5','6','7','8','9');
 			break;
 			}
 
@@ -9496,97 +9516,6 @@ $data="<form action=\"".$PHP_SELF."\" name='form4' id='form4' method='post'>
 			else `w`.`reportingPeriod`
 			end 
 			as  `reportingPeriod_cleaned`,
-		`w`.`epayMadeFifthQuarterMonth` as `epayMFifthQM`,
-		`w`.`epayMadeFirstQuarterMonth` as `epayMFirstQM`,
-		`w`.`epayMadeFourthQuarterMonth` as `epayMFourthQM`,
-		`w`.`epayMadeSecondQuarterMonth` as `epayMSecondQM`,
-		`w`.`epayMadeSixthQuarterMonth` as `epayMSixthQM`,
-		`w`.`epayMadeThirdQuarterMonth` as `epayMThirdQM`,
-		`w`.`epayRecievedFifthQuarterMonth` as `epayRFifthQM`,
-		`w`.`epayRecievedFirstQuarterMonth` as `epayRFirstQM`,
-		`w`.`epayRecievedFourthQuarterMonth` as `epayRFourthQM`,
-		`w`.`epayRecievedSecondQuarterMonth` as `epayRSecondQM`,
-		`w`.`epayRecievedSixthQuarterMonth` as `epayRSixthQM`,
-		`w`.`epayRecievedThirdQuarterMonth` as `epayRThirdQM`,
-		`w`.`vaSupplyChainFifthQuarterMonth` as `exTSCFifthQM`,
-		`w`.`vaSupplyChainFirstQuarterMonth` as `exTSCFirstQM`,
-		`w`.`vaSupplyChainFourthQuarterMonth` as `exTSCFourthQM`,
-		`w`.`vaSupplyChainSecondQuarterMonth` as `exTSCSecondQM`,
-		`w`.`vaSupplyChainSixthQuarterMonth` as `exTSCSixthQM`, 
-		`w`.`vaSupplyChainThirdQuarterMonth` as `exTSCThirdQM`,
-		`w`.`vaSupplyChain`,
-		`w`.`vaSupplyChainDetails`,
-		`w`.`numCboFifthQuarterMonth` as `exUSCFifthQM`, 
-		`w`.`numCboFirstQuarterMonth` as `exUSCFirstQM`, 
-		`w`.`numCboFourthQuarterMonth` as `exUSCFourthQM`, 
-		`w`.`numCboSecondQuarterMonth` as `exUSCSecondQM`, 
-		`w`.`numCboSixthQuarterMonth` as `exUSCSixthQM`,  
-		`w`.`numCboThirdQuarterMonth` as `exUSCThirdQM`,
-		`w`.`numCbo`,
-		`w`.`numCboDetails`,
-		`w`.`volMaizePurchasedDetails`,
-		`w`.`volMaizeExDetails`,
-		`w`.`volCoffeeExDetails`,
-		`w`.`volBeansExDetails`,
-		`w`.`epayRecievedDetails`,
-		`w`.`epayMadeDetails`,
-		`w`.`volBeansExFifthQuarterMonth` as `volBEFifthQM`,
-		`w`.`volBeansExFirstQuarterMonth` as `volBEFirstQM`, 
-		`w`.`volBeansExFourthQuarterMonth` as `volBEFourthQM`,
-		`w`.`volBeansExSecondQuarterMonth` as `volBESecondQM`,
-		`w`.`volBeansExSixthQuarterMonth` as `volBESixthQM`,
-		`w`.`volBeansExThirdQuarterMonth` as `volBEThirdQM`,
-		`w`.`volBeansExUgx`, `w`.`volBeansExUgxDetails`,
-		`w`.`volBeansExUgxFifthQuarterMonth` as `volBEUgxFifthQM`,
-		`w`.`volBeansExUgxFirstQuarterMonth` as `volBEUgxFirstQM`,
-		`w`.`volBeansExUgxFourthQuarterMonth` as `volBEUgxFourthQM`,
-		`w`.`volBeansExUgxSecondQuarterMonth` as `volBEUgxSecondQM`,
-		`w`.`volBeansExUgxSixthQuarterMonth` as `volBEUgxSixthQM`,
-		`w`.`volBeansExUgxThirdQuarterMonth` as `volBEUgxThirdQM`,
-		`w`.`volBeansPurchasedFifthQuarterMonth` as `volBPFifthQM`,
-		`w`.`volBeansPurchasedFirstQuarterMonth` as `volBPFirstQM`,
-		`w`.`volBeansPurchasedFourthQuarterMonth` as `volBPFourthQM`,
-		`w`.`volBeansPurchasedSecondQuarterMonth` as `volBPSecondQM`, 
-		`w`.`volBeansPurchasedSixthQuarterMonth` as `volBPSixthQM`,
-		`w`.`volBeansPurchasedThirdQuarterMonth` as `volBPThirdQM`, 
-		`w`.`volCoffeeExFifthQuarterMonth` as `volCEFifthQM`,
-		`w`.`volCoffeeExFirstQuarterMonth` as `volCEFirstQM`,
-		`w`.`volCoffeeExFourthQuarterMonth` as `volCEFourthQM`,
-		`w`.`volCoffeeExSecondQuarterMonth` as `volCESecondQM`,
-		`w`.`volCoffeeExSixthQuarterMonth` as `volCESixthQM`,
-		`w`.`volCoffeeExThirdQuarterMonth` as `volCEThirdQM`,
-		`w`.`volCoffeeExUgx`,`w`.`volCoffeeExUgxDetails`,
-		`w`.`volCoffeeExUgxFifthQuarterMonth` as `volCEUgxFifthQM`,
-		`w`.`volCoffeeExUgxFirstQuarterMonth` as `volCEUgxFirstQM`,
-		`w`.`volCoffeeExUgxFourthQuarterMonth` as `volCEUgxFourthQM`,
-		`w`.`volCoffeeExUgxSecondQuarterMonth` as `volCEUgxSecondQM`,
-		`w`.`volCoffeeExUgxSixthQuarterMonth` as `volCEUgxSixthQM`,
-		`w`.`volCoffeeExUgxThirdQuarterMonth` as `volCEUgxThirdQM`,
-		`w`.`volCoffeePurchasedFifthQuarterMonth` as `volCPFifthQM`,
-		`w`.`volCoffeePurchasedFirstQuarterMonth` as `volCPFirstQM`,
-		`w`.`volCoffeePurchasedFourthQuarterMonth` as `volCPFourthQM`,
-		`w`.`volCoffeePurchasedSecondQuarterMonth` as `volCPSecondQM`,
-		`w`.`volCoffeePurchasedSixthQuarterMonth` as `volCPSixthQM`, 
-		`w`.`volCoffeePurchasedThirdQuarterMonth` as `volCPThirdQM`,
-		`w`.`volMaizeExFifthQuarterMonth` as `volMEFifthQM`,
-		`w`.`volMaizeExFirstQuarterMonth` as `volMEFirstQM`,
-		`w`.`volMaizeExFourthQuarterMonth` as `volMEFourthQM`,
-		`w`.`volMaizeExSecondQuarterMonth` as `volMESecondQM`,
-		`w`.`volMaizeExSixthQuarterMonth` as `volMESixthQM`,
-		`w`.`volMaizeExThirdQuarterMonth` as `volMEThirdQM`,
-		`w`.`volMaizeExUgx`, `w`.`volMaizeExUgxDetails`,
-		`w`.`volMaizeExUgxFifthQuarterMonth` as `volMEUgxFifthQM`,
-		`w`.`volMaizeExUgxFirstQuarterMonth` as `volMEUgxFirstQM`,
-		`w`.`volMaizeExUgxFourthQuarterMonth` as `volMEUgxFourthQM`,
-		`w`.`volMaizeExUgxSecondQuarterMonth` as `volMEUgxSecondQM`,
-		`w`.`volMaizeExUgxSixthQuarterMonth` as `volMEUgxSixthQM`,
-		`w`.`volMaizeExUgxThirdQuarterMonth` as `volMEUgxThirdQM`,
-		`w`.`volMaizePurchasedFifthQuarterMonth` as `volMPFifthQM`,
-		`w`.`volMaizePurchasedFirstQuarterMonth` as `volMPFirstQM`,
-		`w`.`volMaizePurchasedFourthQuarterMonth` as `volMPFourthQM`,
-		`w`.`volMaizePurchasedSecondQuarterMonth` as `volMPSecondQM`,
-		`w`.`volMaizePurchasedSixthQuarterMonth` as `volMPSixthQM`,
-		`w`.`volMaizePurchasedThirdQuarterMonth` as `volMPThirdQM`,
 			`x`.`traderName`,
 			`x`.`traderDob`, 
 			`x`.`traderCode`,
@@ -9630,94 +9559,64 @@ $data="<form action=\"".$PHP_SELF."\" name='form4' id='form4' method='post'>
 			//$obj->alert($query_string);
 
 			$x=1;
-			$query_=mysql_query($query_string)or die(mysql_error());
+			$query_=mysql_query($query_string)or die(http(__line__));
 			/**************
 			*paging parameters
 			*
 			****/
-
-
-
-			$data.="<table style='background-color:#EBEBEB;' border='0' cellspacing='1' cellpadding='0' width='100%'>
-  <tr>
-  <th colspan='0'rowspan='2' style='min-width: 50px;'>#</th>
-  <th rowspan='2'>Name of Business/Exporter</th>
-  <th rowspan='2'>Reporting Period</th>
-    <th colspan='2' rowspan='2' class='largest-cell-header'>Performance Indicators</th>";
-
-    switch(true){
-
-   	case (!empty($cpma_year)) and (empty($reporting_period)):
-   			 $data.="<th colspan='13' >Achievements</th>";
-   		break;
-   	case (empty($cpma_year)) and (!empty($reporting_period)):
-   		
-   			 $data.="<th colspan='7' >Achievements</th>";
-   		break;
-
-   	case (!empty($cpma_year)) and (!empty($reporting_period)):
-   			 $data.="<th colspan='7' >Achievements</th>";
-   		break;
-   	default:
-   		 $data.="<th colspan='13' >Achievements</th>";
-   		break;
-   } 
-
-  
-
-  $data.="<th rowspan='2'>Given details</th>
-  </tr><tr>";
-
-                      
-foreach ($monthsArray as $key) {
-  $month= __month__coverter($key); 
-  $result = substr($month, 0, 3); 
-  $data.="<th >".$result."</th>"; 
-  }
-  $data.="<th >Total</th>";
-  $data.="</tr>";
-
-
 			$max_records = mysql_num_rows($query_);
 			$num_pages=ceil($max_records/$records_per_page);
 			$offset = ($cur_page-1)*$records_per_page;
 			$x=$offset+1;
-			$new_query=mysql_query($query_string." limit ".$offset.",".$records_per_page) or die(mysql_error());
+			$new_query=mysql_query($query_string." limit ".$offset.",".$records_per_page) or die(http(__line__));
 			
 			while($row=mysql_fetch_array($new_query)){
 				$divVwDisaggregation="vwDisaggregation".$row['tbl_form4_tradersId'];
-//				$color=$x%2==1?"evenrow3":"evenrow";
-
-
-				 $data.="<td rowspan='14' >".$x.".<input name='loopkey[]' type='hidden' id='loopkey' value='1'/>
-       <input name='tbl_form4_tradersId[]' type='checkbox' id='tbl_form4_tradersId".$x."' size='25' value='".$row['tbl_form4_tradersId']."'  /></td>";
-                $data.="<td rowspan='14' style='background-color:#e7e7e7'>".$row['traderName']."</td>";
-                $data.="<td rowspan='14'>".$row['reportingPeriod_cleaned']."</td>";
-
+				$color=$x%2==1?"evenrow3":"evenrow";
+				$data.="<tr class='".$color."'>";
+					$data.="<td  width='5px'>".$x.".<input name='loopkey[]' type='hidden' id='loopkey' size='25' value='1'/>
+					<input name='tbl_form4_tradersId[]' type='checkbox' id='tbl_form4_tradersId".$x."' size='25' value='".$row['tbl_form4_tradersId']."'  /></td>";
+					$data.="<td>".($row['traderName'])."</td>";
+					$data.="<td>".($row['reportingPeriod_cleaned'])."</td>";
+					$data.="<td>".($row['traderSex'])."</td>";
+					$data.="<td>".($row['traderCode'])."</td>";
+					$returnedDate=($row['traderDob']);
+					$date1=date_create("".$returnedDate."");
+					$dateNow=date('Y-m-d');
+					$date2=date_create("".$dateNow."");
+					$diff=date_diff($date1,$date2);
+					$years = $diff->y;
+					$months = $diff->m;
+					$days = $diff->d;
+					$ageString= $years." Yrs,".$months." Months and".$days." days";
+					$traderAge=$ageString;
+					$data.="<td>".$traderAge."</td>";
+			 
+					$data.="<td>".($row['districtName'])."</td>";
+					$data.="<td>".($row['subcountyName'])."</td>";
+					$data.="<td>".($row['traderVillage'])."</td>";
+					$data.="<td align='right'>".number_format(($row['vaSupplyChain']))."</td>";
+					$data.="<td align='right'>".number_format(($row['numCbo']))."</td>";
+					$data.="<td align='right'>".number_format(($row['volMaizePurchased']))."</td>";
+					$data.="<td align='right'>".number_format(($row['volCoffeePurchased']))."</td>";
+					$data.="<td align='right'>".number_format(($row['volBeansPurchased']))."</td>";
+					$data.="<td align='right'>".number_format(($row['volMaizeEx']))."</td>";
+					$data.="<td align='right'>".number_format(($row['volMaizeExUgx']))."</td>";
+					$data.="<td align='right'>".number_format(($row['volCoffeeEx']))."</td>";
+					$data.="<td align='right'>".number_format(($row['volCoffeeExUgx']))."</td>";
+					$data.="<td align='right'>".number_format(($row['volBeansEx']))."</td>";
+					$data.="<td align='right'>".number_format(($row['volBeansExUgx']))."</td>";
+					$data.="<td align='right'>".number_format(($row['epayRecieved']))."</td>";
+					$data.="<td align='right'>".number_format(($row['epayMade']))."</td>";
+					$data.="<td>
+						<input type='button' class='formButton2' title='Edit'  onclick=\"xajax_edit_traders_form4(xajax.getFormValues('form4'));return false;\" value='edit' /> 
+						<input type='button' value='Delete' class='red' onclick=\"ConfirmDelete(xajax.getFormValues('form4'),'Delete_traders_form4');return false;\" align='left'>
+					</td>";
+					
+				$data.="</tr>";
 				
-			//	$data.="<tr><td colspan='23'><div id='".$divVwDisaggregation."'>".view_frm4ExDisaggregation($row['tbl_traderId'],$row['year'],$row['tbl_form4_tradersId'],($row['traderName']),$reporting_period,$divVwDisaggregation)."</div><td></tr>";
+				$data.="<tr><td colspan='23'><div id='".$divVwDisaggregation."'>".view_frm4ExDisaggregation($row['tbl_traderId'],$row['year'],$row['tbl_form4_tradersId'],($row['traderName']),$reporting_period,$divVwDisaggregation)."</div><td></tr>";
 
-                switch(true){
-
-   	case (!empty($cpma_year)) and (empty($reporting_period)):
-   		 $data.=view_frm4ExDisaggregation("All",$row['tbl_traderId'],$row['year'],$row['tbl_form4_tradersId'],($row['traderName']),$reporting_period,$divVwDisaggregation);
-
-   		break;
-   	case (empty($cpma_year)) and (!empty($reporting_period)):
-   			$data.=data_form4($row);
-   		break;
-
-   	case (!empty($cpma_year)) and (!empty($reporting_period)):
-   			$data.=data_form4($row);
-   		break;
-   	default:
-   		 $data.=view_frm4ExDisaggregation("All",$row['tbl_traderId'],$row['year'],$row['tbl_form4_tradersId'],($row['traderName']),$reporting_period,$divVwDisaggregation);
-   		break;
-   } 
-
-    $data.="<tr>
-    <td colspan='21' style='height:5px;background-color:#FFFFFF'></td>
-    </tr>";
 
 		  
 		  $x++;
@@ -9730,15 +9629,6 @@ foreach ($monthsArray as $key) {
 		/*
 		*display pages
 		*/
-
-		$data.="</table>";
-
-$data.="<tr><td>
-						<input type='button' class='formButton2' title='Edit'  onclick=\"xajax_edit_traders_form4(xajax.getFormValues('form4'));return false;\" value='edit' /> 
-						<input type='button' value='Delete' class='red' onclick=\"ConfirmDelete(xajax.getFormValues('form4'),'Delete_traders_form4');return false;\" align='left'>
-					</td>
-</tr>";		
-		
 
 
 			$data.="<tr align='right'>
@@ -9795,7 +9685,7 @@ $obj->call("shadeBgOnCheck");
 $obj->call("hideLoadingDiv"); 
 return $obj;
 }
-function view_frm4ExDisaggregation($value,$Id,$Year,$tbl_form4_tradersId,$traderName,$reportingPeriod,$divVwDisaggregation){
+function view_frm4ExDisaggregation($Id,$Year,$tbl_form4_tradersId,$traderName,$reportingPeriod,$divVwDisaggregation){
 $obj=new xajaxResponse();
 /* $rp=$_SESSION['quarter'];
 $reportingPeriod=substr("".$rp."",0,9); */
@@ -9803,6 +9693,56 @@ $recordId=$tbl_form4_tradersId;
 $nameOfTrader=$traderName;
 
 
+
+
+
+  switch($reportingPeriod){
+								case "Apr - Sep":
+								$monthsArray=array('4','5','6','7','8','9');
+                $data="<form name='disaggregation' id='disaggregation' method = 'post' enctype='multipart/form-data' action='?'>
+<table style='background-color:#EBEBEB; width='100%' border='0' cellspacing='1' cellpadding='1'>
+  <tr >
+    <th colspan='2' rowspan='2'>Performance Indicators </th>
+    <th colspan='7' >Achievements</th>
+    <th rowspan='2'>Given details</th>
+  </tr>";
+  $data.="<tr>";
+								break;
+								
+								case "Oct - Mar":
+								$monthsArray=array('10','11','12','1','2','3');
+                $data="<form name='disaggregation' id='disaggregation' method = 'post' enctype='multipart/form-data' action='?'>
+<table style='background-color:#EBEBEB; width='100%' border='0' cellspacing='1' cellpadding='1'>
+  <tr>
+    <th colspan='2' rowspan='2'>Performance Indicators </th>
+    <th colspan='7' >Achievements</th>
+    <th rowspan='2'>Given details</th>
+  </tr>";
+  $data.="<tr>";
+								break;
+								
+								default:
+                $monthsArray=array('10','11','12','1','2','3','4','5','6','7','8','9');
+                $data="<form name='disaggregation' id='disaggregation' method = 'post' enctype='multipart/form-data' action='?'>
+<table style='background-color:#EBEBEB; width='100%' border='0' cellspacing='1' cellpadding='1'>
+  <tr>
+    <th colspan='2' rowspan='2'>Performance Indicators </th>
+    <th colspan='13' >Achievements</th>
+    <th rowspan='2'>Given details</th>
+  </tr>";
+  $data.="<tr>";
+								break;
+							}
+											
+foreach ($monthsArray as $key) {
+	$month= __month__coverter($key); 
+	$result = substr($month, 0, 3);	
+	$data.="<th >".$result."</th>";	
+	}
+	$data.="<th >Total</th>";
+  
+	$data.="</tr>";
+	
 		$query_string="SELECT 
 		`x`.`tbl_form4_tradersId`,
 		`x`.`tbl_traderId`,
@@ -10003,7 +9943,6 @@ $nameOfTrader=$traderName;
     `x`.`volMaizePurchasedThirdQuarterMonth` as `volMPThirdQM`
     FROM `tbl_form4_traders` as `x`
     WHERE `x`.`tbl_form4_tradersId`='".$recordId."'
-    and `x`.`year`='".$Year."'
     and `x`.`reportingPeriod`='Oct - Mar'";
 
 
@@ -10113,44 +10052,36 @@ $nameOfTrader=$traderName;
 		
 		//$obj->alert($query_string);
 
-    switch($value){
+    switch($reportingPeriod){
                 case "Apr - Sep":
-                $query=mysql_query($query_string)or die(mysql_error());
+                $query=mysql_query($query_string)or die(http(__line__));
                 $row=mysql_fetch_array($query);
                 $data.=data_form4($row);
                 break;
                 
                 case "Oct - Mar":
-                $query=mysql_query($query_string)or die(mysql_error());
+                $query=mysql_query($query_string)or die(http(__line__));
                 $row=mysql_fetch_array($query);
                 $data.=data_form4($row);
                 break;
-
-                case 'All':
-                	# code...
-                $query1=mysql_query($query_string1)or die(mysql_error());
-                $query2=mysql_query($query_string2)or die(mysql_error());
-                $row=mysql_fetch_array($query1);
-                $row2=mysql_fetch_array($query2);
-                $data.=data_form4All($row,$row2);
-                break;
                 
                 default:
-                $query1=mysql_query($query_string1)or die(mysql_error());
-                $query2=mysql_query($query_string2)or die(mysql_error());
+                $query1=mysql_query($query_string1)or die(http(__line__));
+                $query2=mysql_query($query_string2)or die(http(__line__));
                 $row=mysql_fetch_array($query1);
                 $row2=mysql_fetch_array($query2);
                 $data.=data_form4All($row,$row2);
                 break;
               }
-// $data.="</table></form>";  
+ $data.="</table></form>";  
  
  $_SESSION['divVwDisaggregationTraders']=$data;
  
-//$obj->assign($divVwDisaggregation,'innerHTML',$data); 
+$obj->assign($divVwDisaggregation,'innerHTML',$data); 
 return $data;			
 }
 function data_form4($row){
+	
 	$qmobj = new QueryManager('');
 	
     $data.="<tr>";
@@ -10313,8 +10244,6 @@ function data_form4($row){
 
 }
 function data_form4All($row,$row2){
-
-	$qmobj = new QueryManager('');
 
     $data.="<tr class='bluish'>";
     $data.="<td colspan='2'>Number of VAs in the supply chain</td>";
@@ -11121,7 +11050,7 @@ $data="<form action=\"".$PHP_SELF."\" name='form5' id='form5' method='post'>
 
 
 			//$obj->alert($query_string);
-			$query_=mysql_query($query_string)or die(mysql_error());
+			$query_=mysql_query($query_string)or die(http(__line__));
 			/**************
 			*paging parameters
 			*
@@ -11132,7 +11061,7 @@ $data="<form action=\"".$PHP_SELF."\" name='form5' id='form5' method='post'>
 			//$feedback->addAlert($cur_page);
 			$offset = ($cur_page-1)*$records_per_page;
 			$x=$offset+1;
-			$new_query=mysql_query($query_string." limit ".$offset.",".$records_per_page) or die(mysql_error());
+			$new_query=mysql_query($query_string." limit ".$offset.",".$records_per_page) or die(http(__line__));
 
 			while($row=mysql_fetch_array($new_query)){
 
@@ -11876,56 +11805,52 @@ $data.="<tr CLASS='evenrow'>
 <th colspan='15' ><center>EXPORTER AND PROCESSOR DATA DETAILS</center></th>
 </tr>";
 
+
+$data.="<table width='100%' cellpadding=1 cellspacing=1>";
 $data.="<tr>
     <td class='offwhite' COLSPAN='11' align='left'><input type='button' class='formButton2'title='Edit'  onclick=\"xajax_edit_exporters_form3(xajax.getFormValues('form3'));return false;\" value='edit' /> ";
         $data.=" <input type='button' value='Delete' class='red' onclick=\"ConfirmDelete(xajax.getFormValues('form3'),'Delete_exporters_form3');return false;\" align='left'></td>";
     $data.="</td>
-</tr> </table>"; 
-
+</tr>"; 
 
 
  //===================data to be displayed=====================
 
 $data.="<tr class=''>
   <td colspan=8>";
+$data.="<table border='0' class='hoverTable' width='100%'>";
   
   switch(trim($cpma_year)){
       case trim('Project start up'):
       $reportingYearToPeriod="and `w`.`reportingPeriod` in ('Apr - Sep') 
       and `w`.`year` in (2013)";
-      $monthsArray=array('10','11','12','1','2','3','4','5','6','7','8','9');
       break;
 	  
 	  case trim('CPMA Year One'):
       $reportingYearToPeriod="and `w`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
       and `w`.`year` in (2013,2014)";
-      $monthsArray=array('10','11','12','1','2','3','4','5','6','7','8','9');
       break;
       
       case trim('CPMA Year Two'):
       $reportingYearToPeriod="and `w`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
       and `w`.`year` in (2014,2015)";
-      $monthsArray=array('10','11','12','1','2','3','4','5','6','7','8','9');
       break;
       
       case trim('CPMA Year Three'):
       $reportingYearToPeriod="and `w`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
       and `w`.`year` in (2015,2016)
       and `w`.`DateSubmission` between ('2015-10-01') and ('2016-03-31')";
-      $monthsArray=array('10','11','12','1','2','3','4','5','6','7','8','9');
       break;
       
       case trim('CPMA Year Four'):
       $reportingYearToPeriod="and `w`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
       and `w`.`year` in (2016,2017)
       and `w`.`DateSubmission` between ('2016-10-01') and ('2017-03-31')";
-      $monthsArray=array('10','11','12','1','2','3','4','5','6','7','8','9');
       break;      
       
       case trim('CPMA Year Five(Activity close out)'):
       $reportingYearToPeriod="and `w`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
       and `w`.`year` in (2017,2018)";
-      $monthsArray=array('10','11','12','1','2','3','4','5','6','7','8','9');
       break;
       
       default:
@@ -11941,7 +11866,6 @@ $data.="<tr class=''>
       and `w`.`reportingPeriod` = 'Apr - Sep' 
       and `w`.`year` in (2013)
       ";
-      $monthsArray=array('4','5','6','7','8','9');
       break;
       
       case trim('Oct 2013 - Mar 2014'):
@@ -11949,7 +11873,6 @@ $data.="<tr class=''>
       and `w`.`reportingPeriod` = 'Oct - Mar' 
       and `w`.`year` in (2013,2014)
       ";
-      $monthsArray=array('10','11','12','1','2','3');
       break;
       
       case trim('Apr 2014 - Sep 2014'):
@@ -11957,7 +11880,6 @@ $data.="<tr class=''>
       and `w`.`reportingPeriod` = 'Apr - Sep' 
 	  and `w`.`year` in (2014)
       ";
-      $monthsArray=array('4','5','6','7','8','9');
 	   
       break;
       
@@ -11966,7 +11888,6 @@ $data.="<tr class=''>
       and `w`.`reportingPeriod` = 'Oct - Mar' 
       and `w`.`year` in (2014,2015)
       ";
-      $monthsArray=array('10','11','12','1','2','3');
       break;
       
       case trim('Apr 2015 - Sep 2015'):
@@ -11974,7 +11895,6 @@ $data.="<tr class=''>
       and `w`.`reportingPeriod` = 'Apr - Sep' 
       and `w`.`year` in (2015)
       ";
-      $monthsArray=array('4','5','6','7','8','9');
       break;
       
       case trim('Oct 2015 - Mar 2016'):
@@ -11983,7 +11903,6 @@ $data.="<tr class=''>
       and `w`.`year` in (2015,2016)
       and `w`.`DateSubmission` between ('2015-10-01') and ('2016-03-31')
       ";
-      $monthsArray=array('10','11','12','1','2','3');
       break;
       
       case trim('Apr 2016 - Sep 2016'):
@@ -11991,7 +11910,6 @@ $data.="<tr class=''>
       and `w`.`reportingPeriod` = 'Apr - Sep' 
       and `w`.`year` in (2016)
       ";
-      $monthsArray=array('4','5','6','7','8','9');
       break;
       
       case trim('Oct 2016 - Mar 2017'):
@@ -12000,7 +11918,6 @@ $data.="<tr class=''>
       and `w`.`year` in (2016,2017)
       and `w`.`DateSubmission` between ('2016-10-01') and ('2017-03-31')
       ";
-      $monthsArray=array('10','11','12','1','2','3');
       break;
       
       case trim('Apr 2017 - Sep 2017'):
@@ -12008,7 +11925,6 @@ $data.="<tr class=''>
       and `w`.`reportingPeriod` = 'Apr - Sep' 
       and `w`.`year` in (2017)
       ";
-      $monthsArray=array('4','5','6','7','8','9');
       break;
       
       case trim('Oct 2017 – Mar 2018'):
@@ -12016,7 +11932,6 @@ $data.="<tr class=''>
       and `w`.`reportingPeriod` = 'Oct - Mar' 
       and `w`.`year` in (2017,2018)
       ";
-      $monthsArray=array('10','11','12','1','2','3');
       break;
       
       case trim('Apr 2018 – May 2018'):
@@ -12024,17 +11939,11 @@ $data.="<tr class=''>
       and `w`.`reportingPeriod` = 'Apr - Sep' 
       and `w`.`year` in (2018)
       ";
-      $monthsArray=array('4','5','6','7','8','9');
       break;
       
       default:
-      $monthsArray=array('10','11','12','1','2','3','4','5','6','7','8','9');
       break;
     }
-
-    
-
-   // $obj->alert($reporting_period);
 
  
 //Mysql query to return Results from uploaded Excel sheet
@@ -12087,99 +11996,6 @@ $data.="<tr class=''>
   else `w`.`reportingPeriod`
   end 
   as  `reportingPeriod_cleaned`,
-      `w`.`tbl_form3_exportersId`,
-    `w`.`tbl_exporterId`,
-    `w`.`reportingPeriod`,
-    `w`.`year`,
-    `w`.`epayMadeFifthQuarterMonth` as `epayMFifthQM`,
-    `w`.`epayMadeFirstQuarterMonth` as `epayMFirstQM`,
-    `w`.`epayMadeFourthQuarterMonth` as `epayMFourthQM`,
-    `w`.`epayMadeSecondQuarterMonth` as `epayMSecondQM`,
-    `w`.`epayMadeSixthQuarterMonth` as `epayMSixthQM`,
-    `w`.`epayMadeThirdQuarterMonth` as `epayMThirdQM`,
-    `w`.`epayRecievedFifthQuarterMonth` as `epayRFifthQM`,
-    `w`.`epayRecievedFirstQuarterMonth` as `epayRFirstQM`,
-    `w`.`epayRecievedFourthQuarterMonth` as `epayRFourthQM`,
-    `w`.`epayRecievedSecondQuarterMonth` as `epayRSecondQM`,
-    `w`.`epayRecievedSixthQuarterMonth` as `epayRSixthQM`,
-    `w`.`epayRecievedThirdQuarterMonth` as `epayRThirdQM`,
-    `w`.`exTradersSupplyChainFifthQuarterMonth` as `exTSCFifthQM`,
-    `w`.`exTradersSupplyChainFirstQuarterMonth` as `exTSCFirstQM`,
-    `w`.`exTradersSupplyChainFourthQuarterMonth` as `exTSCFourthQM`,
-    `w`.`exTradersSupplyChainSecondQuarterMonth` as `exTSCSecondQM`,
-    `w`.`exTradersSupplyChainSixthQuarterMonth` as `exTSCSixthQM`, 
-    `w`.`exTradersSupplyChainThirdQuarterMonth` as `exTSCThirdQM`,
-    `w`.`exTradersSupplyChainDetails`,
-    `w`.`exUnionSupplyChainFifthQuarterMonth` as `exUSCFifthQM`, 
-    `w`.`exUnionSupplyChainFirstQuarterMonth` as `exUSCFirstQM`, 
-    `w`.`exUnionSupplyChainFourthQuarterMonth` as `exUSCFourthQM`, 
-    `w`.`exUnionSupplyChainSecondQuarterMonth` as `exUSCSecondQM`, 
-    `w`.`exUnionSupplyChainSixthQuarterMonth` as `exUSCSixthQM`,  
-    `w`.`exUnionSupplyChainThirdQuarterMonth` as `exUSCThirdQM`,
-    `w`.`exUnionsSupplyChainDetails`,
-    `w`.`volMaizePurchasedDetails`,
-    `w`.`volMaizeExDetails`,
-    `w`.`volCoffeeExDetails`,
-    `w`.`volBeansExDetails`,
-    `w`.`epayRecievedDetails`,
-    `w`.`epayMadeDetails`,
-    `w`.`volBeansExFifthQuarterMonth` as `volBEFifthQM`,
-    `w`.`volBeansExFirstQuarterMonth` as `volBEFirstQM`, 
-    `w`.`volBeansExFourthQuarterMonth` as `volBEFourthQM`,
-    `w`.`volBeansExSecondQuarterMonth` as `volBESecondQM`,
-    `w`.`volBeansExSixthQuarterMonth` as `volBESixthQM`,
-    `w`.`volBeansExThirdQuarterMonth` as `volBEThirdQM`,
-    `w`.`volBeansExUgx`, `w`.`volBeansExUgxDetails`,
-    `w`.`volBeansExUgxFifthQuarterMonth` as `volBEUgxFifthQM`,
-    `w`.`volBeansExUgxFirstQuarterMonth` as `volBEUgxFirstQM`,
-    `w`.`volBeansExUgxFourthQuarterMonth` as `volBEUgxFourthQM`,
-    `w`.`volBeansExUgxSecondQuarterMonth` as `volBEUgxSecondQM`,
-    `w`.`volBeansExUgxSixthQuarterMonth` as `volBEUgxSixthQM`,
-    `w`.`volBeansExUgxThirdQuarterMonth` as `volBEUgxThirdQM`,
-    `w`.`volBeansPurchasedFifthQuarterMonth` as `volBPFifthQM`,
-    `w`.`volBeansPurchasedFirstQuarterMonth` as `volBPFirstQM`,
-    `w`.`volBeansPurchasedFourthQuarterMonth` as `volBPFourthQM`,
-    `w`.`volBeansPurchasedSecondQuarterMonth` as `volBPSecondQM`, 
-    `w`.`volBeansPurchasedSixthQuarterMonth` as `volBPSixthQM`,
-    `w`.`volBeansPurchasedThirdQuarterMonth` as `volBPThirdQM`, 
-    `w`.`volCoffeeExFifthQuarterMonth` as `volCEFifthQM`,
-    `w`.`volCoffeeExFirstQuarterMonth` as `volCEFirstQM`,
-    `w`.`volCoffeeExFourthQuarterMonth` as `volCEFourthQM`,
-    `w`.`volCoffeeExSecondQuarterMonth` as `volCESecondQM`,
-    `w`.`volCoffeeExSixthQuarterMonth` as `volCESixthQM`,
-    `w`.`volCoffeeExThirdQuarterMonth` as `volCEThirdQM`,
-    `w`.`volCoffeeExUgx`,`w`.`volCoffeeExUgxDetails`,
-    `w`.`volCoffeeExUgxFifthQuarterMonth` as `volCEUgxFifthQM`,
-    `w`.`volCoffeeExUgxFirstQuarterMonth` as `volCEUgxFirstQM`,
-    `w`.`volCoffeeExUgxFourthQuarterMonth` as `volCEUgxFourthQM`,
-    `w`.`volCoffeeExUgxSecondQuarterMonth` as `volCEUgxSecondQM`,
-    `w`.`volCoffeeExUgxSixthQuarterMonth` as `volCEUgxSixthQM`,
-    `w`.`volCoffeeExUgxThirdQuarterMonth` as `volCEUgxThirdQM`,
-    `w`.`volCoffeePurchasedFifthQuarterMonth` as `volCPFifthQM`,
-    `w`.`volCoffeePurchasedFirstQuarterMonth` as `volCPFirstQM`,
-    `w`.`volCoffeePurchasedFourthQuarterMonth` as `volCPFourthQM`,
-    `w`.`volCoffeePurchasedSecondQuarterMonth` as `volCPSecondQM`,
-    `w`.`volCoffeePurchasedSixthQuarterMonth` as `volCPSixthQM`, 
-    `w`.`volCoffeePurchasedThirdQuarterMonth` as `volCPThirdQM`,
-    `w`.`volMaizeExFifthQuarterMonth` as `volMEFifthQM`,
-    `w`.`volMaizeExFirstQuarterMonth` as `volMEFirstQM`,
-    `w`.`volMaizeExFourthQuarterMonth` as `volMEFourthQM`,
-    `w`.`volMaizeExSecondQuarterMonth` as `volMESecondQM`,
-    `w`.`volMaizeExSixthQuarterMonth` as `volMESixthQM`,
-    `w`.`volMaizeExThirdQuarterMonth` as `volMEThirdQM`,
-    `w`.`volMaizeExUgx`, `w`.`volMaizeExUgxDetails`,
-    `w`.`volMaizeExUgxFifthQuarterMonth` as `volMEUgxFifthQM`,
-    `w`.`volMaizeExUgxFirstQuarterMonth` as `volMEUgxFirstQM`,
-    `w`.`volMaizeExUgxFourthQuarterMonth` as `volMEUgxFourthQM`,
-    `w`.`volMaizeExUgxSecondQuarterMonth` as `volMEUgxSecondQM`,
-    `w`.`volMaizeExUgxSixthQuarterMonth` as `volMEUgxSixthQM`,
-    `w`.`volMaizeExUgxThirdQuarterMonth` as `volMEUgxThirdQM`,
-    `w`.`volMaizePurchasedFifthQuarterMonth` as `volMPFifthQM`,
-    `w`.`volMaizePurchasedFirstQuarterMonth` as `volMPFirstQM`,
-    `w`.`volMaizePurchasedFourthQuarterMonth` as `volMPFourthQM`,
-    `w`.`volMaizePurchasedSecondQuarterMonth` as `volMPSecondQM`,
-    `w`.`volMaizePurchasedSixthQuarterMonth` as `volMPSixthQM`,
-    `w`.`volMaizePurchasedThirdQuarterMonth` as `volMPThirdQM`,
     `x`.`exporterName`,
   `x`.`exporterDob`, 
   `x`.`exporterCode`,
@@ -12221,58 +12037,13 @@ $data.="<tr class=''>
 //$obj->alert($query_string);
   $x=1;
   
-  //$query_=mysql_query($query_string)or die(mysql_error());
+  //$query_=mysql_query($query_string)or die(http(__line__));
    $query_=mysql_query($query_string)or die(mysql_error());
    
    /**************
    *paging parameters
    *
    ****/
-
-   
-   $data.="<table style='background-color:#EBEBEB;' border='0' cellspacing='1' cellpadding='0' width='100%'>
-  <tr>
-  <th colspan='0'rowspan='2' style='min-width: 50px;'>#</th>
-  <th rowspan='2'>Name of Business/Exporter</th>
-  <th rowspan='2'>Reporting Period</th>
-    <th colspan='2' rowspan='2' class='largest-cell-header'>Performance Indicators</th>";
-
-    switch(true){
-
-   	case (!empty($cpma_year)) and (empty($reporting_period)):
-   			 $data.="<th colspan='13' >Achievements</th>";
-   		break;
-   	case (empty($cpma_year)) and (!empty($reporting_period)):
-   		
-   			 $data.="<th colspan='7' >Achievements</th>";
-   		break;
-
-   	case (!empty($cpma_year)) and (!empty($reporting_period)):
-   			 $data.="<th colspan='7' >Achievements</th>";
-   		break;
-   	default:
-   		 $data.="<th colspan='13' >Achievements</th>";
-   		break;
-   } 
-
-  
-
-  $data.="<th rowspan='2'>Given details</th>
-  </tr><tr>";
-
-                      
-foreach ($monthsArray as $key) {
-  $month= __month__coverter($key); 
-  $result = substr($month, 0, 3); 
-  $data.="<th >".$result."</th>"; 
-  }
-  $data.="<th >Total</th>";
-  $data.="</tr>";
-
-
-
-
-
    $max_records = mysql_num_rows($query_);
    $num_pages=ceil($max_records/$records_per_page);
    $offset = ($cur_page-1)*$records_per_page;
@@ -12284,54 +12055,32 @@ foreach ($monthsArray as $key) {
     $divVwDisaggregation="vwDisaggregation".$row['tbl_form3_exportersId'];
     //$color=$x%2==1?"evenrow3":"evenrow";
     // $data.="<tr class='alternating_rows'>";
-                    $data.="<td rowspan='14' >".$x.".<input name='loopkey[]' type='hidden' id='loopkey' value='1'/>
-       <input name='tbl_form3_exportersId[]' type='checkbox' id='tbl_form3_exportersId".$x."' size='25' value='".$row['tbl_form3_exportersId']."'/></td>";
-                $data.="<td rowspan='14' style='background-color:#e7e7e7'>".$row['exporterName']."</td>";
-                $data.="<td rowspan='14'>".$row['reportingPeriod_cleaned']."</td>";
-       
+    //   $data.="<td  width='5px'>".$x.".<input name='loopkey[]' type='hidden' id='loopkey' value='1'/>
+    //   <input name='tbl_form3_exportersId[]' type='checkbox' id='tbl_form3_exportersId".$x."' size='25' value='".$row['tbl_form3_exportersId']."'/></td>";
+    //   $data.="<td>".retrieve_info_withSpecialCharactersNowordLimit($row['exporterName'])."</td>";
       
     // $data.="</tr>";
     
      /* $obj->alert('tbl_form3_exportersId->'.$row['tbl_form3_exportersId'].' year->'.$row['year'].' exporterName->'.$row['exporterName'].' reportingPeriod->'.$row['reportingPeriod']);  */
-   switch(true){
-
-   	case (!empty($cpma_year)) and (empty($reporting_period)):
-   		 $data.=view_frm3ExDisaggregation('All',$row['tbl_form3_exportersId'],$row['year'],($row['exporterName']),($row['reportingPeriod']),$divVwDisaggregation);
-
-   		break;
-   	case (empty($cpma_year)) and (!empty($reporting_period)):
-   			$data.=data_form3($row);
-   		break;
-
-   	case (!empty($cpma_year)) and (!empty($reporting_period)):
-   			$data.=data_form3($row);
-   		break;
-   	default:
-   		 $data.=view_frm3ExDisaggregation('All',$row['tbl_form3_exportersId'],$row['year'],($row['exporterName']),($row['reportingPeriod']),$divVwDisaggregation);
-   		break;
-   } 
     
-   
-   
-      $data.="<tr>
-    <td colspan='21' style='height:5px;background-color:#FFFFFF'></td>
-    </tr>";
     
+   $data.="<tr><td colspan='21'><div id='".$divVwDisaggregation."'>".
+     view_frm3ExDisaggregation($row['tbl_form3_exportersId'],$row['year'],($row['exporterName']),($row['reportingPeriod']),$divVwDisaggregation)
+    ."</div><td></tr>";  
   
   $x++;
 $n++;
 }
 
 $data.="".noRecordsFound($new_query,10)."";
-
-$data.="</table>";
+$data.="</table></td></tr>";
 
 $data.="<tr>
     <td class='offwhite' COLSPAN='11' align='left'><input type='button' class='formButton2'title='Edit'  onclick=\"xajax_edit_exporters_form3(xajax.getFormValues('form3'));return false;\" value='edit' /> ";
         $data.=" <input type='button' value='Delete' class='red' onclick=\"ConfirmDelete(xajax.getFormValues('form3'),'Delete_exporters_form3');return false;\" align='left'></td>";
     $data.="</td>
-</tr>";		
-		
+</tr>";   
+    
 
 
 /*
@@ -12348,39 +12097,40 @@ $cur_link=$cur_page;
 
 if($num_pages>1){
 $links=1;
-		$append_bar=$p==$num_pages?"":"|";
-	if ($cur_page==1)$data.="<a href='#' onclick=\"xajax_view_form3('".$_SESSION['region']."','".$_SESSION['reporting_period']."','".$_SESSION['cpma_year']."','".$_SESSION['exName']."','".$_SESSION['exCode']."','1','".$records_per_page."')\"><font color=red><b>1</b></font>\n</a>...".$append_bar;
-	else $data.="<a href='#' onclick=\"xajax_view_form3('".$_SESSION['region']."','".$_SESSION['reporting_period']."','".$_SESSION['cpma_year']."','".$_SESSION['exName']."','".$_SESSION['exCode']."','1','".$records_per_page."')\">1\n</a>...".$append_bar;
-	//for($p=2;$p<$num_pages;$p++){
-	$p=2;
-	while($p<$num_pages){
+    $append_bar=$p==$num_pages?"":"|";
+  if ($cur_page==1)$data.="<a href='#' onclick=\"xajax_view_form3('".$_SESSION['region']."','".$_SESSION['reporting_period']."','".$_SESSION['cpma_year']."','".$_SESSION['exName']."','".$_SESSION['exCode']."','1','".$records_per_page."')\"><font color=red><b>1</b></font>\n</a>...".$append_bar;
+  else $data.="<a href='#' onclick=\"xajax_view_form3('".$_SESSION['region']."','".$_SESSION['reporting_period']."','".$_SESSION['cpma_year']."','".$_SESSION['exName']."','".$_SESSION['exCode']."','1','".$records_per_page."')\">1\n</a>...".$append_bar;
+  //for($p=2;$p<$num_pages;$p++){
+  $p=2;
+  while($p<$num_pages){
 if(($p>$startAt_links) and ($p<$endAt_links)){
-		$data.=$p==$cur_page?"<font color=red><b>".$p."</b></font>".$append_bar:"<a href='#' onclick=\"xajax_view_form3('".$_SESSION['region']."','".$_SESSION['reporting_period']."','".$_SESSION['cpma_year']."','".$_SESSION['exName']."','".$_SESSION['exCode']."','".$p."','".$records_per_page."')\">".$p."\n</a>".$append_bar;
-	}
-	$p++;
-	}
-	if($p==$num_pages){
-			$data.="...<a href='#' onclick=\"xajax_view_form3('".$_SESSION['region']."','".$_SESSION['reporting_period']."','".$_SESSION['cpma_year']."','".$_SESSION['exName']."','".$_SESSION['exCode']."','".$p."','".$records_per_page."')\">".$p."\n</a>".$append_bar;
-			}
+    $data.=$p==$cur_page?"<font color=red><b>".$p."</b></font>".$append_bar:"<a href='#' onclick=\"xajax_view_form3('".$_SESSION['region']."','".$_SESSION['reporting_period']."','".$_SESSION['cpma_year']."','".$_SESSION['exName']."','".$_SESSION['exCode']."','".$p."','".$records_per_page."')\">".$p."\n</a>".$append_bar;
+  }
+  $p++;
+  }
+  if($p==$num_pages){
+      $data.="...<a href='#' onclick=\"xajax_view_form3('".$_SESSION['region']."','".$_SESSION['reporting_period']."','".$_SESSION['cpma_year']."','".$_SESSION['exName']."','".$_SESSION['exCode']."','".$p."','".$records_per_page."')\">".$p."\n</a>".$append_bar;
+      }
 }
 
 
 $data.=" Records: <select name='num_rec' id='num_rec' onchange=\"xajax_view_form3('".$_SESSION['region']."','".$_SESSION['reporting_period']."','".$_SESSION['cpma_year']."','".$_SESSION['exName']."','".$_SESSION['exCode']."','".$cur_page."',this.value)\">";
-	$i=1;
-	$selected="";
-	while($i*10<=$max_records){
-		$selected=$i*10==$records_per_page?"SELECTED":"";
-		$data.="<option value='".($i*10)."' ".$selected.">".($i*10)."</option>";
-		$i++;
-	}
-	
-	$sel=$records_per_page>=$max_records?"SELECTED":"";
-	$data.="<option value='".$max_records."' ".$sel.">All</option>";
-	$data.="</select>";
-	$data.="</br></td>
-	</tr>";
-	
- 
+  $i=1;
+  $selected="";
+  while($i*10<=$max_records){
+    $selected=$i*10==$records_per_page?"SELECTED":"";
+    $data.="<option value='".($i*10)."' ".$selected.">".($i*10)."</option>";
+    $i++;
+  }
+  
+  $sel=$records_per_page>=$max_records?"SELECTED":"";
+  $data.="<option value='".$max_records."' ".$sel.">All</option>";
+  $data.="</select>";
+  $data.="</br></td>
+  </tr>
+  </table>";
+  
+
         
    $data.="</tr>
    </table>
@@ -12392,7 +12142,7 @@ $obj->call("hideLoadingDiv");
 return $obj;
 }
 
-function view_frm3ExDisaggregation($value,$tbl_form3_exportersId,$Year,$exporterName,$reportingPeriod,$divVwDisaggregation){
+function view_frm3ExDisaggregation($tbl_form3_exportersId,$Year,$exporterName,$reportingPeriod,$divVwDisaggregation){
 $obj=new xajaxResponse();
 $rp=$_SESSION['quarter'];
 //$reportingPeriod=substr("".$rp."",0,9);
@@ -12401,7 +12151,55 @@ $nameOfExporter=$exporterName;
 //$obj->alert($reportingPeriod);
 //41
 
+switch($reportingPeriod){
+                case "Apr - Sep":
+                $monthsArray=array('4','5','6','7','8','9');
+                $data="<form name='disaggregation' id='disaggregation' method = 'post' enctype='multipart/form-data' action='?'>
+<table style='background-color:#EBEBEB;' border='0' cellspacing='1' cellpadding='0' width='100%'>
+  <tr>
+  <th rowspan='2'>Name of Business/Exporter</th>
+    <th colspan='2' rowspan='2'>Performance Indicators</th>
+    <th colspan='7' >Achievements</th>
+    <th rowspan='2'>Given details</th>
+  </tr>";
+  $data.="<tr>";
+                break;
+                
+                case "Oct - Mar":
+                $monthsArray=array('10','11','12','1','2','3');
+                $data="<form name='disaggregation' id='disaggregation' method = 'post' enctype='multipart/form-data' action='?'>
+<table style='background-color:#EBEBEB;' border='0' cellspacing='1' cellpadding='0' width='100%'>
+  <tr>
+   <th rowspan='2'>Name of Business/Exporter</th>
+    <th colspan='2' rowspan='2'>Performance Indicators</th>
+    <th colspan='7' >Achievements</th>
+    <th rowspan='2'>Given details</th>
+  </tr>";
+  $data.="<tr>";
+                break;
+                
+                default:
+                $monthsArray=array('10','11','12','1','2','3','4','5','6','7','8','9');
+                $data="<form name='disaggregation' id='disaggregation' method = 'post' enctype='multipart/form-data' action='?'>
+<table style='background-color:#EBEBEB;' border='0' cellspacing='1' cellpadding='0' width='100%'>
+  <tr>
+  <th rowspan='2'>Name of Business/Exporter</th>
+    <th colspan='2' rowspan='2'>Performance Indicators</th>
+    <th colspan='13' >Achievements</th>
+    <th rowspan='2'>Given details</th>
+  </tr>";
+  $data.="<tr>";
+                break;
+              }
 
+                      
+foreach ($monthsArray as $key) {
+  $month= __month__coverter($key); 
+  $result = substr($month, 0, 3); 
+  $data.="<th >".$result."</th>"; 
+  }
+  $data.="<th >Total</th>";
+  $data.="</tr>";
   
     $query_string="SELECT 
     `x`.`tbl_form3_exportersId`,
@@ -12702,32 +12500,19 @@ $nameOfExporter=$exporterName;
     and `x`.`reportingPeriod`='Apr - Sep'";
 
 
-    switch($value){
+    switch($reportingPeriod){
                 case "Apr - Sep":
                 $query=mysql_query($query_string)or die(mysql_error());
                 $row=mysql_fetch_array($query);
-                $data.="<td rowspan='14' >".$x.".<input name='loopkey[]' type='hidden' id='loopkey' value='1'/>
-       <input name='tbl_form3_exportersId[]' type='checkbox' id='tbl_form3_exportersId".$x."' size='25' value='".$row['tbl_form3_exportersId']."'/></td>";
-                $data.="<td rowspan='14' style='background-color:#e7e7e7'>".$nameOfExporter."</td>";
-                $data.="<td rowspan='14'>".$reportingPeriod." ".$Year."</td>";
+                $data.="<td rowspan='14'>".$nameOfExporter."</td>";
                 $data.=data_form3($row);
                 break;
                 
                 case "Oct - Mar":
                 $query=mysql_query($query_string)or die(mysql_error());
                 $row=mysql_fetch_array($query);
-                $data.="<td rowspan='14' style='background-color:#e7e7e7'>".$nameOfExporter."</td>";
-                $data.="<td rowspan='14'>".$reportingPeriod." ".$Year."</td>";
+                $data.="<td rowspan='14'>".$nameOfExporter."</td>";
                 $data.=data_form3($row);
-                break;
-
-                case 'All':
-                	# code...
-                $query1=mysql_query($query_string1)or die(mysql_error());
-                $query2=mysql_query($query_string2)or die(mysql_error());
-                $row=mysql_fetch_array($query1);
-                $row2=mysql_fetch_array($query2);
-                $data.=data_form3All($row,$row2);
                 break;
                 
                 default:
@@ -12735,12 +12520,14 @@ $nameOfExporter=$exporterName;
                 $query2=mysql_query($query_string2)or die(mysql_error());
                 $row=mysql_fetch_array($query1);
                 $row2=mysql_fetch_array($query2);
+                $data.="<td rowspan='14'>".$nameOfExporter."</td>";
                 $data.=data_form3All($row,$row2);
                 break;
               }
 
 
   
+ $data.="</table></form>"; 
 $_SESSION['divVwDisaggregationExporter']=$data;
  
 //$obj->assign($divVwDisaggregation,'innerHTML',$data);
@@ -12925,9 +12712,9 @@ function data_form3All($row,$row2){
     $data.="<td align='right'>".number_format($row2['exTSCFourthQM'])."</td>";
     $data.="<td align='right'>".number_format($row2['exTSCFifthQM'])."</td>";
     $data.="<td align='right'>".number_format($row2['exTSCSixthQM'])."</td>";
-  $totTSC=number_format($row['exTSCFirstQM']+$row['exTSCSecondQM']+$row['exTSCThirdQM']+$row['exTSCFourthQM']+$row['exTSCFifthQM']+$row['exTSCSixthQM']+$row2['exTSCFirstQM']+$row2['exTSCSecondQM']+$row2['exTSCThirdQM']+$row2['exTSCFourthQM']+$row2['exTSCFifthQM']+$row2['exTSCSixthQM']);
+  $totTSC=number_format($row['exTSCFirstQM']+$row['exTSCSecondQM']+$row['exTSCThirdQM']+$row['exTSCFourthQM']+$row['exTSCFifthQM']+$row['exTSCSixthQM']);
     $data.="<td align='right'>".$totTSC."</td>";
-    $data.="<td>".$row['exTradersSupplyChainDetails']."\n".$row2['exTradersSupplyChainDetails']."</td>";
+    $data.="<td>".$row['exTradersSupplyChainDetails']."</td>";
   $data.="</tr>";
   $data.="<tr class='white1'>";
     $data.="<td colspan='2'>Number of CBOs/unions/societies in the supply Chain</td>";
@@ -12944,9 +12731,9 @@ function data_form3All($row,$row2){
     $data.="<td align='right'>".number_format($row2['exUSCFourthQM'])."</td>";
     $data.="<td align='right'>".number_format($row2['exUSCFifthQM'])."</td>";
     $data.="<td align='right'>".number_format($row2['exUSCSixthQM'])."</td>";
-  $totUSC=number_format($row['exUSCFirstQM']+$row['exUSCSecondQM']+$row['exUSCThirdQM']+$row['exUSCFourthQM']+$row['exUSCFifthQM']+$row['exUSCSixthQM']+$row2['exUSCFirstQM']+$row2['exUSCSecondQM']+$row2['exUSCThirdQM']+$row2['exUSCFourthQM']+$row2['exUSCFifthQM']+$row2['exUSCSixthQM']);
+  $totUSC=number_format($row['exUSCFirstQM']+$row['exUSCSecondQM']+$row['exUSCThirdQM']+$row['exUSCFourthQM']+$row['exUSCFifthQM']+$row['exUSCSixthQM']);
     $data.="<td align='right'>".$totUSC."</td>";
-    $data.="<td>".$row['exUnionsSupplyChainDetails']."\n".$row2['exUnionsSupplyChainDetails']."</td>";
+    $data.="<td>".$row['exUnionsSupplyChainDetails']."</td>";
   $data.="</tr>";
   $data.="<tr class='bluish'>";
     $data.="<td rowspan='3'>Volume of produce purchased (Kgs)</td>";
@@ -12964,9 +12751,9 @@ function data_form3All($row,$row2){
     $data.="<td align='right'>".number_format($row2['volMPFourthQM'])."</td>";
     $data.="<td align='right'>".number_format($row2['volMPFifthQM'])."</td>";
     $data.="<td align='right'>".number_format($row2['volMPSixthQM'])."</td>";
-    $totVolMP=number_format($row['volMPFirstQM']+$row['volMPSecondQM']+$row['volMPThirdQM']+$row['volMPFourthQM']+$row['volMPFifthQM']+$row['volMPSixthQM']+ $row2['volMPFirstQM']+$row2['volMPSecondQM']+$row2['volMPThirdQM']+$row2['volMPFourthQM']+$row2['volMPFifthQM']+$row2['volMPSixthQM']);
+    $totVolMP=number_format($row['volMPFirstQM']+$row['volMPSecondQM']+$row['volMPThirdQM']+$row['volMPFourthQM']+$row['volMPFifthQM']+$row['volMPSixthQM']);
     $data.="<td align='right'>".$totVolMP."</td>";
-    $data.="<td rowspan='3'>".$row['volMaizePurchasedDetails']."\n".$row2['volMaizePurchasedDetails']."</td>";
+    $data.="<td rowspan='3'>".$row['volMaizePurchasedDetails']."</td>";
   $data.="</tr>";
   $data.="<tr class='bluish'>";
     $data.="<td>Coffee</td>";
@@ -12983,7 +12770,7 @@ function data_form3All($row,$row2){
     $data.="<td align='right'>".number_format($row2['volCPFourthQM'])."</td>";
     $data.="<td align='right'>".number_format($row2['volCPFifthQM'])."</td>";
     $data.="<td align='right'>".number_format($row2['volCPSixthQM'])."</td>";
-   $totvolCP=number_format($row['volCPFirstQM']+$row['volCPSecondQM']+$row['volCPThirdQM']+$row['volCPFourthQM']+$row['volCPFifthQM']+$row['volCPSixthQM']+$row2['volCPFirstQM']+$row2['volCPSecondQM']+$row2['volCPThirdQM']+$row2['volCPFourthQM']+$row2['volCPFifthQM']+$row2['volCPSixthQM']);
+   $totvolCP=number_format($row['volCPFirstQM']+$row['volCPSecondQM']+$row['volCPThirdQM']+$row['volCPFourthQM']+$row['volCPFifthQM']+$row['volCPSixthQM']);
     $data.="<td align='right'>".$totvolCP."</td>";
   $data.="</tr>";
   $data.="<tr class='bluish'>";
@@ -13001,7 +12788,7 @@ function data_form3All($row,$row2){
     $data.="<td align='right'>".number_format($row2['volBPFourthQM'])."</td>";
     $data.="<td align='right'>".number_format($row2['volBPFifthQM'])."</td>";
     $data.="<td align='right'>".number_format($row2['volBPSixthQM'])."</td>";
-    $totvolBP=number_format($row['volBPFirstQM']+$row['volBPSecondQM']+$row['volBPThirdQM']+$row['volBPFourthQM']+$row['volBPFifthQM']+$row['volBPSixthQM']+$row2['volBPFirstQM']+$row2['volBPSecondQM']+$row2['volBPThirdQM']+$row2['volBPFourthQM']+$row2['volBPFifthQM']+$row2['volBPSixthQM']);
+    $totvolBP=number_format($row['volBPFirstQM']+$row['volBPSecondQM']+$row['volBPThirdQM']+$row['volBPFourthQM']+$row['volBPFifthQM']+$row['volBPSixthQM']);
     $data.="<td align='right'>".$totvolBP."</td>";
   $data.="</tr>";
   $data.="<tr class='white1'>";
@@ -13020,9 +12807,9 @@ function data_form3All($row,$row2){
     $data.="<td align='right'>".number_format($row2['volMEFourthQM'])."</td>";
     $data.="<td align='right'>".number_format($row2['volMEFifthQM'])."</td>";
     $data.="<td align='right'>".number_format($row2['volMESixthQM'])."</td>";
-    $totvolME=number_format($row['volMEFirstQM']+$row['volMESecondQM']+$row['volMEThirdQM']+$row['volMEFourthQM']+$row['volMEFifthQM']+$row['volMESixthQM']+$row2['volMEFirstQM']+$row2['volMESecondQM']+$row2['volMEThirdQM']+$row2['volMEFourthQM']+$row2['volMEFifthQM']+$row2['volMESixthQM']);
+    $totvolME=number_format($row['volMEFirstQM']+$row['volMESecondQM']+$row['volMEThirdQM']+$row['volMEFourthQM']+$row['volMEFifthQM']+$row['volMESixthQM']);
     $data.="<td align='right'>".$totvolME."</td>";
-    $data.="<td rowspan='2'>".$row['volMaizeExDetails']."\n".$row2['volMaizeExDetails']."</td>";
+    $data.="<td rowspan='2'>".$row['volMaizeExDetails']."</td>";
   $data.="</tr>";
   $data.="<tr class='white1'>";
     $data.="<td>Value (UGX)</td>";
@@ -13039,7 +12826,7 @@ function data_form3All($row,$row2){
     $data.="<td align='right'>".number_format($row2['volMEUgxFourthQM'])."</td>";
     $data.="<td align='right'>".number_format($row2['volMEUgxFifthQM'])."</td>";
     $data.="<td align='right'>".number_format($row2['volMEUgxSixthQM'])."</td>";
-    $totvolMEUgx=number_format($row['volMEUgxFirstQM']+$row['volMEUgxSecondQM']+$row['volMEUgxThirdQM']+$row['volMEUgxFourthQM']+$row['volMEUgxFifthQM']+$row['volMEUgxSixthQM']+$row2['volMEUgxFirstQM']+$row2['volMEUgxSecondQM']+$row2['volMEUgxThirdQM']+$row2['volMEUgxFourthQM']+$row2['volMEUgxFifthQM']+$row2['volMEUgxSixthQM']);
+    $totvolMEUgx=number_format($row['volMEUgxFirstQM']+$row['volMEUgxSecondQM']+$row['volMEUgxThirdQM']+$row['volMEUgxFourthQM']+$row['volMEUgxFifthQM']+$row['volMEUgxSixthQM']);
     $data.="<td align='right'>".$totvolMEUgx."</td>";
   $data.="</tr>";
   $data.="<tr class='bluish'>";
@@ -13058,9 +12845,9 @@ function data_form3All($row,$row2){
     $data.="<td align='right'>".number_format($row2['volCEFourthQM'])."</td>";
     $data.="<td align='right'>".number_format($row2['volCEFifthQM'])."</td>";
     $data.="<td align='right'>".number_format($row2['volCESixthQM'])."</td>";
-    $totvolCE=number_format($row['volCEFirstQM']+$row['volCESecondQM']+$row['volCEThirdQM']+$row['volCEFourthQM']+$row['volCEFifthQM']+$row['volCESixthQM'] + $row2['volCEFirstQM']+$row2['volCESecondQM']+$row2['volCEThirdQM']+$row2['volCEFourthQM']+$row2['volCEFifthQM']+$row2['volCESixthQM']);
+    $totvolCE=number_format($row['volCEFirstQM']+$row['volCESecondQM']+$row['volCEThirdQM']+$row['volCEFourthQM']+$row['volCEFifthQM']+$row['volCESixthQM']);
     $data.="<td align='right'>".$totvolCE."</td>";
-    $data.="<td rowspan='2' >".$row['volCoffeeExDetails']."\n".$row2['volCoffeeExDetails']."</td>";
+    $data.="<td rowspan='2' >".$row['volCoffeeExDetails']."</td>";
   $data.="</tr>";
   $data.="<tr class='bluish'>";
     $data.="<td>Value (UGX)</td>";
@@ -13077,7 +12864,7 @@ function data_form3All($row,$row2){
     $data.="<td align='right'>".number_format($row2['volCEUgxFourthQM'])."</td>";
     $data.="<td align='right'>".number_format($row2['volCEUgxFifthQM'])."</td>";
     $data.="<td align='right'>".number_format($row2['volCEUgxSixthQM'])."</td>";
-     $totvolCEUgx=number_format($row['volCEUgxFirstQM']+$row['volCEUgxSecondQM']+$row['volCEUgxThirdQM']+$row['volCEUgxFourthQM']+$row['volCEUgxFifthQM']+$row['volCEUgxSixthQM'] + $row2['volCEUgxFirstQM']+$row2['volCEUgxSecondQM']+$row2['volCEUgxThirdQM']+$row2['volCEUgxFourthQM']+$row2['volCEUgxFifthQM']+$row2['volCEUgxSixthQM']);
+     $totvolCEUgx=number_format($row['volCEUgxFirstQM']+$row['volCEUgxSecondQM']+$row['volCEUgxThirdQM']+$row['volCEUgxFourthQM']+$row['volCEUgxFifthQM']+$row['volCEUgxSixthQM']);
     $data.="<td align='right'>".$totvolCEUgx."</td>";
   $data.="</tr>";
   $data.="<tr class='white1'>";
@@ -13096,9 +12883,9 @@ function data_form3All($row,$row2){
     $data.="<td align='right'>".number_format($row2['volBEFourthQM'])."</td>";
     $data.="<td align='right'>".number_format($row2['volBEFifthQM'])."</td>";
     $data.="<td align='right'>".number_format($row2['volBESixthQM'])."</td>";
-    $totvolBE=number_format($row['volBEFirstQM']+$row['volBESecondQM']+$row['volBEThirdQM']+$row['volBEFourthQM']+$row['volBEFifthQM']+$row['volBESixthQM'] + $row2['volBEFirstQM']+$row2['volBESecondQM']+$row2['volBEThirdQM']+$row2['volBEFourthQM']+$row2['volBEFifthQM']+$row2['volBESixthQM']);
+    $totvolBE=number_format($row['volBEFirstQM']+$row['volBESecondQM']+$row['volBEThirdQM']+$row['volBEFourthQM']+$row['volBEFifthQM']+$row['volBESixthQM']);
     $data.="<td align='right'>".$totvolBE."</td>";
-    $data.="<td rowspan='2' >".$row['volBeansExDetails']."\n".$row2['volBeansExDetails']."</td>";
+    $data.="<td rowspan='2' >".$row['volBeansExDetails']."</td>";
   $data.="</tr>";
   $data.="<tr class='white1'>";
     $data.="<td>Value(UGX)</td>";
@@ -13115,7 +12902,7 @@ function data_form3All($row,$row2){
     $data.="<td align='right'>".number_format($row2['volBEUgxFourthQM'])."</td>";
     $data.="<td align='right'>".number_format($row2['volBEUgxFifthQM'])."</td>";
     $data.="<td align='right'>".number_format($row2['volBEUgxSixthQM'])."</td>";
-    $totvolBEUgx=number_format($row['volBEUgxFirstQM']+$row['volBEUgxSecondQM']+$row['volBEUgxThirdQM']+$row['volBEUgxFourthQM']+$row['volBEUgxFifthQM']+$row['volBEUgxSixthQM'] + $row2['volBEUgxFirstQM']+$row2['volBEUgxSecondQM']+$row2['volBEUgxThirdQM']+$row2['volBEUgxFourthQM']+$row2['volBEUgxFifthQM']+$row2['volBEUgxSixthQM']);
+    $totvolBEUgx=number_format($row['volBEUgxFirstQM']+$row['volBEUgxSecondQM']+$row['volBEUgxThirdQM']+$row['volBEUgxFourthQM']+$row['volBEUgxFifthQM']+$row['volBEUgxSixthQM']);
     $data.="<td align='right'>".$totvolBEUgx."</td>";
   $data.="</tr>";
   $data.="<tr class='bluish'>";
@@ -13133,9 +12920,9 @@ function data_form3All($row,$row2){
     $data.="<td align='right'>".number_format($row2['epayRFourthQM'])."</td>";
     $data.="<td align='right'>".number_format($row2['epayRFifthQM'])."</td>";
     $data.="<td align='right'>".number_format($row2['epayRSixthQM'])."</td>";
-     $totepayR=number_format($row['epayRFirstQM']+$row['epayRSecondQM']+$row['epayRThirdQM']+$row['epayRFourthQM']+$row['epayRFifthQM']+$row['epayRSixthQM'] + $row2['epayRFirstQM']+$row2['epayRSecondQM']+$row2['epayRThirdQM']+$row2['epayRFourthQM']+$row2['epayRFifthQM']+$row2['epayRSixthQM']);
+     $totepayR=number_format($row['epayRFirstQM']+$row['epayRSecondQM']+$row['epayRThirdQM']+$row['epayRFourthQM']+$row['epayRFifthQM']+$row['epayRSixthQM']);
     $data.="<td align='right'>".$totepayR."</td>";
-    $data.="<td>".$row['epayRecievedDetails']."\n".$row2['epayRecievedDetails']."</td>";
+    $data.="<td>".$row['epayRecievedDetails']."</td>";
   $data.="</tr>";
   $data.="<tr class='bluish'>";
     $data.="<td colspan='2'>Number of e-payments made</td>";
@@ -13152,9 +12939,9 @@ function data_form3All($row,$row2){
     $data.="<td align='right'>".number_format($row2['epayMFourthQM'])."</td>";
     $data.="<td align='right'>".number_format($row2['epayMFifthQM'])."</td>";
     $data.="<td align='right'>".number_format($row2['epayMSixthQM'])."</td>";
-    $totepayM=number_format($row['epayMFirstQM']+$row['epayMSecondQM']+$row['epayMThirdQM']+$row['epayMFourthQM']+$row['epayMFifthQM']+$row['epayMSixthQM']+ $row2['epayMFirstQM']+$row2['epayMSecondQM']+$row2['epayMThirdQM']+$row2['epayMFourthQM']+$row2['epayMFifthQM']+$row2['epayMSixthQM']);
+    $totepayM=number_format($row['epayMFirstQM']+$row['epayMSecondQM']+$row['epayMThirdQM']+$row['epayMFourthQM']+$row['epayMFifthQM']+$row['epayMSixthQM']);
     $data.="<td align='right'>".$totepayM."</td>";
-    $data.="<td>".$row['epayMadeDetails']."\n".$row2['epayMadeDetails']."</td>";
+    $data.="<td>".$row['epayMadeDetails']."</td>";
   $data.="</tr>";
 
   return $data;
@@ -13167,1438 +12954,6 @@ $object->assign($div,'innerHTML',$data);
 return $object;
 }
 
-function viewQualiatativeTSOEntered($quarter,$Qyear,$orgname,$intervention){
-$obj = new xajaxResponse();
-
-$n=1; $inc=1;
-$_SESSION['Qquarter']='';
-$_SESSION['Qyear']='';
-
-$_SESSION['intervention']='';
-$_SESSION['Qquarter']=$quarter;
-$_SESSION['Qyear']=$Qyear;
-$_SESSION['intervention']=$intervention;
-$data.="<form name='organization' id='organization'   action='".$PHP_SELF."' method='post'>";
-
-
-$data.="<table cellspacing='0'  width='100%' border='0'> ".filter_tsoQualitative()." 
-	  <tr class='evenrow'>
- 
-<td colspan=8><input type='button' class='formButton2'   id='button' onclick=\"multiCheckBox('checked');return false;\" value='check all' /> |<input type='button' class='formButton2'   id='button' onclick=\"multiCheckBox('');\" value='uncheck all' /> | <input type='button' class='formButton2'   id='button' title='Edit'  onclick=\"xajax_edit_TSOqualitativeReporting(xajax.getFormValues('organization'),'".$_SESSION['quarter']."');return false;\" value='edit' />| <input type='button' class='formButton2'   id='button' title='Delete'  onclick=\"ConfirmDelete(xajax.getFormValues('organization'),'delete_QualiatativeTSOEntered','');return false;\" value='Delete' class='redhdrs' /></td>
-
-	 <td></td>
-<td></td>
-
-   
-
-  </tr><tr>
-<th colspan='10' ><div align='center' class=''>TECHNICAL SERVICES ORGANIZATIONS (TSO) QUALITATIVE REPORT</div></th>
-</tr>
-  
-  <tr>
-	  <th ><b class=''>NO.</th><th><b class=''>SELECT</th>
-	  <th width='' colspan=''><strong class=''>INTERVENTION NAME</strong></th>
-	 
-<th width='' colspAN='3'><strong class=''>PLANNED ACTIVITIES</strong></th>
-
-		<th width=''><strong class=''>IMPLEMENTATION</strong></th>
-		<th width=''><strong class=''>ACHIEVEMENTS</strong></th>
-		<th width=''><strong class=''>DEVIATIONS</strong></th>
-		
-	
-		<th  width=''><strong class=''>ACTION</strong></th>
-		
-
-  </tr>";
-
-$query_string="select t.narrative_id,t.org_code,o.orgName,t.intervention,l.code,l.codeName as interventionName,t.reportingPeriod,t.year,t.plannedActivities,t.implementation,t.achievements,t.deviations,t.challenges,
-t.next_quarter,t.lessons,t.report,t.report2,t.updatedby,t.display from tbl_tsoqualitative t inner join tbl_organization o on(o.org_code=t.org_code) inner join tbl_lookup l on(l.code=t.intervention) where classCode='5' and t.display='Yes' and l.codeName like '".$_SESSION['intervention']."%' and o.org_code='".$_SESSION['org_code']."'  and t.year like '".$_SESSION['Qyear']."%' and t.reportingPeriod like '".$_SESSION['Qquarter']."%'  order by o.org_code,t.year,t.reportingPeriod Asc";
-#$obj->addAlert($query_string);
-
-$query_=mysql_query($query_string)or die(mysql_error());
-
-	  while($row=mysql_fetch_array($query_)){
-
-	
-	  $color=$n%2==1?"evenrow3":"white1";
- $data.="<tr class=$color '>
-	 <td>".$inc++."</td>
-	 <td><input name='narrative_id[]' id='narrative_id' type='checkbox' value='".$row['narrative_id']."' />
-	 <input type='hidden' name='loopkey[]' id='loopkey' value='1'></td>
-	 <td>".mysql_real_escape_string($row['interventionName'])."</td>
-	 
-	 <td COLSPan='3' >".$row['plannedActivities']."</td>
-	 <td>".$row['implementation']."</td>
-	 <td>".$row['achievements']."</td>
-	  <td>".$row['deviations']."</td> 
-	  
-
-<td><input name='details' type='button' class='formButton2'   id='button' onclick=\" xajax_TSO_Details('".$row['narrative_id']."');\" value='Details' /></td>
-	  </tr>";
-	  $n++;
-	  }
-$data.="<tr class='evenrow'>
- 
-<td colspan=8><input type='button' class='formButton2'   id='button' onclick=\"multiCheckBox('checked');return false;\" value='check all' /> |<input type='button' class='formButton2'   id='button' onclick=\"multiCheckBox('');\" value='uncheck all' /> | <input type='button' class='formButton2'   id='button' title='Edit'  onclick=\"xajax_edit_TSOqualitativeReporting(xajax.getFormValues('organization'),'".$_SESSION['quarter']."');return false;\" value='edit' />| <input type='button' class='formButton2'   id='button' title='Delete'  onclick=\"ConfirmDelete(xajax.getFormValues('organization'),'delete_QualiatativeTSOEntered','');return false;\" value='Delete' class='redhdrs' /></td>
-
-	 <td></td>
-<td></td>
-
-   
-
-  </tr>";
-$data.="</table></form>";
-
-$obj->assign('bodyDisplay','innerHTML',$data);
-return $obj;
-}
-#---------------------staff reporting--------------------------------
-function view_TrainingParticipants($organization,$quarter,$year){
-$obj = new xajaxResponse();
-
-$n=1; $inc=1;
-$_SESSION['region']='';
-$_SESSION['staffyear']='';
-$_SESSION['staffQuarter']='';
-$_SESSION['region']=$region;
-$_SESSION['staffyear']=$year;
-$_SESSION['staffQuarter']=$quarter;
-
-
-$data="<form action=\"".$PHP_SELF."\" name='projects' id='projects' method='post'>
-<table width='800' id='report'>";
- 
-  $data.="
-  
-  <tr class=''>
-  <td colspan=8>
-  <div id='status'></div>
- </td>
-</tr>
-  
-  
-	  
-	 
-<tr class='evenrow3'>
-  <td width='30%' colspan='12'><div id='' style='float:right;'><input type='button' class='formButton2'   id='button' value='New Entry' onclick=\"xajax_new_TrainingParticipants('');return false;\" /> |  <a href='export_to_excel_word.php?linkvar=Export Training Participants&&organization=".$organization."&&quarter=".$quarter."&&year=".$year."&&format=excel' > <input type='button' class='formButton2'   id='button' onclick=\"multiCheckBox('');\" value='Export to Excel' /></a> | <a href='print_version2.php?linkvar=Print Training Participants&&organization=".$organization."&&quarter=".$quarter."&&year=".$year."&&format=Print' target='_blank'><input type='button' class='formButton2'   id='button' value='Print Version'  /> </a></td></tr>
-	<tr class='evenrow3'>
-  <td width='30%' colspan='3'>
-  <div align='left'><strong>Organization</strong></div></td>
-  <td colspan=9><select name='project' style='width:300px;'  onchange=\"xajax_view_TrainingParticipants(this.value,'','');return false;\"><option value=''>-ALL-</option>";
-		  $sql="select * from tbl_organization order by orgName asc";
-		  #$obj->addAlert($sql);
-		  $query=mysql_query($sql) or die(http(4371)); 
-		  while($ROW=mysql_fetch_array($query)){
-		$selected=($organization==$ROW['org_code'])?"SELECTED":"";
-		  $data.="<option value=\"".$ROW['org_code']."\" ".$selected." >".substr($ROW['orgName'],0,500)."</option>";}
-		  $data.="</select></td>
-</tr><tr class='evenrow'>
- 
-<td colspan='12'><input type='button' class='formButton2'   id='button' onclick=\"multiCheckBox('checked');return false;\" value='check all' /> |<input type='button' class='formButton2'   id='button' onclick=\"multiCheckBox('');\" value='uncheck all' /> | <input type='button' class='formButton2'   id='button' title='Edit'  onclick=\"xajax_edit_TrainingParticipants(xajax.getFormValues('projects'));return false;\" value='edit' />| <input type='button' class='formButton2'   id='button' title='Delete'  onclick=\"ConfirmDelete(xajax.getFormValues('projects'),'delete_StaffQualitativeReport','');return false;\" value='Delete' class='redhdrs' /></td>
-
-	
-</tr>
- <tr CLASS='evenrow'>
- 
-<th colspan='12' ><center>PARTICPANTS TRAINING  RECORDs</center></th>
-	
-  </tr>
-	
-	
-	<tr>
-	<th colspan=2>NO</th>
-	<th>organization</th>
-	<th>DISTRICT</th>
-	<th>subcounty</th>
-	<th>parish</th>
-	<th>VILLAGE/LOCATION</th>
-	<th>training AREA</th>
-	<th>trainees</th>
-	<th>naME</th>
-	<th>SEX</th>
-	<th>NUMBER OF TIMES<br> TRAINED ON <br>THIS TOPIC</th>
-	</tr>";
-	$sql="select t.`training_id`, t.`org_code`,o.orgName, t.`village`, t.`semi_annual`, t.`year`, t.`training_topic`,c.topic, t.`trainer`, 
-	 t.`typeofparticipants`, t.`name_oftrainee`,tr.Name as NameofParticipants, t.`gender`, t.`number_of_times`,l.codeName, t.`organizing_date`, t.`updatedby`, t.`status`, t.`district`, d.districtName,
-	 t.`subcounty`,s.subcountyName, t.`parish`,p.ParishName, t.`task`,t.village 
-	 from tbl_training t left join tbl_trainees tr on(tr.code=t.typeofparticipants)
-	 left join tbl_district d on(d.districtCode=t.district)
-	 
-	 left join tbl_subcounty s on (s.subcountyCode=t.subcounty)
-	 left join tbl_parish p on(p.parishCode=t.parish)
-	 left join tbl_organization o on(o.org_code=t.org_code)
-	 left join tbl_trainingtopic c on(c.code=t.training_topic)
-	 left join tbl_trainees e on(e.code=t.typeofparticipants)
-	 left join tbl_lookup l on(l.code=t.number_of_times)
-	 where t.status like 'Yes%' && t.org_code like '".$organization."%'";
-	 $query=mysql_query($sql)or die(http("PR-310"));
-  while($row=mysql_fetch_array($query)){
-  $orgdate="org_date".$n;
-  $color=($n%2==1)?"evenrow3":"white1";
-$data.="<tr class='$color'>
-	".loop_key('training_id',$row['training_id'])."
-  <td>".$n."</td>
-<td>".$row['orgName']."</td>
-<td>".$row['districtName']."</td>
-<td>".$row['subcountyName']."</td>
-<td align='left'>".$row['ParishName']."</td>
- <td align='left'>".$row['village']."</td>
- <td align='left'>".$row['topic']."</td>
- <td align='left'>".$row['NameofParticipants']."</td>
-  <td align='left'>".$row['name_oftrainee']."</td>
-  <td align='left'>".$row['gender']."</td>
-  <td align='left'>".$row['codeName']."</td>
-  </tr>";
-  $n++;
-  }
-  
-
-
- $data.="".noRecordsFound($query,18)."<tr class='evenrow'>
- <td colspan='12'><input type='button' class='formButton2'   id='button' onclick=\"multiCheckBox('checked');return false;\" value='check all' /> |<input type='button' class='formButton2'   id='button' onclick=\"multiCheckBox('');\" value='uncheck all' /> | <input type='button' class='formButton2'   id='button' title='Edit'  onclick=\"xajax_edit_TrainingParticipants(xajax.getFormValues('projects'));return false;\" value='edit' />| <input type='button' class='formButton2'   id='button' title='Delete'  onclick=\"ConfirmDelete(xajax.getFormValues('projects'),'delete_StaffQualitativeReport','');return false;\" value='Delete' class='redhdrs' /></td>
-
-	
-</tr>";
-$data.="</table></form>";
-
-$obj->assign('bodyDisplay','innerHTML',$data);
-return $obj;
-}
-function ViewCFTechnicalTrainingActivities($region,$district,$indicator,$subcomponent,$output,$year,$quarter,$indicatorCode,$indicator,$organization,$cur_page=1,$records_per_page=20){
-$obj = new xajaxResponse();
-
-
-$n=1; $inc=1;
-$_SESSION['zoneID']='';
-$_SESSION['semiAnnual']='';
-$_SESSION['zoneID']=$region;
-$_SESSION['organization']=$organization;
-$_SESSION['districtID']=$district;
-$quarter=($quarter==NULL)?$_SESSION['quarter']:$quarter;
-$_SESSION['semiAnnual']=$quarter;
-$year=($year==NULL)?currFinancialYear($_SESSION['Activeyear'],'YearRange'):$year;
-$_SESSION['fyear']=$year;
-
-$data="<form action=\"".$PHP_SELF."\" name='projects' id='projects' method='post'>
-<table width='100%' id='report' cellspacing='1'>";
- 
-  $data.=filter_CFTechnicalTrainingActivities('ViewCFTechnicalTrainingActivities');
-	  if($_GET['action']=='Reports'){
- $data.="";
- }else{
-$data.="<tr class='evenrow'>
-<td colspan='14'><input type='button' class='formButton2'   id='button' onclick=\"multiCheckBox('checked');return false;\" value='check all' /> |<input type='button' class='formButton2'   id='button' onclick=\"multiCheckBox('');\" value='uncheck all' /> | <input type='button' class='formButton2'   id='button' title='Edit'  onclick=\"xajax_edit_CFTechnicalTrainingActivities(xajax.getFormValues('projects'),'".$region."');return false;\" value='edit' /> <input type='hidden' class='formButton2'   id='button' title='Delete'  onclick=\"ConfirmDelete(xajax.getFormValues('projects'),'delete_StaffQualitativeReport','');return false;\" value='Delete' class='redhdrs' /></td>
- </tr>";
- }
- 
- $data.="<tr CLASS='evenrow'>
- 
-<th colspan='14' ><center>TECHNICAL TRAINING ACTIVITIES</center></th>
-	
-  </tr>
-	
-	
-	<tr><th colspan='2' ROWSPAN='2'>No/Select</th>
-	
-	<th ROWSPAN='2' colspan='1'>DISTRICT</th>
-	<th colspan='2'><center>CF HOE</center></th>
-	<th colspan='2'><center>CF ADP</center></th>
-	<th colspan='2'><center>CF Mechanized</center></th>
-	<th colspan='2'><center>CF Herbicise Safety and Use</center>
-	<img src='images/spacer2.png' width='100' height='0.1'></th>
-	<th colspan='2'><center>Tree Planting</center></th>
-	<th rowspan='2'>Action</th>
-		</tr>
-	<tr>
-	
-	
-	<th>Male</th>
-	<th>Female</th>
-	<th>Male</th>
-	<th>Female</th>
-	<th>Male</th>
-	<th>Female</th>
-	<th>Male</th>
-	<th>Female</th>
-	<th>Male</th>
-	<th>Female</th>
-	</tr>";  
-	
-	$querytrainees=mysql_query("select * from tbl_trainees order by code asc")or die(http("PR-403"));
-  while($rowparticipants=mysql_fetch_array($querytrainees)){
-  
-$data.="<tr class='evenrow'>
-
-  <td colspan='14'><strong>".$rowparticipants['Name']."</strong></td></tr>";
-	  
-	$sql=QueryManager::ViewCFTechnicalTrainingActivities($_SESSION['zoneID'],$_SESSION['districtID'],$_SESSION['organization'],$_SESSION['fyear'],$_SESSION['semiAnnual'],$rowparticipants['code']);   
-	   //$obj->alert($sql);
-	   
-	 $query=mysql_query($sql)or die(http("PR-413"));
-  while($row=mysql_fetch_array($query)){
-  $orgdate="org_date".$n;
-  $color=($n%2==1)?"evenrow3":"white1";
-$data.="<tr class='$color'>
-	".loop_key('training_id',$row['training_id'])."
-  <td>".$n."</td>
-   
-<td colspan='1'>
-	<input name='districtCode[]' type='hidden' id='districtCode' value='".$row['district']."'>
-	<input name='region[]' type='hidden' id='region' value='".$row['zone']."'>
-	<input name='participants[]' type='hidden' id='participants' value='".$row['typeofparticipants']."'>
-		<input name='org_code[]' type='hidden' id='org_code' value='".$row['org_code']."'>
-		<input name='semiAnnual[]' type='hidden' id='semiAnnual' value='".$row['semi_annual']."'>
-		<input name='year[]' type='hidden' id='year' value='".$row['year']."'>
-	".$row['districtName']."</td>
-<td>".$row['MaleHoebasin']."</td>
-<td align='right'>".$row['FemaleHoebasin']."</td>
- <td align='right'>".$row['MaleADPRipping']."</td>
- <td align='right'>".$row['FemaleADPRipping']."</td>
- <td align='right'>".$row['MaleMechanizedRipping']."</td>
-  <td align='right'>".$row['FemaleMechanizedRipping']."</td>
-  <td align='right'>".$row['MaleHerbicide']."</td>
-  <td align='right'>".$row['FemaleHerbicide']."</td>
-   <td align='right'>".$row['MaleTreePlanting']."</td>
-   <td align='right'>".$row['FemaleTreePlanting']."</td>
- <td  align='center'><img src='icons/trash.png' title='Move to Trash' onclick=\"xajax_delete_TechnicalTraining('".$row['year']."',
-  
-  '".$row['semi_annual']."','".$row['zone']."','".$row['district']."','".$row['typeofparticipants']."','".$row['training_topic']."','tbl_technicaltraining','delete_ViewCFTechnicalTrainingActivities');return false;\" ></td>
-  </tr>";
-$n++;
-  }
-  
-  $sqlTotal=QueryManager::ViewCFTechnicalTrainingActivitiesTotals($_SESSION['zoneID'],$_SESSION['districtID'],$_SESSION['organization'],$_SESSION['fyear'],$_SESSION['semiAnnual'],$rowparticipants['code']); 
-  
-  $queryTotal=Execute($sqlTotal) or die(http("PR-446"));
-		$rowTotal=FetchRecords($queryTotal);
-  
-   $data.="<tr class='$color'>
-<td colspan='3'><strong>Total ".$rowparticipants['Name']."</strong></td>
-<td><strong>".$rowTotal['MaleHoebasin']."</strong></td>
-<td align='right'><strong>".$rowTotal['FemaleHoebasin']."</strong></td>
- <td align='right'><strong>".$rowTotal['MaleADPRipping']."</strong></td>
- <td align='right'><strong>".$rowTotal['FemaleADPRipping']."</strong></td>
- <td align='right'><strong>".$rowTotal['MaleMechanizedRipping']."</strong></td>
-  <td align='right'><strong>".$rowTotal['FemaleMechanizedRipping']."</strong></td>
-  <td align='right'><strong>".$rowTotal['MaleHerbicide']."</strong></td>
-  <td align='right'><strong>".$rowTotal['FemaleHerbicide']."</strong></td>
-   <td align='right'><strong>".$rowTotal['MaleTreePlanting']."</strong></td>
-   <td align='right'><strong>".$rowTotal['FemaleTreePlanting']."</strong></td>
- 
-  </tr>";
-  
-  
-  		}
-
-
- $data.="".noRecordsFound($query,14);
-	
-	if($_GET['action']=='Reports'){
- $data.="";
- }else{
-$data.="<tr class='evenrow'>
-<td colspan='14'><input type='button' class='formButton2'   id='button' onclick=\"multiCheckBox('checked');return false;\" value='check all' /> |<input type='button' class='formButton2'   id='button' onclick=\"multiCheckBox('');\" value='uncheck all' /> | <input type='button' class='formButton2'   id='button' title='Edit'  onclick=\"xajax_edit_CFTechnicalTrainingActivities(xajax.getFormValues('projects'),'".$region."');return false;\" value='edit' /> <input type='hidden' class='formButton2'   id='button' title='Delete'  onclick=\"ConfirmDelete(xajax.getFormValues('projects'),'delete_StaffQualitativeReport','');return false;\" value='Delete' class='redhdrs' /></td>
- </tr>";
- }
-$data.="</table></form>";
-
-$obj->assign('bodyDisplay','innerHTML',$data);
-return $obj;
-}
-//--------------------View Other Trainings----------------------
-function ViewOtherTrainingActivities($region,$district,$indicator,$subcomponent,$output,$year,$quarter,$indicatorCode,$indicator,$organization,$cur_page=1,$records_per_page=20){
-$obj = new xajaxResponse();
-
-
-$n=1; $inc=1;
-$_SESSION['zoneID']='';
-$_SESSION['semiAnnual']='';
-$_SESSION['zoneID']=$region;
-$_SESSION['organization']=$organization;
-$_SESSION['districtID']=$district;
-$quarter=($quarter==NULL)?$_SESSION['quarter']:$quarter;
-$_SESSION['semiAnnual']=$quarter;
-$year=($year==NULL)?currFinancialYear($_SESSION['Activeyear'],'YearRange'):$year;
-$_SESSION['fyear']=$year;
-
-$data="<form action=\"".$PHP_SELF."\" name='projects' id='projects' method='post'>
-<table width='800' id='report' cellspacing='1'>";
- 
-  $data.=filter_OtherTrainingActivities('ViewOtherTrainingActivities');
-	 
-if($_GET['action']=='Reports'){
- $data.="";
- }else{
- $data.="<tr class='evenrow'>
- <td colspan='21'><input type='button' class='formButton2'   id='button' onclick=\"multiCheckBox('checked');return false;\" value='check all' /> |<input type='button' class='formButton2'   id='button' onclick=\"multiCheckBox('');\" value='uncheck all' />  <input type='hidden' class='formButton2'   id='button' title='Edit'  onclick=\"xajax_edit_OtherTrainingActivities(xajax.getFormValues('projects'),'".$region."');return false;\" value='edit' />| <input type='button' class='formButton2'   id='button' title='Delete'  onclick=\"ConfirmDelete(xajax.getFormValues('projects'),'delete_StaffQualitativeReport','');return false;\" value='Delete' class='redhdrs' /></td>
-
-	
-</tr>";
-}
-	
-
-	
-	
-	$data.="<tr><th colspan='2' ROWSPAN='2'>No/Select</th>
-	
-	<th ROWSPAN='2' colspan='1'>DISTRICT</th>
-	<th colspan='2'><center>Training in IPM</center></th>
-	<th colspan='2'><center>Training in Post Harvest Handling </center></th>
-	<th colspan='2'><center>Business Training</center></th>
-	<th colspan='2'><center>Seedling beneficiaries</center>
-	<img src='images/spacer2.png' width='100' height='0.1'></th>
-	<th colspan='2' rowspan='2'><center>No. of seedlings given out</center></th>
-	<th colspan='3'><center>Inputs procured Kg/Litres</center></th>
-	<th colspan='4'><center>Kg of produce bulked</center></th>
-	<th rowspan='2'><center>Action</center></th>
-		</tr>
-	<tr>
-	<th>Male</th>
-	<th>Female</th>
-	<th>Male</th>
-	<th>Female</th>
-	<th>Male</th>
-	<th>Female</th>
-	<th>Male</th>
-	<th>Female</th>
-	
-
-	<th>Seed</th>
-	<th>Fertilizer</th>
-	<th>Herbicide</th>
-	<th>Maize</th>
-	<th>Beans</th>
-	<th>Sunflower</th>
-	<th>SoyaBean</th>
-	</tr>";  
-	
-	
-	  
-	$sql=QueryManager::ViewOtherTrainingActivities($_SESSION['zoneID'],$_SESSION['districtID'],$_SESSION['fyear'],$_SESSION['semiAnnual']);   
-	   //$obj->alert($sql);
-	   
-	 $query=mysql_query($sql)or die(http("PR-528"));
-  while($row=mysql_fetch_array($query)){
-  $orgdate="org_date".$n;
-  $color=($n%2==1)?"evenrow3":"white1";
-$data.="<tr class='$color'>
-	".loop_key('training_id',$row['training_id'])."
-  <td>".$n."</td>
-   
-<td colspan='1'>
-	<input name='districtCode[]' type='hidden' id='districtCode' value='".$row['district']."'>
-	<input name='region[]' type='hidden' id='region' value='".$row['zone']."'>
-	<input name='participants[]' type='hidden' id='participants' value='".$row['typeofparticipants']."'>
-		<input name='org_code[]' type='hidden' id='org_code' value='".$row['org_code']."'>
-		<input name='semiAnnual[]' type='hidden' id='semiAnnual' value='".$row['semi_annual']."'>
-		<input name='year[]' type='hidden' id='year' value='".$row['year']."'>
-	".$row['districtName']."</td>
-<td align='right'>".$row['MaleTraininginIPM']."</td>
-<td align='right'>".$row['FemaleTraininginIPM']."</td>
- <td align='right'>".$row['MalePostHarvest']."</td>
- <td align='right'>".$row['FemalePostHarvest']."</td>
- <td align='right'>".$row['MaleBulkMrktng']."</td>
-  <td align='right'>".$row['FemaleBulkMrktng']."</td>
-  <td align='right'>".$row['MaleSeedBen']."</td>
-  <td align='right'>".$row['FemaleSeedBen']."</td>
-   <td align='right' colspan='2'>".$row['seedlingsgivenout']."</td>
-   <td align='right'>".$row['SeedInputProcured']."</td>
- <td align='right'>".$row['FertilizerInputProcured']."</td>
- <td align='right'>".$row['HerbicideInputProcured']."</td>
- 
-   <td align='right'>".$row['maizeproducebulked']."</td>
-   <td align='right'>".$row['beansproducebulked']."</td>
- <td align='right'>".$row['sunflowerproducebulked']."</td>
- <td align='right'>".$row['soyaproducebulked']."</td>
-  <td  align='center'><img src='icons/trash.png' title='Move to Trash' onclick=\"xajax_delete_OtherTechnicalTraining('".$row['year']."',
-'".$row['semi_annual']."','".$row['zone']."','".$row['district']."','".$row['typeofparticipants']."','".$row['training_topic']."','tbl_othertrainingsandseeddistribution','delete_OtherTechnicalTraining');return false;\" ></td>
-  </tr>";
-$n++;
-  }
-
-		$sqlTotal=QueryManager::ViewOtherTrainingActivitiesTotals($_SESSION['zoneID'],$_SESSION['districtID'],$_SESSION['fyear'],$_SESSION['semiAnnual']); 
-		 #$obj->alert($sqlTotal);
-		$queryTotal=Execute($sqlTotal) or die(http("PR-597"));
-		$rowTotal=FetchRecords($queryTotal);
-
- $data.="<tr class='$color'>
-
-  <td colspan='3'><strong>Total</strong></td>
-<td align='right'><strong>".$rowTotal['MaleTraininginIPM']."</strong></td>
-<td align='right'><strong>".$rowTotal['FemaleTraininginIPM']."</strong></td>
- <td align='right'><strong>".$rowTotal['MalePostHarvest']."</strong></td>
- <td align='right'><strong>".$rowTotal['FemalePostHarvest']."</strong></td>
- <td align='right'><strong>".$rowTotal['MaleBulkMrktng']."</strong></td>
-  <td align='right'><strong>".$rowTotal['FemaleBulkMrktng']."</strong></td>
-  <td align='right'><strong>".$rowTotal['MaleSeedBen']."</strong></td>
-  <td align='right'><strong>".$rowTotal['FemaleSeedBen']."</strong></td>
-   <td align='right' colspan='2'><strong>".$rowTotal['seedlingsgivenout']."</strong></td>
-   <td align='right'><strong>".$rowTotal['SeedInputProcured']."</strong></td>
- <td align='right'><strong>".$rowTotal['FertilizerInputProcured']."</strong></td>
- <td align='right'><strong>".$rowTotal['HerbicideInputProcured']."</strong></td>
-<td align='right'><strong>".$rowTotal['maizeproducebulked']."</strong></td>
-   <td align='right'><strong>".$rowTotal['beansproducebulked']."</strong></td>
- <td align='right'><strong>".$rowTotal['sunflowerproducebulked']."</strong></td>
- <td align='right'><strong>".$rowTotal['soyaproducebulked']."</strong></td>
-  <td align='right'></td>
-  </tr>";
-
-
-
- $data.="".noRecordsFound($query,14);
- if($_GET['action']=='Reports'){
- $data.="";
- }else{
- $data.="<tr class='evenrow'>
- <td colspan='21'><input type='button' class='formButton2'   id='button' onclick=\"multiCheckBox('checked');return false;\" value='check all' /> |<input type='button' class='formButton2'   id='button' onclick=\"multiCheckBox('');\" value='uncheck all' /> | <input type='button' class='formButton2'   id='button' title='Edit'  onclick=\"xajax_edit_OtherTrainingActivities(xajax.getFormValues('projects'),'".$region."');return false;\" value='edit' />| <input type='button' class='formButton2'   id='button' title='Delete'  onclick=\"ConfirmDelete(xajax.getFormValues('projects'),'delete_StaffQualitativeReport','');return false;\" value='Delete' class='redhdrs' /></td>
-
-	
-</tr>";
-}
-$data.="</table></form>";
-
-$obj->assign('bodyDisplay','innerHTML',$data);
-return $obj;
-}
-function new_OtherTrainingActivities($region,$district,$organization,$fyear){
-$obj=new xajaxResponse();
-if($_SESSION['user_id']==''){
-$obj->redirect('index.php');
-return $obj;
-}
-if(($_SESSION['quarter']=='Closed')||($_SESSION['Activeyear']=='Closed')){
-$obj->alert("Please Your Reporting Period is Closed Please Open the Reporting period and Try Again!");
-return $obj;
-}
-
-if($region==NULL){
-$obj->alert("Please select a region you are Entering Data for!");
-return $obj;
-}
-
-
-$n=1;
-$inc=1;
-$_SESSION['nhh']=1;
-$_SESSION['nhh']=$nhh;
-$_SESSION['subcountyCode']=$subcounty;
-#$obj->alert($_SESSION['subcountyCode']);
-$_SESSION['ParishName']=$parishName;
-$_SESSION['parishCode']=$parish;
-$fyear=($fyear==NULL)?currFinancialYear($_SESSION['Activeyear'],'YearRange'):$fyear;
-#$obj->alert($_SESSION['parishCode']);
-//$n=1;
-$data="<form action=\"".$PHP_SELF."\" name='projects' id='projects' method='post'>
-<table width='100%' id='report'>";
- 
-  $data.="
-  
-  			<tr class='evenrow'>
-  <td width='30%' colspan='3'>
-  <div align='left'><strong>Region</strong></div></td>
-  <td colspan='18'><select name='region' id='region' onchange=\"xajax_new_OtherTrainingActivities(this.value,'','".$organization."','".$fyear."');return false;\" style='width:300px;'><option value=''>-select-</option>";
-			$data.=QueryManager::ZoneFilter($region);
-		  $data.="</select></td>
-</tr>
-	<tr class='evenrow3'>
-  <td width='30%' colspan='3'>
-  <div align='left'>Field Supervisor Responsible</div></td>
-  <td colspan='18'><input type='text' name='fieldofficer' id='fieldofficer' size='55' ></td>
-</tr>
-<tr class='evenrow3'><td colspan='3'>Project Year:</td>
-	<td colspan='18'><select name='year' id='year'   style='width:300px;'><option value=''>-select-</option>";
-				$data.=QueryManager::FinancialYearFilter($fyear);
-				  $data.="</select></td>
-	</tr>
-	<tr class='evenrow'><td colspan='3'>Reporting Period</td>
-	 <td colspan='18'><select name='semiAnnual' id='semiAnnual' style='width:300px;'><option value=''>-select-</option>";
-				$data.=QueryManager::ReportingPeriodFilter($period=$_SESSION['quarter']);
-				  $data.="</select></td></tr>
-	<tr class='display_none'>
-  <td>Organizing Date</td>
-  <td><a href='javascript:void(0)' onClick=\"if(self.gfPop)gfPop.fPopCalendar(document.projects.orgdate);return false;\" hidefocus=''>
-<input name='orgdate' type='text'  size='50' value='' id='orgdate' readonly='readonly' />
-<img name='popcal' src='WeekPicker/calbtn.gif' alt='' align='absmiddle' border='0' height='22' width='25'></a></td>
-  </tr>
-	 <tr CLASS='evenrow'>
- 
-<th colspan='21' ><center>Other Famer Training and Tree Seedling Distribution conducted in each district</center></th>
-	
-  </tr>
-	
-
-	
-	
-	<tr><th colspan='1' ROWSPAN='2'>No</th>
-	
-	<th ROWSPAN='2' colspan='1'>DISTRICT</th>
-	<th colspan='2'><center>Training in IPM</center></th>
-	<th colspan='2'><center>Training in Post Harvest Handling </center></th>
-	<th colspan='2'><center>Training in Bulk Marketing</center></th>
-	<th colspan='2'><center>Seedling beneficiaries</center>
-	<img src='images/spacer2.png' width='100' height='0.1'></th>
-	<th colspan='1' rowspan='2'><center>No. of seedlings given out</center></th>
-	<th colspan='3'><center>Inputs procured Kg/Litres</center></th>
-	<th colspan='4'><center>Kg of produce bulked</center></th>
-		</tr>
-	<tr>
-	<th>Male</th>
-	<th>Female</th>
-	<th>Male</th>
-	<th>Female</th>
-	<th>Male</th>
-	<th>Female</th>
-	<th>Male</th>
-	<th>Female</th>
-	<th>Seed</th>
-	<th>Fertilizer</th>
-	<th>Herbicide</th>
-	<th>Maize</th>
-	<th>Beans</th>
-	<th>Sunflower</th>
-	<th>SoyaBean</th>
-	</tr>";  
-
-	
-	for($x=0;$x<10;$x++){
-	$data.="<tr class='evenrow'>
-	<td><input name='loopkey[]' size='10'  type='hidden' id='loopkey".$n."' value='1'  />".$n."</td>
-	
-	<td colspan=''><select name='district[]' id='district' style='width:100px;'><option value=''>-select-</option>";
-	
-	 	$data.=QueryManager::DistrictFilter($region,$district);
-	
-	$data.="</select></td>
-	
-	<td>
-	
-	
-	
-	<input name='loopkey1[]' size='10'  type='hidden' id='loopkey' value='1'  />
-	<input name='trainingtopic1[]' size='10' type='hidden' id='trainingtopic1".$n."' value='1'  />
-	<input name='malehoe[]' size='10'  type='text' id='malehoe".$n."' onKeyPress='return numbersonly(event, false)'  /></td>
-	<td><input name='femalehoe[]' size='10'  type='text' id='malehoe".$n."' onKeyPress='return numbersonly(event, false)'  /></td>
-	<td> <input name='loopkey2[]' size='10'  type='hidden' id='loopkey2' value='1'  />
-	<input name='trainingtopic2[]' size='10'  type='hidden' id='trainingtopic2".$n."' value='2'  />
-	<input name='maleadp[]' size='10'  type='text' id='maleadp".$n."' onKeyPress='return numbersonly(event, false)' /></td>
-	<td><input name='femaleadp[]' size='10'  type='text' id='femaleadp".$n."'
-		onKeyPress='return numbersonly(event, false)'
-	onKeyUp=\"xajax_calc_trainingSemiAnnual(
-		getElementById('malehoe".$n."').value,getElementById('femalehoe".$n."').value,
-		getElementById('maleadp".$n."').value,getElementById('femaleadp".$n."').value,
-		getElementById('malemechanized".$n."').value,getElementById('femalemechanized".$n."').value,
-		getElementById('maleherbicide".$n."').value,getElementById('femaleherbicide".$n."').value,
-		getElementById('maletreeplanting".$n."').value,getElementById('femaletreeplanting".$n."').value,
-		'total".$n."');\"
-	  /></td>
-	<td>
-	<input name='loopkey3[]' size='10'  type='hidden' id='loopkey3' value='1'  />
-	<input name='trainingtopic3[]' size='10'  type='hidden' id='trainingtopic3".$n."' value='3'  />
-	<input name='malemechanized[]' size='10'  type='text' id='malemechanized".$n."' 
-		
-		onKeyPress='return numbersonly(event, false)'
-		
-onKeyUp=\"xajax_calc_trainingSemiAnnual(
-		getElementById('malehoe".$n."').value,getElementById('femalehoe".$n."').value,
-		getElementById('maleadp".$n."').value,getElementById('femaleadp".$n."').value,
-		getElementById('malemechanized".$n."').value,getElementById('femalemechanized".$n."').value,
-		getElementById('maleherbicide".$n."').value,getElementById('femaleherbicide".$n."').value,
-		getElementById('maletreeplanting".$n."').value,getElementById('femaletreeplanting".$n."').value,
-		'total".$n."');\"
-	
-	 /></td>
-	<td><input name='femalemechanized[]' size='10'  type='text' id='femalemechanized".$n."'
-		onKeyPress='return numbersonly(event, false)'
-	onKeyUp=\"xajax_calc_trainingSemiAnnual(
-		getElementById('malehoe".$n."').value,getElementById('femalehoe".$n."').value,
-		getElementById('maleadp".$n."').value,getElementById('femaleadp".$n."').value,
-		getElementById('malemechanized".$n."').value,getElementById('femalemechanized".$n."').value,
-		getElementById('maleherbicide".$n."').value,getElementById('femaleherbicide".$n."').value,
-		getElementById('maletreeplanting".$n."').value,getElementById('femaletreeplanting".$n."').value,
-		'total".$n."');\"
-	  /></td>
-	<td>
-		<input name='loopkey4[]' size='10'  type='hidden' id='loopkey4' value='1'  />
-		<input name='trainingtopic4[]' size='10'  type='hidden' id='trainingtopic4".$n."' value='4'  />
-	<input name='maleseedling[]' size='10'  type='text' id='maleherbicide".$n."' 
-		onKeyPress='return numbersonly(event, false)'	 /></td>
-	<td><input name='femaleseedling[]' size='10'  type='text' id='femaleherbicide".$n."'
-		onKeyPress='return numbersonly(event, false)'/></td>
-		<td>
-		
-		<input name='loopkey5[]' size='10'  type='hidden' id='loopkey5' value='1'  />
-		<input name='trainingtopic5[]' size='10'  type='hidden' id='trainingtopic5".$n."' value='5'  />
-		<input name='seedlingsgivenout[]' size='10' type='text' id='seedlingsgivenout".$n."'  onKeyPress='return numbersonly(event, false)' /></td>
-		
-		
-		<td>
-		<input name='loopkey6[]' size='10'  type='hidden' id='loopkey6' value='1'  />
-		<input name='trainingtopic6[]' size='10'  type='hidden' id='trainingtopic6".$n."' value='6'  />
-		<input name='seed[]' size='10' type='text' id='seed".$n."'  onKeyPress='return numbersonly(event, false)' /></td>
-		<td><input name='fertilizer[]' size='10' type='text' id='fertilizer".$n."'  onKeyPress='return numbersonly(event, false)' /></td>
-		<td><input name='herbicide[]' size='10' type='text' id='herbicide".$n."'  onKeyPress='return numbersonly(event, false)' /></td>
-		<td>
-		
-		<input name='loopkey7[]' size='10'  type='hidden' id='loopkey7' value='1'  />
-		<input name='trainingtopic7[]' size='10'  type='hidden' id='trainingtopic7".$n."' value='7'  />
-		<input name='maize[]' size='10' type='text' id='maize".$n."'  onKeyPress='return numbersonly(event, false)' /></td>
-		<td><input name='beans[]' size='10' type='text' id='beans".$n."'  onKeyPress='return numbersonly(event, false)' /></td>
-		<td><input name='sunflower[]' size='10' type='text' id='sunflower".$n."'  onKeyPress='return numbersonly(event, false)' /></td>
-		<td><input name='soyabean[]' size='10' type='text' id='soyabean".$n."'  onKeyPress='return numbersonly(event, false)' /></td>
-		</tr>";
-	
-	$n++;
-	
-	}
-	
-	
-
-  $data.=" 
- <tr style='display:none'>
-  <td>Attach Minutes</td>
-  <td><input name='' size='50' type='file'></td>
-  </tr>
-  <tr style='display:none'>
-  <td>Attach Attendance Sheet/List</td>
-  <td><input name='' size='50' type='file'></td>
-  </tr>
-  ";
- 
- 
- $data.="<tr class='evenrow'><td></td><td colspan='21' align='right'><div align='right'>
-<button type='button' class='formButton2'   id='button' name='save' id='save' style='width:100px;' value='Save' onclick=\"xajax_update_OtherTrainingActivities(xajax.getFormValues('projects')); return false;\" />Save</button>
-</div></td></tr>
-</table>
-
-
-
-</form>";
-
-$obj->assign('bodyDisplay','innerHTML',$data);
-return $obj;
-}
-//----------------------Field Days and Demos--------------------
-function ViewFieldDaysandDemonstrations($region,$district,$indicator,$subcomponent,$output,$year,$quarter,$indicatorCode,$indicator,$organization,$cur_page=1,$records_per_page=20){
-$obj = new xajaxResponse();
-
-
-$n=1; $inc=1;
-$_SESSION['zoneID']='';
-$_SESSION['semiAnnual']='';
-$_SESSION['zoneID']=$region;
-$_SESSION['organization']=$organization;
-$_SESSION['districtID']=$district;
-$quarter=($quarter==NULL)?$_SESSION['quarter']:$quarter;
-$_SESSION['semiAnnual']=$quarter;
-$year=($year==NULL)?currFinancialYear($_SESSION['Activeyear'],'YearRange'):$year;
-$_SESSION['fyear']=$year;
-
-$data="<form action=\"".$PHP_SELF."\" name='projects' id='projects' method='post'>
-<table width='100%' id='report' cellspacing='1'>";
- 
-  $data.=filter_FieldDaysandDemonstrations('ViewFieldDaysandDemonstrations');
-	 
- if($_GET['action']=='Reports'){
- $data.="";
- }else{
- $data.="<tr class='evenrow'>
- <td colspan='18'><input type='button' class='formButton2'   id='button' onclick=\"multiCheckBox('checked');return false;\" value='check all' /> |<input type='button' class='formButton2'   id='button' onclick=\"multiCheckBox('');\" value='uncheck all' /> | <input type='button' class='formButton2'   id='button' title='Edit'  onclick=\"xajax_edit_FieldDaysandDemonstrations(xajax.getFormValues('projects'),'".$region."');return false;\" value='edit' /> <input type='hidden' class='formButton2'   id='button' title='Delete'  onclick=\"ConfirmDelete(xajax.getFormValues('projects'),'delete_StaffQualitativeReport','');return false;\" value='Delete' class='redhdrs' />  | <a href='project_crosstab.php?linkvar=Aggregate Field Days and Demonstrations&&region=".$region."&&year=".$year."&&quarter=".$quarter."'  > <input type='button' class='formButton2'   id='button' title='Cross tab'   value='Cross tab' class='' /></a></td>
-
-	
-</tr>";
-}
- 
- $data.="<tr CLASS='evenrow'>
- 
-<th colspan='18' ><center>Field days and demonstrations </center></th>
-	
-  </tr>
-	
-	
-	<tr>
-	<th colspan='2' ROWSPAN='3'>No/Select</th>
-	<th ROWSPAN='3' colspan='1'>DISTRICT</th>
-	<th  colspan='9'><center>Field days conducted<center></th>
-	<th colspan='3' rowspan='2'><center>demonstrations</center></th>
-	<th rowspan='3'>Action</th>
-		</tr>
-		
-		<tr>
-		<th  colspan='3'>District (Major) Field days</th>
-		<th  colspan='3'>DC (Regular) Field days</th>
-		<th  colspan='3'>PO (Specific) Field days</th>
-
-	
-		</tr>
-	
-	<tr>
-	
-	
-	<th>Male</th>
-	<th>Female</th>
-	<th>No. of F/days</th>
-	<th>Male</th>
-	<th>Female</th>
-	<th>No. of F/days</th>
-	<th>Male</th>
-	<th>Female</th>
-	<th>No. of F/days</th>
-	<th>Male</th>
-		<th>Female</th>
-		<th>No. of Demos</th>
-		</tr>";  
-	
-	
-	$sql=QueryManager::ViewFieldDaysandDemonstrations($_SESSION['zoneID'],$_SESSION['districtID'],$_SESSION['organization'],$_SESSION['fyear'],$_SESSION['semiAnnual']);   
-	   //$obj->alert($sql);
-	   
-	 $query=Execute($sql)or die(http("PR-866"));
-  while($row=FetchRecords($query)){
-  $orgdate="org_date".$n;
-  $color=($n%2==1)?"evenrow3":"white1";
-$data.="<tr class='$color'>
-	".loop_key('training_id',$row['training_id'])."
-  <td>".$n."</td>
-   
-<td colspan='1'>
-	<input name='districtCode[]' type='hidden' id='districtCode' value='".$row['district']."'>
-	<input name='region[]' type='hidden' id='region' value='".$row['zone']."'>
-	<input name='fielddayIndicator[]' type='hidden' id='fielddayIndicator' value='".$row['fielddayIndicator']."'>
-		<input name='org_code[]' type='hidden' id='org_code' value='".$row['org_code']."'>
-		<input name='semiAnnual[]' type='hidden' id='semiAnnual' value='".$row['semi_annual']."'>
-		<input name='year[]' type='hidden' id='year' value='".$row['year']."'>
-	".$row['districtName']."</td>
- <td align='right'>".$row['MaleDMajor']."</td>
-<td align='right'>".$row['FemaleDMajor']."</td>
-	<td align='right'>".$row['numberofDMFieldDays']."</td>
-	   <td align='right'>".$row['MaleDRegular']."</td>
-	  <td align='right'>".$row['FemaleDRegular']."</td>
-		   <td align='right'>".$row['numberofDRFieldDays']."</td>
-<td align='right'>".$row['MalePOSpecific']."</td>
- <td align='right'>".$row['FemalePOSpecific']."</td>
- <td align='right'>".$row['numberofPOFieldDays']."</td>
-  <td align='right'>".$row['MaleDemo']."</td>
-  <td align='right'>".$row['FemaleDemo']."</td>
-  <td align='right'>".$row['numberofDemonstrationsEstablished']."</td>
-  
-  <td  align='center'><img src='icons/trash.png' title='Move to Trash' onclick=\"xajax_delete_CarpFieldDaysandDemonstrations('".$row['year']."',
-  
-  '".$row['semi_annual']."','".$row['zone']."','".$row['district']."','".$row['fielddayIndicator']."','tbl_fielddaysanddemonstrations','delete_ViewFieldDaysandDemonstrations');return false;\" ></td>
-  
-  
-  
-</tr>";
-$n++;
-  }
-  //-------Gerrating Totals
-  
-  
-  	$sqlTotal=QueryManager::ViewFieldDaysandDemonstrationsTotals($_SESSION['zoneID'],$_SESSION['districtID'],$_SESSION['organization'],
-	$_SESSION['fyear'],$_SESSION['semiAnnual']);
-	
-	//$obj->alert($sqlTotal);
-  
-	$queryTotal=Execute($sqlTotal) or die(http("PR-934"));
-		$rowTotal=FetchRecords($queryTotal);
-   $data.="<tr class='$color'>
-	
-<td colspan='3'>
-	<strong>Total</strong></td>
- <td align='right'><strong>".$rowTotal['MaleDMajor']."</strong></td>
-<td align='right'><strong>".$rowTotal['FemaleDMajor']."</strong></td>
-	<td align='right'>".$rowTotal['numberofDMFieldDays']."</td>
-	   <td align='right'><strong>".$rowTotal['MaleDRegular']."</strong></td>
-	  <td align='right'><strong>".$rowTotal['FemaleDRegular']."</strong></td>
-		  <td align='right'>".$rowTotal['numberofDRFieldDays']."</td>
-<td align='right'><strong>".$rowTotal['MalePOSpecific']."</strong></td>
- <td align='right'><strong>".$rowTotal['FemalePOSpecific']."</strong></td>
- <td align='right'>".$rowTotal['numberofPOFieldDays']."</td>
-  <td align='right'><strong>".$rowTotal['MaleDemo']."</strong></td>
-  <td align='right'><strong>".$rowTotal['FemaleDemo']."</strong></td>
-  <td align='right'>".$rowTotal['numberofDemonstrationsEstablished']."</td>
-  <td  align='center'><img src='icons/trash.png' title='Move to Trash' onclick=\"ConfirmDeletionCompletely('".$rowWP['workplan_id']."','workplan_id','tbl_workplan','delete_AnnualTargets');return false;\" ></td>
-</tr>";
-  
-  
-
-
- $data.="".noRecordsFound($query,14);
- if($_GET['action']=='Reports'){
- $data.="";
- }
- else {
- $data.="<tr class='evenrow'>
- <td colspan='18'><input type='button' class='formButton2'   id='button' onclick=\"multiCheckBox('checked');return false;\" value='check all' /> |<input type='button' class='formButton2'   id='button' onclick=\"multiCheckBox('');\" value='uncheck all' /> | <input type='button' class='formButton2'   id='button' title='Edit'  onclick=\"xajax_edit_FieldDaysandDemonstrations(xajax.getFormValues('projects'),'".$region."');return false;\" value='edit' /> <input type='hidden' class='formButton2'   id='button' title='Delete'  onclick=\"ConfirmDelete(xajax.getFormValues('projects'),'delete_StaffQualitativeReport','');return false;\" value='Delete' class='redhdrs' /> | <a href='project_crosstab.php?linkvar=Aggregate Field Days and Demonstrations&&region=".$region."&&year=".$year."&&quarter=".$quarter."'  > <input type='button' class='formButton2'   id='button' title='Cross tab'   value='Cross tab' class='' /></a></td>
-
-	
-</tr>";
-}
-$data.="</table></form>";
-
-$obj->assign('bodyDisplay','innerHTML',$data);
-return $obj;
-}
-//-------------Adoption rates-----------------------
-function ViewAdoptionRates($region,$district,$indicator,$subcomponent,$output,$year,$quarter,$indicatorCode,$indicator,$organization,$cur_page=1,$records_per_page=20){
-$obj = new xajaxResponse();
-
-
-$n=1; $inc=1;
-$_SESSION['zoneID']='';
-$_SESSION['semiAnnual']='';
-$_SESSION['zoneID']=$region;
-$_SESSION['organization']=$organization;
-$_SESSION['districtID']=$district;
-$quarter=($quarter==NULL)?$_SESSION['quarter']:$quarter;
-$_SESSION['semiAnnual']=$quarter;
-$year=($year==NULL)?currFinancialYear($_SESSION['Activeyear'],'YearRange'):$year;
-$_SESSION['fyear']=$year;
-
-$data="<form action=\"".$PHP_SELF."\" name='projects' id='projects' method='post'>
-<table width='800' id='report'>";
- 
-  $data.=filter_AdoptionRates('ViewAdoptionRates');
-	 if($_GET['action']=='Reports'){
- $data.="";
- }else{
-$data.="<tr class='evenrow'>
-<td colspan='22'><input type='button' class='formButton2'   id='button' onclick=\"multiCheckBox('checked');return false;\" value='check all' /> |<input type='button' class='formButton2'   id='button' onclick=\"multiCheckBox('');\" value='uncheck all' /> | <input type='button' class='formButton2'   id='button' title='Edit'  onclick=\"xajax_edit_AdoptionRates(xajax.getFormValues('projects'),'".$region."','".$year."');return false;\" value='edit' /> | <a href='project_crosstab.php?linkvar=Aggregate Adoption Rates&&region=".$region."&&year=".$year."&&quarter=".$quarter."'  > <input type='button' class='formButton2'   id='button' title='Cross tab'   value='Cross tab' class='' /></a></td>
- </tr>";
- }
- 
- $data.="<tr CLASS='evenrow'>
- 
-<th colspan='22' ><center>CF/CA Adoption Rates (M=Male,F=Female,CF=Conservation Farming,CA=Conservation Agriculture)</center></th>
-	
-  </tr>
-	
-	
-	<tr><th colspan='2' ROWSPAN='3'>No/Select</th>
-	
-	<th ROWSPAN='3' colspan='1'>DISTRICT</th>
-	<th colspan='6'><center>No. of farmers adopting</center></th>
-	<th colspan='6'><center>Area under adoption</center></th>
-	<th colspan='2' ROWSPAN='2'><center>Area under legumes</center>
-	</th>
-	<th colspan='2' ROWSPAN='2' ><center>Herbicide use</center></th>
-	<th colspan='2' ROWSPAN='2' ><center>Not burning residue</center></th>
-		<th colspan='1' ROWSPAN='3' ><center>Action</center></th>
-	
-		</tr>
-		
-		
-		<tr>
-	
-
-	<th colspan='2'><center>CF HOE</center></th>
-	<th colspan='2'><center>CF ADP</center></th>
-	<th colspan='2'><center>CF Mechanized</center></th>
-	<th colspan='2'><center>CF HOE</center></th>
-	<th colspan='2'><center>CF ADP</center></th>
-	<th colspan='2'><center>CF Mechanized</center></th>
-		</tr>
-	<tr>";
-	for($x=0;$x<9;$x++){
-	$data.="<th>M</th><th>F</th>";
-	}
-	
-	$data.="</tr>";  
-	
-	$querytrainees=mysql_query("select * from tbl_trainees order by code asc")or die(http("PR-432"));
-  while($rowparticipants=mysql_fetch_array($querytrainees)){
-  
-$data.="<tr class='evenrow'>
-
-  <td colspan='22'><strong>".$rowparticipants['Name']."</strong></td></tr>";
-	  
-	$sql=QueryManager::ViewAdoptionRates($_SESSION['zoneID'],$_SESSION['districtID'],$_SESSION['organization'],$_SESSION['fyear'],$_SESSION['semiAnnual'],$rowparticipants['code']);   
-	   #$obj->alert($sql);
-	   
-	 $query=@mysql_query($sql)or die(http("PR-1000"));
-  while($row=@mysql_fetch_array($query)){
-  $orgdate="org_date".$n;
-  $color=($n%2==1)?"evenrow3":"white1";
-$data.="<tr class='$color'>
-	".loop_key('adoption_id',$row['adoption_id'])."
-<td>".$n."</td>
-<td colspan='1'>
-	<input name='loopkey[]' type='hidden' id='loopkey' value='1'>
-	<input name='districtCode[]' type='hidden' id='districtCode' value='".$row['district']."'>
-	<input name='region[]' type='hidden' id='region' value='".$row['zone']."'>
-	<input name='participants[]' type='hidden' id='participants' value='".$row['typeofparticipants']."'>
-		<input name='org_code[]' type='hidden' id='org_code' value='".$row['org_code']."'>
-		<input name='semiAnnual[]' type='hidden' id='semiAnnual' value='".$row['semi_annual']."'>
-		<input name='AdoptionTopic[]' type='hidden' id='AdoptionTopic' value='".$row['adoption_topic']."'>
-		<input name='year[]' type='hidden' id='year' value='".$row['year']."'>
-	".$row['districtName']."</td>
-<td align='right'>".$row['MaleHoebasin']."</td>
-<td align='right'>".$row['FemaleHoebasin']."</td>
- <td align='right'>".$row['MaleADPRipping']."</td>
- <td align='right'>".$row['FemaleADPRipping']."</td>
- <td align='right'>".$row['MaleMechanizedRipping']."</td>
-  <td align='right'>".$row['FemaleMechanizedRipping']."</td>
-  <td align='right'>".$row['MaleAreaHoebasin']."</td>
-  <td align='right'>".$row['FemaleAreaHoebasin']."</td>
-<td align='right'>".$row['MaleAreaADPRipping']."</td>
-  <td align='right'>".$row['FemaleAreaADPRipping']."</td>
-   <td align='right'>".$row['MaleAreaMechanizedRipping']."</td>
-   <td align='right'>".$row['FemaleAreaMechanizedRipping']."</td>
-   <td align='right'>".$row['MaleLegumes']."</td>
-  <td align='right'>".$row['FemaleLegumes']."</td>
-  <td align='right'>".$row['MaleHerbicide']."</td>
-  <td align='right'>".$row['FemaleHerbicide']."</td>
-  <td align='right'>".$row['MaleResidues']."</td>
-  <td align='right'>".$row['FemaleResidues']."</td>";
- 
-  //$obj->alert($code);
-  
-  /* xajax_delete_CarpAdoptionRates('".$row['year']."',
-  
-  '".$row['semi_annual']."','".$row['zone']."','".$row['district']."','".$row['typeofparticipants']."'
-  'tbl_adoptionrates','delete_AdoptionRates');return false;\" */
- // $year,$semi_annual,$zone,$district,$typeofparticipants
-  $data.="<td  align='center'><img src='icons/trash.png' title='Move to Trash' onclick=\"xajax_delete_CarpAdoptionRates('".$row['year']."',
-  
-  '".$row['semi_annual']."','".$row['zone']."','".$row['district']."','".$row['typeofparticipants']."','tbl_adoptionrates','delete_AdoptionRates');return false;\" ></td>
-  </tr>";
-$n++; }
-	
-	$sqlTotal=QueryManager::ViewAdoptionRatesTotals($_SESSION['zoneID'],$_SESSION['districtID'],$_SESSION['organization'],$_SESSION['fyear'],$_SESSION['semiAnnual'],$rowparticipants['code']);   
-		$queryTotal=Execute($sqlTotal) or die(http("PR-1025"));
-		$rowTotal=FetchRecords($queryTotal);
-	$data.="<tr class='$color'>
-	<td colspan=3><strong>Total ".$rowparticipants['Name']."</strong></td>
-<td align='right'><strong>".$rowTotal['MaleHoebasinTotal']."</strong></td>
-<td align='right'><strong>".$rowTotal['FemaleHoebasinTotal']."</strong></td>
-<td align='right'><strong>".$rowTotal['MaleADPRippingTotal']."</strong></td>
-<td align='right'><strong>".$rowTotal['FemaleADPRippingTotal']."</strong></td>
- 	<td align='right'><strong>".$rowTotal['MaleMechanizedRippingTotal']."</strong></td>
-  	<td align='right'><strong>".$rowTotal['FemaleMechanizedRippingTotal']."</strong></td>
-<td align='right'><strong>".$rowTotal['MaleAreaHoebasinTotal']."</strong></td>
-<td align='right'><strong>".$rowTotal['FemaleAreaHoebasinTotal']."</strong></td>
-<td align='right'><strong>".$rowTotal['MaleAreaADPRippingTotal']."</strong></td>
-<td align='right'><strong>".$rowTotal['FemaleAreaADPRippingTotal']."</strong></td>
-<td align='right'><strong>".$rowTotal['MaleAreaMechanizedRippingTotal']."</strong></td>
-<td align='right'><strong>".$rowTotal['FemaleAreaMechanizedRippingTotal']."</strong></td>
-<td align='right'><strong>".$rowTotal['MaleLegumesTotal']."</strong></td>
-<td align='right'><strong>".$rowTotal['FemaleLegumesTotal']."</strong></td>
-<td align='right'><strong>".$rowTotal['MaleHerbicideTotal']."</strong></td>
-<td align='right'><strong>".$rowTotal['FemaleHerbicideTotal']."</strong></td>
-<td align='right'><strong>".$rowTotal['MaleResiduesTotal']."</strong></td>
-<td align='right'><strong>".$rowTotal['FemaleResiduesTotal']."</strong></td>
-	 <td align='right'></strong></td>
-</tr>";
- 
-  
-  
-  
-  
-  
-  		}
-		//Generating Totals---------
-
- $data.="".noRecordsFound($query,22);
- 
- if($_GET['action']=='Reports'){
- $data.="";
- }else{
- $data.="<tr class='evenrow'>
- <td colspan='22'><input type='button' class='formButton2'   id='button' onclick=\"multiCheckBox('checked');return false;\" value='check all' /> |<input type='button' class='formButton2'   id='button' onclick=\"multiCheckBox('');\" value='uncheck all' /> | <input type='button' class='formButton2'   id='button' title='Edit'  onclick=\"xajax_edit_AdoptionRates(xajax.getFormValues('projects'),'".$region."','".$year."');return false;\" value='edit' />  | <a href='project_crosstab.php?linkvar=Aggregate Adoption Rates&&region=".$region."&&year=".$year."&&quarter=".$quarter."' > <input type='button' class='formButton2'   id='button' title='Cross tab'   value='Cross tab' class='' /></a></td>
-
-	
-</tr>";
-}
-$data.="</table></form>";
-
-$obj->assign('bodyDisplay','innerHTML',$data);
-return $obj;
-}
- #-======new training Particpants===================
-function new_AdoptionRates($region,$district,$organization,$fyear){
-$obj=new xajaxResponse();
-if($_SESSION['user_id']==''){
-$obj->redirect('index.php');
-return $obj;
-}
-if(($_SESSION['quarter']=='Closed')||($_SESSION['Activeyear']=='Closed')){
-$obj->alert("Please Your Reporting Period is Closed Please Open the Reporting period and Try Again!");
-return $obj;
-}
-
-$n=1;
-$inc=1;
-$_SESSION['nhh']=1;
-$_SESSION['nhh']=$nhh;
-$_SESSION['subcountyCode']=$subcounty;
-#$obj->alert($_SESSION['subcountyCode']);
-$_SESSION['ParishName']=$parishName;
-$_SESSION['parishCode']=$parish;
-$fyear=($fyear==NULL)?currFinancialYear($_SESSION['Activeyear'],'YearRange'):$fyear;
-#$obj->alert($_SESSION['parishCode']);
-//$n=1;
-$data="<form action=\"".$PHP_SELF."\" name='projects' id='projects' method='post'>
-<table width='100%' id='report'>";
- 
-  $data.="
-  
-  			<tr class='evenrow'>
-  <td width='30%' colspan='3'>
-  <div align='left'><strong>Region</strong></div></td>
-  <td colspan='18'><select name='region' id='region' onchange=\"xajax_new_AdoptionRates(this.value,'','".$organization."','".$fyear."');return false;\" style='width:300px;'><option value=''>-select-</option>";
-			$data.=QueryManager::ZoneFilter($region);
-		  $data.="</select></td>
-</tr>
-	<tr class='evenrow3'>
-  <td width='30%' colspan='3'>
-  <div align='left'><strong>Field Supervisor Responsible</strong></div></td>
-  <td colspan='18'><input type='text' name='fieldofficer' id='fieldofficer' size='48' ></td>
-</tr>
-<tr class='evenrow3'><td colspan='3'>Project Year:</td>
-	<td colspan='18'><select name='year' id='year'   style='width:300px;'><option value=''>-select-</option>";
-				$data.=QueryManager::FinancialYearFilter($fyear);
-				  $data.="</select></td>
-	</tr>
-	<tr class='evenrow'><td colspan='3'>Reporting Period</td>
-	 <td colspan='18'><select name='semiAnnual' id='semiAnnual' style='width:300px;'><option value=''>-select-</option>";
-				$data.=QueryManager::ReportingPeriodFilter($period=$_SESSION['quarter']);
-				  $data.="</select></td></tr>
-	<tr class='display_none'>
-  <td>Organizing Date</td>
-  <td><a href='javascript:void(0)' onClick=\"if(self.gfPop)gfPop.fPopCalendar(document.projects.orgdate);return false;\" hidefocus=''>
-<input name='orgdate' type='text'  size='50' value='' id='orgdate' readonly='readonly' />
-<img name='popcal' src='WeekPicker/calbtn.gif' alt='' align='absmiddle' border='0' height='22' width='25'></a></td>
-  </tr>
-	<tr CLASS='evenrow'>
- 
-<th colspan='21' ><center>CF/CA Adoption Rates</center></th>
-	
-  </tr>
-	
-	<tr><th colspan='' ROWSPAN='3'>No</th>
-		<th ROWSPAN='3' colspan='1'>category</th>
-	<th ROWSPAN='3' colspan='1'>DISTRICT</th>
-	
-	<th colspan='6'><center>No. of farmers adopting</center></th>
-	<th colspan='6'><center>Area under adoption</center></th>
-	<th rowspan='2' colspan='2'><center>Area under legumes</center></th>
-	<th rowspan='2' colspan='2'><center>Herbicide use</center></th>
-	<th rowspan='2' colspan='2'><center>Not burning residue</center></th>
-	
-	</tr>
-	
-	<tr>
-	<th colspan='2'><center>CF HOE</center></th>
-	<th colspan='2'><center>CF ADP</center></th>
-	<th colspan='2'><center>CF Mechanized</center></th>
-	<th colspan='2'><center>CF HOE</center></th>
-	<th colspan='2'><center>CF ADP</center></th>
-	<th colspan='2'><center>CF Mechanized</center></th>
-		</tr>
-	<tr>
-	<th>Male</th>
-	<th>Female</th>
-	<th>Male</th>
-	<th>Female</th>
-	<th>Male</th>
-	<th>Female</th>
-	<th>Male</th>
-	<th>Female</th>
-	<th>Male</th>
-	<th>Female</th>
-	<th>Male</th>
-	<th>Female</th>
-	<th>Male</th>
-	<th>Female</th>
-	<th>Male</th>
-	<th>Female</th>
-	<th>Male</th>
-	<th>Female</th>
-
-	</tr>";
-	
-	for($x=0;$x<10;$x++){
-	$data.="<tr class='evenrow'>
-	<td><input name='loopkey[]' size='10'  type='hidden' id='loopkey".$n."' value='1'  />".$n."</td>
-	<td colspan=''><select name='trainees[]' id='trainees' style='width:100px;'>
-	".funct_dropDown('tbl_trainees', 'Name', 'code', 'code')."</select></td>
-	<td colspan=''><select name='district[]' id='district' style='width:100px;'><option value=''>-select-</option>";
-	
-	 	$data.=QueryManager::DistrictFilter($region,$district);
-	
-	$data.="</select></td>
-	
-	<td>
-	
-	
-	
-	<input name='loopkey1[]' size='10'  type='hidden' id='loopkey' value='1'  />
-	<input name='trainingtopic1[]' size='10' type='hidden' id='trainingtopic1".$n."' value='1'  />
-	<input name='malehoe[]' size='10'  type='text' id='malehoe".$n."'
-	
-	onKeyPress='return numbersonly(event, false)'
-	
-
-	onKeyUp=\"xajax_calc_trainingSemiAnnual(
-		getElementById('malehoe".$n."').value,getElementById('femalehoe".$n."').value,
-		getElementById('maleadp".$n."').value,getElementById('femaleadp".$n."').value,
-		getElementById('malemechanized".$n."').value,getElementById('femalemechanized".$n."').value,
-		getElementById('maleherbicide".$n."').value,getElementById('femaleherbicide".$n."').value,
-		getElementById('maletreeplanting".$n."').value,getElementById('femaletreeplanting".$n."').value,
-		'total".$n."');\"
-	
-	  /></td>
-	<td><input name='femalehoe[]' size='10'  type='text' id='femalehoe".$n."' 
-		onKeyPress='return numbersonly(event, false)'
-	
-	onKeyUp=\"xajax_calc_trainingSemiAnnual(
-		getElementById('malehoe".$n."').value,getElementById('femalehoe".$n."').value,
-		getElementById('maleadp".$n."').value,getElementById('femaleadp".$n."').value,
-		getElementById('malemechanized".$n."').value,getElementById('femalemechanized".$n."').value,
-		getElementById('maleherbicide".$n."').value,getElementById('femaleherbicide".$n."').value,
-		getElementById('maletreeplanting".$n."').value,getElementById('femaletreeplanting".$n."').value,
-		'total".$n."');\"
-	
-	 /></td>
-	<td>
-		<input name='loopkey2[]' size='10'  type='hidden' id='loopkey2' value='1'  />
-	<input name='trainingtopic2[]' size='10'  type='hidden' id='trainingtopic2".$n."' value='2'  />
-	<input name='maleadp[]' size='10'  type='text' id='maleadp".$n."'
-	onKeyUp=\"xajax_calc_trainingSemiAnnual(
-		getElementById('malehoe".$n."').value,getElementById('femalehoe".$n."').value,
-		getElementById('maleadp".$n."').value,getElementById('femaleadp".$n."').value,
-		getElementById('malemechanized".$n."').value,getElementById('femalemechanized".$n."').value,
-		getElementById('maleherbicide".$n."').value,getElementById('femaleherbicide".$n."').value,
-		getElementById('maletreeplanting".$n."').value,getElementById('femaletreeplanting".$n."').value,
-		'total".$n."');\"
-	
-	  /></td>
-	<td><input name='femaleadp[]' size='10'  type='text' id='femaleadp".$n."'
-		onKeyPress='return numbersonly(event, false)'
-	onKeyUp=\"xajax_calc_trainingSemiAnnual(
-		getElementById('malehoe".$n."').value,getElementById('femalehoe".$n."').value,
-		getElementById('maleadp".$n."').value,getElementById('femaleadp".$n."').value,
-		getElementById('malemechanized".$n."').value,getElementById('femalemechanized".$n."').value,
-		getElementById('maleherbicide".$n."').value,getElementById('femaleherbicide".$n."').value,
-		getElementById('maletreeplanting".$n."').value,getElementById('femaletreeplanting".$n."').value,
-		'total".$n."');\"
-	  /></td>
-	<td>
-	<input name='loopkey3[]' size='10'  type='hidden' id='loopkey3' value='1'  />
-	<input name='trainingtopic3[]' size='10'  type='hidden' id='trainingtopic3".$n."' value='3'  />
-	<input name='malemechanized[]' size='10'  type='text' id='malemechanized".$n."' 
-		
-		onKeyPress='return numbersonly(event, false)'
-		
-onKeyUp=\"xajax_calc_trainingSemiAnnual(
-		getElementById('malehoe".$n."').value,getElementById('femalehoe".$n."').value,
-		getElementById('maleadp".$n."').value,getElementById('femaleadp".$n."').value,
-		getElementById('malemechanized".$n."').value,getElementById('femalemechanized".$n."').value,
-		getElementById('maleherbicide".$n."').value,getElementById('femaleherbicide".$n."').value,
-		getElementById('maletreeplanting".$n."').value,getElementById('femaletreeplanting".$n."').value,
-		'total".$n."');\"
-	
-	 /></td>
-	<td><input name='femalemechanized[]' size='10'  type='text' id='femalemechanized".$n."'
-		onKeyPress='return numbersonly(event, false)'
-	onKeyUp=\"xajax_calc_trainingSemiAnnual(
-		getElementById('malehoe".$n."').value,getElementById('femalehoe".$n."').value,
-		getElementById('maleadp".$n."').value,getElementById('femaleadp".$n."').value,
-		getElementById('malemechanized".$n."').value,getElementById('femalemechanized".$n."').value,
-		getElementById('maleherbicide".$n."').value,getElementById('femaleherbicide".$n."').value,
-		getElementById('maletreeplanting".$n."').value,getElementById('femaletreeplanting".$n."').value,
-		'total".$n."');\"
-	  /></td>
-	<td>
-		<input name='loopkey4[]' size='10'  type='hidden' id='loopkey4' value='1'  />
-		<input name='trainingtopic4[]' size='10'  type='hidden' id='trainingtopic4".$n."' value='4'  />
-	<input name='maleherbicide[]' size='10'  type='text' id='maleherbicide".$n."' 
-		onKeyPress='return numbersonly(event, false)'
-	onKeyUp=\"xajax_calc_trainingSemiAnnual(
-		getElementById('malehoe".$n."').value,getElementById('femalehoe".$n."').value,
-		getElementById('maleadp".$n."').value,getElementById('femaleadp".$n."').value,
-		getElementById('malemechanized".$n."').value,getElementById('femalemechanized".$n."').value,
-		getElementById('maleherbicide".$n."').value,getElementById('femaleherbicide".$n."').value,
-		getElementById('maletreeplanting".$n."').value,getElementById('femaletreeplanting".$n."').value,
-		'total".$n."');\"
-	 /></td>
-	<td><input name='femaleherbicide[]' size='10'  type='text' id='femaleherbicide".$n."'
-		onKeyPress='return numbersonly(event, false)'
-onKeyUp=\"xajax_calc_trainingSemiAnnual(
-		getElementById('malehoe".$n."').value,getElementById('femalehoe".$n."').value,
-		getElementById('maleadp".$n."').value,getElementById('femaleadp".$n."').value,
-		getElementById('malemechanized".$n."').value,getElementById('femalemechanized".$n."').value,
-		getElementById('maleherbicide".$n."').value,getElementById('femaleherbicide".$n."').value,
-		getElementById('maletreeplanting".$n."').value,getElementById('femaletreeplanting".$n."').value,
-		'total".$n."');\"  /></td>
-	<td>
-	
-	
-		<input name='loopkey5[]' size='10'  type='hidden' id='loopkey5' value='1'  />
-	<input name='trainingtopic5[]' size='10'  type='hidden' id='trainingtopic5".$n."' value='5'  />
-	<input name='maletreeplanting[]' size='10'  type='text' id='maletreeplanting".$n."'
-		onKeyPress='return numbersonly(event, false)'
-	onKeyUp=\"xajax_calc_trainingSemiAnnual(
-		getElementById('malehoe".$n."').value,getElementById('femalehoe".$n."').value,
-		getElementById('maleadp".$n."').value,getElementById('femaleadp".$n."').value,
-		getElementById('malemechanized".$n."').value,getElementById('femalemechanized".$n."').value,
-		getElementById('maleherbicide".$n."').value,getElementById('femaleherbicide".$n."').value,
-		getElementById('maletreeplanting".$n."').value,getElementById('femaletreeplanting".$n."').value,
-		'total".$n."');\"
-	  /></td>
-	<td><input name='femaletreeplanting[]' size='10'  type='text' id='femaletreeplanting".$n."' 
-		onKeyPress='return numbersonly(event, false)'
-	onKeyUp=\"xajax_calc_trainingSemiAnnual(
-		getElementById('malehoe".$n."').value,getElementById('femalehoe".$n."').value,
-		getElementById('maleadp".$n."').value,getElementById('femaleadp".$n."').value,
-		getElementById('malemechanized".$n."').value,getElementById('femalemechanized".$n."').value,
-		getElementById('maleherbicide".$n."').value,getElementById('femaleherbicide".$n."').value,
-		getElementById('maletreeplanting".$n."').value,getElementById('femaletreeplanting".$n."').value,
-		'total".$n."');\"
-	 /></td>
-	 <td>
-	
-	
-		<input name='loopkey6[]' size='10'  type='hidden' id='loopkey6' value='1'  />
-	<input name='trainingtopic6[]' size='10'  type='hidden' id='trainingtopic6".$n."' value='6'  />
-	<input name='malearea[]' size='10'  type='text' id='malearea".$n."'
-		onKeyPress='return numbersonly(event, false)'
-	onKeyUp=\"xajax_calc_trainingSemiAnnual(
-		getElementById('malehoe".$n."').value,getElementById('femalehoe".$n."').value,
-		getElementById('maleadp".$n."').value,getElementById('femaleadp".$n."').value,
-		getElementById('malemechanized".$n."').value,getElementById('femalemechanized".$n."').value,
-		getElementById('maleherbicide".$n."').value,getElementById('femaleherbicide".$n."').value,
-		getElementById('maletreeplanting".$n."').value,getElementById('femaletreeplanting".$n."').value,
-		'total".$n."');\"
-	  /></td>
-	<td><input name='femalearea[]' size='10'  type='text' id='femalearea".$n."' 
-		onKeyPress='return numbersonly(event, false)'
-	onKeyUp=\"xajax_calc_trainingSemiAnnual(
-		getElementById('malehoe".$n."').value,getElementById('femalehoe".$n."').value,
-		getElementById('maleadp".$n."').value,getElementById('femaleadp".$n."').value,
-		getElementById('malemechanized".$n."').value,getElementById('femalemechanized".$n."').value,
-		getElementById('maleherbicide".$n."').value,getElementById('femaleherbicide".$n."').value,
-		getElementById('maletreeplanting".$n."').value,getElementById('femaletreeplanting".$n."').value,
-		'total".$n."');\"
-	 /></td>
-	 
-	 
-	 
-	 <td>
-	
-	
-		<input name='loopkey7[]' size='10'  type='hidden' id='loopkey7' value='1'  />
-	<input name='trainingtopic7[]' size='10'  type='hidden' id='trainingtopic7".$n."' value='7'  />
-	<input name='malelegumes[]' size='10'  type='text' id='malelegumes".$n."'
-		onKeyPress='return numbersonly(event, false)'
-	onKeyUp=\"xajax_calc_trainingSemiAnnual(
-		getElementById('malehoe".$n."').value,getElementById('femalehoe".$n."').value,
-		getElementById('maleadp".$n."').value,getElementById('femaleadp".$n."').value,
-		getElementById('malemechanized".$n."').value,getElementById('femalemechanized".$n."').value,
-		getElementById('maleherbicide".$n."').value,getElementById('femaleherbicide".$n."').value,
-		getElementById('maletreeplanting".$n."').value,getElementById('femaletreeplanting".$n."').value,
-		'total".$n."');\"
-	  /></td>
-	<td><input name='femalelegumes[]' size='10'  type='text' id='femalelegumes".$n."' 
-		onKeyPress='return numbersonly(event, false)'
-	onKeyUp=\"xajax_calc_trainingSemiAnnual(
-		getElementById('malehoe".$n."').value,getElementById('femalehoe".$n."').value,
-		getElementById('maleadp".$n."').value,getElementById('femaleadp".$n."').value,
-		getElementById('malemechanized".$n."').value,getElementById('femalemechanized".$n."').value,
-		getElementById('maleherbicide".$n."').value,getElementById('femaleherbicide".$n."').value,
-		getElementById('maletreeplanting".$n."').value,getElementById('femaletreeplanting".$n."').value,
-		'total".$n."');\"
-	 /></td>
-	 
-	  <td>
-	
-		<input name='loopkey9[]' size='10'  type='hidden' id='loopkey9' value='1'  />
-	<input name='trainingtopic9[]' size='10'  type='hidden' id='trainingtopic9".$n."' value='9'  />
-	<input name='maleherbs[]' size='10'  type='text' id='maleherbs".$n."'
-		onKeyPress='return numbersonly(event, false)'
-	onKeyUp=\"xajax_calc_trainingSemiAnnual(
-		getElementById('malehoe".$n."').value,getElementById('femalehoe".$n."').value,
-		getElementById('maleadp".$n."').value,getElementById('femaleadp".$n."').value,
-		getElementById('malemechanized".$n."').value,getElementById('femalemechanized".$n."').value,
-		getElementById('maleherbicide".$n."').value,getElementById('femaleherbicide".$n."').value,
-		getElementById('maletreeplanting".$n."').value,getElementById('femaletreeplanting".$n."').value,
-		'total".$n."');\"
-	  /></td>
-	<td><input name='femaleherbs[]' size='10'  type='text' id='femaleherbs".$n."' 
-		onKeyPress='return numbersonly(event, false)'
-	onKeyUp=\"xajax_calc_trainingSemiAnnual(
-		getElementById('malehoe".$n."').value,getElementById('femalehoe".$n."').value,
-		getElementById('maleadp".$n."').value,getElementById('femaleadp".$n."').value,
-		getElementById('malemechanized".$n."').value,getElementById('femalemechanized".$n."').value,
-		getElementById('maleherbicide".$n."').value,getElementById('femaleherbicide".$n."').value,
-		getElementById('maletreeplanting".$n."').value,getElementById('femaletreeplanting".$n."').value,
-		'total".$n."');\"
-	 /></td>
-	 
-	 
-	 
-	 <td>
-	
-	
-		<input name='loopkey8[]' size='10'  type='hidden' id='loopkey8' value='1'  />
-	<input name='trainingtopic8[]' size='10'  type='hidden' id='trainingtopic8".$n."' value='8'  />
-	<input name='maleresidues[]' size='10'  type='text' id='maleresidues".$n."'
-		onKeyPress='return numbersonly(event, false)'
-	onKeyUp=\"xajax_calc_trainingSemiAnnual(
-		getElementById('malehoe".$n."').value,getElementById('femalehoe".$n."').value,
-		getElementById('maleadp".$n."').value,getElementById('femaleadp".$n."').value,
-		getElementById('malemechanized".$n."').value,getElementById('femalemechanized".$n."').value,
-		getElementById('maleherbicide".$n."').value,getElementById('femaleherbicide".$n."').value,
-		getElementById('maletreeplanting".$n."').value,getElementById('femaletreeplanting".$n."').value,
-		'total".$n."');\"
-	  /></td>
-	<td><input name='femaleresidues[]' size='10'  type='text' id='femaleresidues".$n."' 
-		onKeyPress='return numbersonly(event, false)'
-	onKeyUp=\"xajax_calc_trainingSemiAnnual(
-		getElementById('malehoe".$n."').value,getElementById('femalehoe".$n."').value,
-		getElementById('maleadp".$n."').value,getElementById('femaleadp".$n."').value,
-		getElementById('malemechanized".$n."').value,getElementById('femalemechanized".$n."').value,
-		getElementById('maleherbicide".$n."').value,getElementById('femaleherbicide".$n."').value,
-		getElementById('maletreeplanting".$n."').value,getElementById('femaletreeplanting".$n."').value,
-		'total".$n."');\"
-	 /></td>
-	 	 
-	 
-	</tr>";
-	
-	
-	
-	/**/
-	
-	$n++;
-	
-	}
-	
-	
-
-  $data.=" 
- <tr style='display:none'>
-  <td>Attach Minutes</td>
-  <td><input name='' size='50' type='file'></td>
-  </tr>
-  <tr style='display:none'>
-  <td>Attach Attendance Sheet/List</td>
-  <td><input name='' size='50' type='file'></td>
-  </tr>
-  ";
- 
- 
- $data.="<tr class='evenrow'><td></td><td colspan='21' align='right'><div align='right'>
-<button type='button' class='formButton2'   id='button' name='save' id='save' style='width:100px;' value='Save' onclick=\"xajax_update_AdoptionRates(xajax.getFormValues('projects')); return false;\" />Save</button>
-</div></td></tr>
-</table>
-
-
-
-</form>";
-
-$obj->assign('bodyDisplay','innerHTML',$data);
-return $obj;
-}
 function getRecordId($semi_annual,$year,$org_code,$div){
 $obj= new xajaxResponse();
 $n=1;
@@ -14619,7 +12974,7 @@ return $obj;
 } */
  $sql="select narrative_id from tbl_tsoqualitative where org_code='".$org_code."' and year='".$year."' and semi_annual='".$semi_annual."' ";
 //$obj->alert($sql);
-$query=mysql_query($sql)or die(http(0941));
+$query=mysql_query($sql)or die(mysql_error());
 while($queryRecord=mysql_fetch_array($query)){
 //$obj->alert($queryRecord['narrative_id']."---narr----- ".$semi_annual."-semi-----  ----".$div."--div------".$project_id."-prj_id-----".$year."----year");
 if($queryRecord['narrative_id']<>0){
@@ -14650,7 +13005,7 @@ return $obj;
 } */
  $sql="select * from tbl_farmerproductionrecords where org_code='".$org_code."' and year='".$year."' and quarter='".$semi_annual."' ";
 //$obj->alert($sql);
-$query=mysql_query($sql)or die(http(0941));
+$query=mysql_query($sql)or die(mysql_error());
 while($queryRecord=mysql_fetch_array($query)){
 //$obj->alert($queryRecord['narrative_id']."---narr----- ".$semi_annual."-semi-----  ----".$div."--div------".$project_id."-prj_id-----".$year."----year");
 if($queryRecord['org_code']<>0){
@@ -15064,7 +13419,7 @@ $data="<form   method='post' name='formUploadIndividual' id='formUploadIndividua
 <td><textarea name='activity[]' cols=50 rows=3></textarea></td>
 <td><textarea name='milestone[]' cols=18 rows=3></textarea></td>
 <td><select name='quarter[]' size='1'><option value='' >-select-</option>";
-	$s=@mysql_query("select britishSemiannual from tbl_quarters group by britishSemiannual asc") or die(http(0789)); 
+	$s=@mysql_query("select britishSemiannual from tbl_quarters group by britishSemiannual asc") or die(mysql_error()); 
 	while($rr=@mysql_fetch_array($s)){
 	$data.="<option value=\"".$rr['britishSemiannual']."\" >".$rr['britishSemiannual']."</option>";
 	}
@@ -15829,7 +14184,7 @@ $query_string="select * from tbl_lookup  where classCode='5' order by code Asc";
 #where lower(orgName) like '".strtolower($_SESSION['orgname1'])."%'&& lower(organization_type) like '".strtolower($_SESSION['orgtype1'])."%'&& lower(district) like '".strtolower($_SESSION['district1'])."%$feedback->addAlert($query_string);'
 
 
-$query_=mysql_query($query_string)or die(http(0186));
+$query_=mysql_query($query_string)or die(mysql_error());
 
 	  while($row=mysql_fetch_array($query_)){
 

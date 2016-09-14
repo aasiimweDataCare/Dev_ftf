@@ -324,7 +324,7 @@ $query_string.=" order by t.`tbl_techadoptionId` DESC";
   while($row_parent=mysql_fetch_array($query_)){
 	  
 	  //determining the number of child records for each row
-			$s_child="SELECT * FROM `tbl_tech_adoption_jobholder` 
+			$s_child="SELECT * FROM `tbl_tech_adoption_jobHolder` 
 			WHERE `techAdoption_id`=".$row_parent['tbl_techadoptionId']."";
 			$q_child=Execute($s_child) or die(http(__line__));			
 			$num_child_records=mysql_num_rows($q_child);	
@@ -410,7 +410,7 @@ $query_string.=" order by t.`tbl_techadoptionId` DESC";
 			</td>";
 			
 			//return first row of child records
-					$s_first_child = mysql_query("SELECT * FROM `tbl_tech_adoption_jobholder` 
+					$s_first_child = mysql_query("SELECT * FROM `tbl_tech_adoption_jobHolder` 
 					WHERE `techAdoption_id`=".$row_parent['tbl_techadoptionId']." limit 0,1")or die(http(__line__));
 					$first_child_row = mysql_fetch_array($s_first_child );
 					$y=1;
@@ -469,7 +469,7 @@ $query_string.=" order by t.`tbl_techadoptionId` DESC";
 				switch(true){
 					case $num_child_records>1:
 					//loop thru kid records -1
-					$s_other_children = mysql_query("SELECT * FROM `tbl_tech_adoption_jobholder` 
+					$s_other_children = mysql_query("SELECT * FROM `tbl_tech_adoption_jobHolder` 
 					WHERE `techAdoption_id`=".$row_parent['tbl_techadoptionId']." limit 1,100000")or die(http(__line__));
 					$z=1;
 					while($other_children_row = mysql_fetch_array($s_other_children )){
@@ -649,7 +649,7 @@ $sexOfJobHolder_first_child_row=$formValues['sexOfJobHolder_first_child_row'];
 $dateOfEngagement_first_child_row=$formValues['dateOfEngagement_first_child_row'];
 $timeSpentOnJob_first_child_row=$formValues['timeSpentOnJob_first_child_row'];
 
-$sql_first_record="insert into tbl_tech_adoption_jobholder
+$sql_first_record="insert into tbl_tech_adoption_jobHolder
 (`dateOfEngagement`,
 `nameOfJobHolder`,
 `sexOfJobHolder`,
@@ -682,7 +682,7 @@ $query=@mysql_query($sql_first_record)or die(http(__line__));
 	$timeSpentOnJob_other_children=$formValues['timeSpentOnJob_other_children'][$i];
 
 		if(!empty($nameOfJobHolder_other_children)){
-		$sql_other_children="UPDATE `tbl_tech_adoption_jobholder` 
+		$sql_other_children="UPDATE `tbl_tech_adoption_jobHolder` 
 		SET 
 		`dateOfEngagement`='".$dateOfEngagement_other_children."',
 		`nameOfJobHolder`='".$nameOfJobHolder_other_children."',
@@ -1291,7 +1291,7 @@ $timeSpentOnJob_first_child_row=($formValues['timeSpentOnJob_first_child_row'] !
 
 switch(true){
 	case $tbl_id_first_row < 1 :
-	$sql_first_record="INSERT INTO `tbl_laboursavingtech_jobholder`
+	$sql_first_record="INSERT INTO `tbl_labourSavingTech_jobHolder`
 	(`dateOfEngagement`, `nameOfJobHolder`, `sexOfJobHolder`, `timeSpentOnJob`, `labour_saving_tech_id`) 
 	VALUES (
 	'".$dateOfEngagement_first_child_row."',
@@ -1304,7 +1304,7 @@ switch(true){
 
 
 	default:
-	$sql_first_record="UPDATE `tbl_laboursavingtech_jobholder` 
+	$sql_first_record="UPDATE `tbl_labourSavingTech_jobHolder` 
 	SET 
 	`dateOfEngagement`='".$dateOfEngagement_first_child_row."',
 	`nameOfJobHolder`='".$nameOfJobHolder_first_child_row."',
@@ -1329,7 +1329,7 @@ $query=@mysql_query($sql_first_record)or die(mysql_error());
 	$timeSpentOnJob_other_children=$formValues['timeSpentOnJob_other_children'][$i];
 
 		if(!empty($nameOfJobHolder_other_children)){
-		$sql_other_children="UPDATE `tbl_laboursavingtech_jobholder` 
+		$sql_other_children="UPDATE `tbl_labourSavingTech_jobHolder` 
 		SET 
 		`dateOfEngagement`='".$dateOfEngagement_other_children."',
 		`nameOfJobHolder`='".$nameOfJobHolder_other_children."',
@@ -2366,7 +2366,7 @@ switch(trim($cpma_year)){
 		  while($row_parent=mysql_fetch_array($query_)){
 			  
 			  //determining the number of child records for each row
-				$s_child="SELECT * FROM `tbl_apprenticeship_jobholder` WHERE `apprenticeship_id`=".$row_parent['tbl_youthapprenticeId']."";
+				$s_child="SELECT * FROM `tbl_apprenticeship_jobHolder` WHERE `apprenticeship_id`=".$row_parent['tbl_youthapprenticeId']."";
 				$q_child=Execute($s_child) or die(http(__line__));			
 				$num_child_records=mysql_num_rows($q_child);	
 				//$obj->alert($num_child_records);			
@@ -2542,7 +2542,7 @@ switch(trim($cpma_year)){
 					
 					
 					//return first row of child records
-					$s_first_child = mysql_query("SELECT * FROM `tbl_apprenticeship_jobholder` 
+					$s_first_child = mysql_query("SELECT * FROM `tbl_apprenticeship_jobHolder` 
 					WHERE `apprenticeship_id`=".$row_parent['tbl_youthapprenticeId']." limit 0,1")or die(http(__line__));
 					$first_child_row = mysql_fetch_array($s_first_child );
 					$y=1;
@@ -2601,7 +2601,7 @@ switch(trim($cpma_year)){
 				switch(true){
 					case $num_child_records>1:
 					//loop thru kid records -1
-					$s_other_children = mysql_query("SELECT * FROM `tbl_apprenticeship_jobholder` 
+					$s_other_children = mysql_query("SELECT * FROM `tbl_apprenticeship_jobHolder` 
 					WHERE `apprenticeship_id`=".$row_parent['tbl_youthapprenticeId']." limit 1,100000")or die(http(__line__));
 					$z=1;
 					while($other_children_row = mysql_fetch_array($s_other_children )){
@@ -2790,7 +2790,7 @@ $timeSpentOnJob_first_child_row=$formValues['timeSpentOnJob_first_child_row'];
 
 switch(true){
 	case $tbl_id_first_row < 1 :
-	$sql_first_record="INSERT INTO `tbl_apprenticeship_jobholder`
+	$sql_first_record="INSERT INTO `tbl_apprenticeship_jobHolder`
 	(`dateOfEngagement`, `nameOfJobHolder`, `sexOfJobHolder`, `timeSpentOnJob`, `apprenticeship_id`) 
 	VALUES (
 	'".$dateOfEngagement_first_child_row."',
@@ -2803,7 +2803,7 @@ switch(true){
 
 
 	default:
-	$sql_first_record="UPDATE `tbl_apprenticeship_jobholder` 
+	$sql_first_record="UPDATE `tbl_apprenticeship_jobHolder` 
 	SET 
 	`dateOfEngagement`='".$dateOfEngagement_first_child_row."',
 	`nameOfJobHolder`='".$nameOfJobHolder_first_child_row."',
@@ -2829,7 +2829,7 @@ $query=@mysql_query($sql_first_record)or die(mysql_error());
 	$timeSpentOnJob_other_children=$formValues['timeSpentOnJob_other_children'][$i];
 
 		if(!empty($nameOfJobHolder_other_children)){
-		$sql_other_children="UPDATE `tbl_apprenticeship_jobholder` 
+		$sql_other_children="UPDATE `tbl_apprenticeship_jobHolder` 
 		SET 
 		`dateOfEngagement`='".$dateOfEngagement_other_children."',
 		`nameOfJobHolder`='".$nameOfJobHolder_other_children."',
@@ -3532,7 +3532,7 @@ $timeSpentOnJob_first_child_row=($formValues['timeSpentOnJob_first_child_row'] !
 
 switch(true){
 	case $tbl_id_first_row < 1 :
-	$sql_first_record="INSERT INTO `tbl_bds_jobholder`
+	$sql_first_record="INSERT INTO `tbl_bds_jobHolder`
 	(`dateOfEngagement`, `nameOfJobHolder`, `sexOfJobHolder`, `timeSpentOnJob`, `bds_id`) 
 	VALUES (
 	'".$dateOfEngagement_first_child_row."',
@@ -4565,7 +4565,7 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 		`sm`.`year`, 
 		`sm`.`reportingMonth`
 		from `tbl_input_sales` as `s`
-		join `inputsales_metadata` as `sr` on (`sr`.`sales_id` = `s`.`id`)
+		join `inputSales_metaData` as `sr` on (`sr`.`sales_id` = `s`.`id`)
 		join `tbl_input_sales_meta_data` as `sm` on (`sm`.`id` = `sr`.`metadata_id`)
 		where `sm`.`input_sales_id`	is not null ";
 		$reporting_period=(!empty($cpma_year))?'':$reporting_period;
@@ -5937,12 +5937,14 @@ $data="<form action='".$_SERVER['PHP_SELF']."' name='edit_phh' id='edit_phh' met
 		`p`.`id`,  
 		`p`.`dateOfStartOfinputsSalesBusiness`,
 		`p`.`nameOfMiddleValueChainActor`,
+		`p`.`msmeId`,
+		`p`.`msmeType`,
 		`pm`.`dateSubmission`,
 		`pm`.`reportingPeriod`,
 		`pm`.`year`, 
 		`pm`.`reportingMonth`
 		from `tbl_phh` as `p`
-		join `phh_metadata` as `pr` on (`pr`.`phh_id` = `p`.`id`)
+		join `phh_metaData` as `pr` on (`pr`.`phh_id` = `p`.`id`)
 		join `tbl_phh_meta_data` as `pm` on (`pm`.`id` = `pr`.`metadata_id`)
 		where `pm`.`phh_id`	is not null ";
 		$reporting_period=(!empty($cpma_year))?'':$reporting_period;
@@ -6191,12 +6193,17 @@ $data="<form action='".$_SERVER['PHP_SELF']."' name='edit_phh' id='edit_phh' met
 		$data.="<td ".$row_span.">".$n.".<input type='hidden'  name='tbl_phh_id' 
 					id='tbl_phh_id' value='".$row_parent['id']."' />			
 					</td>";
+
+		$partnerProperties=$qmobj->get_phh_nameValuchainPartnerTypeAndId($row_parent['msmeId'],$row_parent['msmeType'],$row_parent['nameOfMiddleValueChainActor']);
+		
+		list($partnershipId,$partnerType)=$partnerProperties;
+		$obj->alert($partnershipId.'-'.$partnerType);
 		$data.="<td ".$row_span.">
 		<select name='nameOfMiddleValueChainActor' 
 		id='nameOfMiddleValueChainActor'
-		style='width:150px;'>";
+		style='width:150px;'>";		
 		$data.="<option value=''>-Select-</option>";
-		$data.=$qmobj->Form2PartnerFilter($row_parent['nameOfMiddleValueChainActor']);
+		$data.=$qmobj->get_form2_partner_filter($partnershipId,$partnerType);
 		$data.="</select>
 		</td>";
 		
@@ -6663,48 +6670,247 @@ return $obj;
 function update_phh($formValues){
 $obj=new xajaxResponse();
 $n=1;
+$qmobj = new QueryManager('');
 
-for($i=0;$i<count($formValues['loopkey']);$i++){
- 
-$tbl_bankLoanId=$formValues['tbl_bankLoanId'][$i];
-$techArea=$formValues['techArea'][$i];
-$nameMSME=$formValues['nameMSME'][$i];
-$valueChain=$formValues['valueChainBds'][$i];
-$cpmAssistance=$formValues['cpmAssistance'][$i];
-$amountLoanAccessed=$formValues['amountLoanAccessed'][$i];
-$recipientSex=$formValues['recipientSex'][$i];
-$bankingInstitution=$formValues['bankingInstitution'][$i];
-$jobsCreatedFemaleNew=$formValues['jobsCreatedFemaleNew'][$i];
-$jobsCreatedFemaleOld=$formValues['jobsCreatedFemaleOld'][$i];
-$jobsCreatedMaleNew=$formValues['jobsCreatedMaleNew'][$i];
-$jobsCreatedMaleOld=$formValues['jobsCreatedMaleOld'][$i];
-$jobsCreatedTotalNew=$formValues['jobsCreatedTotalNew'][$i];
-$jobsCreatedTotalOld=$formValues['jobsCreatedTotalOld'][$i];
+$tbl_phh_id=$formValues['tbl_phh_id'];
+$dateOfStartOfinputsSalesBusiness=$formValues['dateOfStartOfinputsSalesBusiness'];
+$nameOfMiddleValueChainActor=$formValues['nameOfMiddleValueChainActor'];
+list($smeId,$smeType) = QueryManager::get_partner_type_and_Id(QueryManager::get_partnership_id($nameOfMiddleValueChainActor),$nameOfMiddleValueChainActor);
+$tot_string_length= trim(strlen($nameOfMiddleValueChainActor));
+$string_length_char= trim(strrpos($nameOfMiddleValueChainActor,"|"));
+$start_index=($string_length_char-$tot_string_length);
+$nameOfMiddleValueChainActor=trim(substr($nameOfMiddleValueChainActor, 0, ($start_index)));
+
+//update  parent table
+ $sql_parent_record="UPDATE `tbl_phh` 
+SET
+`dateOfStartOfinputsSalesBusiness`='".$dateOfStartOfinputsSalesBusiness."',
+`nameOfMiddleValueChainActor`='".$nameOfMiddleValueChainActor."',
+`msmeId`='".$smeId."',
+`msmeType`='".$smeType."'
+WHERE
+`id` ='".$tbl_phh_id."'";
+//$obj->alert($sql_parent_record); 
+//$query=@mysql_query($sql_parent_record)or die(http(__line__)); 
+$query=@mysql_query($sql_parent_record)or die(mysql_error()); 
 
 
 
-$sql="UPDATE `tbl_bankloans` SET
-`techArea`='".$techArea."',
-`nameMSME`='".$nameMSME."',
-`valueChain`='".$valueChain."',
-`cpmAssistance`='".$cpmAssistance."',
-`amountLoanAccessed`='".$amountLoanAccessed."',
-`recipientSex`='".$recipientSex."',
-`bankingInstitution`='".$bankingInstitution."',
-`jobsCreatedFemaleNew`='".$jobsCreatedFemaleNew."',
-`jobsCreatedFemaleOld`='".$jobsCreatedFemaleOld."',
-`jobsCreatedMaleNew`='".$jobsCreatedMaleNew."',
-`jobsCreatedMaleOld`='".$jobsCreatedMaleOld."',
-`jobsCreatedTotalNew`='".$jobsCreatedTotalNew."',
-`jobsCreatedTotalOld`='".$jobsCreatedTotalOld."',
-`updatedby`='".$_SESSION['username']."'
-WHERE `tbl_bankLoanId`='".$tbl_bankLoanId."'";
-//$obj->alert($sql);
-$query=@mysql_query($sql)or die(http(1595));
-			 
-			 }
-$obj->assign('bodyDisplay','innerHTML',congMsg("Bank Loan record(s) successfully Updated!"));
-$obj->call("xajax_view_bankLoans",'','','');
+//when reportingMonth is null or invalid
+$CompiledBy_first_child_row=($formValues['CompiledBy_first_child_row']=='')?$_SESSION['name']:$formValues['CompiledBy_first_child_row'];
+$valueChain_first_child_row=$formValues['valueChain_first_child_row'];
+$reporting_period_first_child_row_rp_start_month=substr($formValues['reporting_period_first_child_row'], 0, -16); 
+$reporting_period_first_child_row_rp_end_month=substr($formValues['reporting_period_first_child_row'], 11, -5);
+$year_first_child_row=substr($formValues['reporting_period_first_child_row'],-4);
+$reportingPeriod_first_child_row="".$reporting_period_first_child_row_rp_start_month." - ".$reporting_period_first_child_row_rp_end_month."";
+$reportingMonth_first_child_row=$formValues['reportingMonth_first_child_row'];
+
+//$obj->alert($year_first_child_row);
+
+switch($reporting_period_first_child_row_rp_end_month){
+	case"Sep":
+	$reportingMonth_first_child_row_default="".$year_first_child_row."-09-30 00:00:00";
+	break;
+	
+	case"Mar":
+	$reportingMonth_first_child_row_default="".$year_first_child_row."-03-31 00:00:00";
+	break;
+	
+	default:	
+	break;
+}
+switch($reporting_period_first_child_row_rp_start_month){
+	case"Apr":
+	$start_date_default_first_child_row="".$year_first_child_row."-04-01";
+	$end_date_default_first_child_row="".$year_first_child_row."-09-30";
+	break;
+	
+	case"Oct":
+	$start_date_default_first_child_row="".$year_first_child_row."-10-01";
+	$end_date_default_first_child_row="".($year_first_child_row+1)."-03-31";
+	break;
+	
+	default:	
+	break;
+}
+$reportingMonth_first_child_row=($reportingMonth_first_child_row=='' or $reportingMonth_first_child_row==null)?$reportingMonth_first_child_row_default:$reportingMonth_first_child_row;
+$assistanceRenderedByActivity_first_child_row=($formValues['assistanceRenderedByActivity_first_child_row']);
+$sizeOfStoreRefurbished_first_child_row=($formValues['sizeOfStoreRefurbished_first_child_row'] !=='')?$formValues['sizeOfStoreRefurbished_first_child_row']:0;
+$storageTypeForColdChain_first_child_row=($formValues['storageTypeForColdChain_first_child_row'] !=='')?$formValues['storageTypeForColdChain_first_child_row']:0;
+$storageTypeForDryGoods_first_child_row=($formValues['storageTypeForDryGoods_first_child_row'] !=='')?$formValues['storageTypeForDryGoods_first_child_row']:0;
+$amountInvestedInRefurbishing_first_child_row=($formValues['amountInvestedInRefurbishing_first_child_row'] !=='')?$formValues['amountInvestedInRefurbishing_first_child_row']:0;
+$tbl_id_first_row=$formValues['tbl_id_first_row'];
+$nameOfJobHolder_first_child_row=($formValues['nameOfJobHolder_first_child_row'] !=='')?$formValues['nameOfJobHolder_first_child_row']:'-';
+$sexOfJobHolder_first_child_row=($formValues['sexOfJobHolder_first_child_row'] !=='')?$formValues['sexOfJobHolder_first_child_row']:'-';
+$dateOfEngagement_first_child_row=$formValues['dateOfEngagement_first_child_row'];
+$timeSpentOnJob_first_child_row=($formValues['timeSpentOnJob_first_child_row'] !=='')?$formValues['timeSpentOnJob_first_child_row']:0;
+
+
+
+
+switch(true){
+	case $tbl_id_first_row < 1 :
+	$sql_first_record="INSERT INTO `tbl_phh_meta_data`( 
+	`amountInvestedInRefurbishing`, 
+	`assistanceRenderedByActivity`, 
+	`compiledBy`, 
+	`dateOfEngagement`,
+	`dateSubmission`, 
+	`nameOfJobHolder`,	   
+	`sizeOfStoreRefurbished`, 
+	`storageTypeForColdChain`,
+	`storageTypeForDryGoods`, 
+	`reportingPeriod`,
+	`reviewedBy`, 
+	`sexOfJobHolder`, 
+	`submittedBy`,
+	`timeSpentOnJob`, 
+	`updatedby`, 
+	`valueChain`, 
+	`year`,
+	`phh_id`, 
+	`reportingMonth`
+	) VALUES (
+	'".floatval($amountInvestedInRefurbishing_first_child_row)."',
+	'".$assistanceRenderedByActivity_first_child_row."',
+	'".$CompiledBy_first_child_row."',
+	'".$qmobj->cleanDirtyDates_Form2Edits($dateOfEngagement_first_child_row)."',	
+	'".$qmobj->cleanDirtyDates_Form2Edits($end_date_default_first_child_row)."',
+	'".$qmobj->validateRequiredNumericInput_Form2Edits($inputsSoldByChemicals_first_child_row)."',
+	'".$nameOfJobHolder_first_child_row."',			
+	'".$qmobj->validateRequiredNumericInput_Form2Edits($sizeOfStoreRefurbished_first_child_row)."',	
+	'".$qmobj->validateRequiredNumericInput_Form2Edits($storageTypeForColdChain_first_child_row)."',
+	'".$qmobj->validateRequiredNumericInput_Form2Edits($storageTypeForDryGoods_first_child_row)."',
+	'".$reportingPeriod_first_child_row."',	
+	'".$CompiledBy_first_child_row."',
+	'".$sexOfJobHolder_first_child_row."',
+	'".$CompiledBy_first_child_row."',
+	'".$timeSpentOnJob_first_child_row."',
+	'".$CompiledBy_first_child_row."',	
+	'".$valueChain_first_child_row."',		
+	'".$year_first_child_row."',	
+	'".$tbl_phh_id."',	
+	'".$reportingMonth_first_child_row."'	
+	)";
+	break;
+
+
+	default:
+	$sql_first_record="UPDATE `tbl_phh_meta_data` 
+	SET 	
+	`amountInvestedInRefurbishing`='".floatval($amountInvestedInRefurbishing_first_child_row)."',
+	`assistanceRenderedByActivity`='".$assistanceRenderedByActivity_first_child_row."',
+	`compiledBy`='".$CompiledBy_first_child_row."', 
+	`dateOfEngagement`='".$qmobj->cleanDirtyDates_Form2Edits($dateOfEngagement_first_child_row)."',
+	`dateSubmission`='".$qmobj->cleanDirtyDates_Form2Edits($end_date_default_first_child_row)."',
+	`nameOfJobHolder`='".$nameOfJobHolder_first_child_row."', 
+	`sizeOfStoreRefurbished`='".$qmobj->validateRequiredNumericInput_Form2Edits($sizeOfStoreRefurbished_first_child_row)."', 
+	`storageTypeForColdChain`='".$qmobj->validateRequiredNumericInput_Form2Edits($storageTypeForColdChain_first_child_row)."',
+	`storageTypeForDryGoods`='".$qmobj->validateRequiredNumericInput_Form2Edits($storageTypeForDryGoods_first_child_row)."', 
+	`reportingPeriod`='".$reportinPeriod_first_child_row."',
+	`reviewedBy`='".$CompiledBy_first_child_row."', 
+	`sexOfJobHolder`='".$sexOfJobHolder_first_child_row."', 
+	`submittedBy`='".$CompiledBy_first_child_row."',
+	`timeSpentOnJob`='".$timeSpentOnJob_first_child_row."', 
+	`updatedby`='".$CompiledBy_first_child_row."', 
+	`valueChain`='".$valueChain_first_child_row."', 
+	`year`='".$year_first_child_row."',
+	`phh_id`='".$tbl_phh_id."', 
+	`reportingMonth`='".$reportingMonth_first_child_row."' 
+	WHERE `id`='".$tbl_id_first_row."'
+	and `phh_id`='".$tbl_phh_id."'";
+	break;
+	
+}
+
+$obj->alert($sql_first_record); 
+$query=@mysql_query($sql_first_record)or die(mysql_error()); 
+
+//update  other kids' table records
+	for($i=0;$i<count($formValues['loopkey_edit_other_children']);$i++){
+	$tbl_id_other_children=$formValues['tbl_id_other_children'][$i];
+	$CompiledBy_other_children=($formValues['CompiledBy_other_children'][$i]=='')?$_SESSION['name']:$formValues['CompiledBy_other_children'][$i];
+	$valueChain_other_children=$formValues['valueChain_other_children'][$i];
+	$reporting_period_other_children_rp_start_month=substr($formValues['reporting_period_other_children'][$i], 0, -16); 
+	$reporting_period_other_children_rp_end_month=substr($formValues['reporting_period_other_children'][$i], 11, -5);
+	$year_other_children=substr($formValues['reporting_period_other_children'][$i],-4);
+	$reportinPeriod_other_children="".$reporting_period_other_children_rp_start_month." - ".$reporting_period_other_children_rp_end_month."";
+	$reportingMonth_other_children=$formValues['reportingMonth_other_children'][$i];
+	switch($reporting_period_other_children_rp_end_month){
+	case"Sep":
+	$reportingMonth_other_children_default="".$year_other_children."-09-30 00:00:00";
+	break;
+
+	case"Mar":
+	$reportingMonth_other_children_default="".$year_other_children."-03-31 00:00:00";
+	break;
+
+	default:	
+	break;
+	}
+	switch($reporting_period_other_children_rp_start_month){
+	case"Apr":
+	$start_date_default_other_children="".$year_other_children."-04-01";
+	$end_date_default_other_children="".$year_other_children."-09-30";
+	break;
+
+	case"Oct":
+	$start_date_default_other_children="".$year_other_children."-10-01";
+	$end_date_default_other_children="".($year_other_children+1)."-03-31";
+	break;
+
+	default:	
+	break;
+	}
+
+$reportingMonth_other_children=($reportingMonth_other_children=='' or $reportingMonth_other_children==null)?$reportingMonth_other_children_default:$reportingMonth_other_children;
+$assistanceRenderedByActivity_other_children=($formValues['assistanceRenderedByActivity_other_children'][$i]);
+$sizeOfStoreRefurbished_other_children=($formValues['sizeOfStoreRefurbished_other_children'][$i] !=='')?$formValues['sizeOfStoreRefurbished_other_children'][$i]:0;
+$storageTypeForColdChain_other_children=($formValues['storageTypeForColdChain_other_children'][$i] !=='')?$formValues['storageTypeForColdChain_other_children'][$i]:0;
+$storageTypeForDryGoods_other_children=($formValues['storageTypeForDryGoods_other_children'][$i] !=='')?$formValues['storageTypeForDryGoods_other_children'][$i]:0;
+$amountInvestedInRefurbishing_other_children=($formValues['amountInvestedInRefurbishing_other_children'][$i] !=='')?$formValues['amountInvestedInRefurbishing_other_children'][$i]:0;
+$tbl_id_first_row=$formValues['tbl_id_first_row'];
+$nameOfJobHolder_other_children=($formValues['nameOfJobHolder_other_children'][$i] !=='')?$formValues['nameOfJobHolder_other_children'][$i]:'-';
+$sexOfJobHolder_other_children=($formValues['sexOfJobHolder_other_children'][$i] !=='')?$formValues['sexOfJobHolder_other_children'][$i]:'-';
+$dateOfEngagement_other_children=$formValues['dateOfEngagement_other_children'][$i];
+$timeSpentOnJob_other_children=($formValues['timeSpentOnJob_other_children'][$i] !=='')?$formValues['timeSpentOnJob_other_children'][$i]:0;
+
+if(!empty($nameOfJobHolder_other_children)){
+		$sql_other_children="UPDATE `tbl_phh_meta_data` 
+	SET 	
+	`amountInvestedInRefurbishing`='".floatval($amountInvestedInRefurbishing_other_children)."',
+	`assistanceRenderedByActivity`='".$assistanceRenderedByActivity_other_children."',
+	`compiledBy`='".$CompiledBy_other_children."', 
+	`dateOfEngagement`='".$qmobj->cleanDirtyDates_Form2Edits($dateOfEngagement_other_children)."',
+	`dateSubmission`='".$qmobj->cleanDirtyDates_Form2Edits($end_date_default_other_children)."',
+	`nameOfJobHolder`='".$nameOfJobHolder_other_children."', 
+	`sizeOfStoreRefurbished`='".$qmobj->validateRequiredNumericInput_Form2Edits($sizeOfStoreRefurbished_other_children)."', 
+	`storageTypeForColdChain`='".$qmobj->validateRequiredNumericInput_Form2Edits($storageTypeForColdChain_other_children)."',
+	`storageTypeForDryGoods`='".$qmobj->validateRequiredNumericInput_Form2Edits($storageTypeForDryGoods_other_children)."', 
+	`reportingPeriod`='".$reportinPeriod_other_children."',
+	`reviewedBy`='".$CompiledBy_other_children."', 
+	`sexOfJobHolder`='".$sexOfJobHolder_other_children."', 
+	`submittedBy`='".$CompiledBy_other_children."',
+	`timeSpentOnJob`='".$timeSpentOnJob_other_children."', 
+	`updatedby`='".$CompiledBy_other_children."', 
+	`valueChain`='".$valueChain_other_children."', 
+	`year`='".$year_other_children."',
+	`phh_id`='".$tbl_phh_id."', 
+	`reportingMonth`='".$reportingMonth_other_children."' 
+	WHERE `id`='".$tbl_id_other_children."'
+	and `phh_id`='".$tbl_phh_id."'";
+		
+		$obj->alert($sql_other_children); 
+		$query=@mysql_query($sql_other_children)or die(mysql_error()); 
+		
+		
+		}
+
+	}
+
+$obj->call("hidemyLoaderDiv");
+$obj->assign('bodyDisplay','innerHTML',congMsg("PHH record successfully Updated!"));
+$obj->call("xajax_view_phh",'','','',1,20);
 return $obj;
 }
 

@@ -108,6 +108,7 @@ function loadingIcon(Keys,Component) {
 	if(Component=='save_Xtrapolation')xajax_save_extrapolation(Keys,Component);
 	if(Component=='save_Indicator')xajax_save_indicatorTwentyEight(Keys,Component);
 	if(Component=='save_lTwo')xajax_save_levelTwoIndicators(Keys,Component);
+	if(Component=='save_new_market_price_form')xajax_save_market_price(Keys,Component);
     })
     
 	
@@ -124,6 +125,7 @@ function loadingIconFormOne(Component) {
 
 
 function loadingIconFormTwo(Component) {
+	console.log(Component);
     $("#dvLoading").show(function(){
 		if(Component=='go_to_enterpriseTechAdoption')xajax_view_enterpriseTechAdoption('','','','','',1,20);
 		if(Component=='go_to_labourSavingTech')xajax_view_labourSavingTech('','','',1,20);
