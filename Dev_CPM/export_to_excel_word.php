@@ -6418,68 +6418,69 @@ $valueChain=($_SESSION['valueChain']<>''?$_SESSION['valueChain']:$valueChain);
 $partnerType=($_SESSION['partnerType']<>''?$_SESSION['partnerType']:$partnerType);
 
 
-$data.="<form  name='privatePartnerships' id='privatePartnerships' method='post' action='".$PHP_SELF."'>";
-$data.="<table width='800' id='report' BORDER='1' CELLSPACING='1'>";
-$data.="<tr class='evenrow3' height='31'>
-    <th colspan='12'>
-      <div align='center'>
-        Commodity Production and Marketing Activity  VALUE CHAIN DATA COLLECTION FORM/PUBLIC PRIVATE PARTNERSHIPS
-      </div>
-    </th>
-  </tr>";
- 
- $data.="
-<tr class='evenrow3'>
-    <th rowspan='2'>#</th>
+$data.="<table class='standard-report-grid' width='100%' border='0' cellspacing='1' cellpadding='1'>";
+
+$data.="<tr>
+	<th colspan='12'>
+	Commodity Production and Marketing Activity VALUE CHAIN DATA COLLECTION FORM/PUBLIC PRIVATE PARTNERSHIPS</th>
+</tr>";			
+
+//===================data to be displayed=====================
+$data.="<tr>
+    <th rowspan='2' class='first-cell-header'>#</th>
     <th rowspan='2'>Name of partner/Business / Grantee</th>
 	<th rowspan='2'>Reporting Period</th>
-    <th rowspan='2'>Value chain</th>
+    <th rowspan='2' class='small-cell-header'>Value chain</th>
     <th rowspan='2'>Partnership Focus (USE Agricultural production, Agricultural PH transformation, Multi-focus, others)</th>
     <th colspan='3'>Value of Partnership (Ushs)</th>
     <th colspan='4'>Jobs Created</th>
   </tr>
   <tr>
-    <th>Activity</th>
-    <th>Partner</th>
-    <th>Total</th>
+    <th class='small-cell-header'>Activity</th>
+    <th class='small-cell-header'>Partner</th>
+    <th class='small-cell-header'>Total</th>
     <th>Name of Job holder</th>
-    <th>Sex</th>
-    <th>Date of engagement</th>
-    <th>Time spent on job (Months)</th>
-  </tr>";
+    <th class='small-cell-header'>Sex</th>
+    <th class='small-cell-header'>Date of engagement</th>
+    <th class='small-cell-header'>Time spent on job (Months)</th>
+  </tr>
+  </thead>
+  <tbody>";
   
-	switch($cpma_year){
-			case'CPMA Year One':
-			$reportingYearToPeriod="and `p`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
-			and `p`.`reportingMonth` between ('2012-10-01') and ('2013-09-30')
-			and `p`.`year` in (2012,2013)";
+	switch(trim($cpma_year)){
+
+			case trim('Project start up'):
+			$reportingYearToPeriod="and `p`.`reportingPeriod` in ('Apr - Sep') 
+			and `p`.`year` in (2013)";
 			break;
-			
-			case'CPMA Year Two':
-			$reportingYearToPeriod="and `p`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
-			and `p`.`reportingMonth` between ('2013-10-01') and ('2014-09-30')
+
+			case trim('CPMA Year One'):
+			$reportingYearToPeriod="and `p`.`reportingPeriod` in ('Oct - Mar','Apr - Sep')
+			and `p`.`reportingMonth` between ('2013-10-01') and ('2014-09-30') 
 			and `p`.`year` in (2013,2014)";
 			break;
 			
-			case'CPMA Year Three':
+			case trim('CPMA Year Two'):
 			$reportingYearToPeriod="and `p`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
 			and `p`.`reportingMonth` between ('2014-10-01') and ('2015-09-30')
 			and `p`.`year` in (2014,2015)";
 			break;
 			
-			case'CPMA Year Four':
+			case trim('CPMA Year Three'):
 			$reportingYearToPeriod="and `p`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
 			and `p`.`reportingMonth` between ('2015-10-01') and ('2016-09-30')
+			and `p`.`DateSubmission` between ('2015-10-01') and ('2016-09-30')
 			and `p`.`year` in (2015,2016)";
 			break;
 			
-			case'CPMA Year Five':
+			case trim('CPMA Year Four'):
 			$reportingYearToPeriod="and `p`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
 			and `p`.`reportingMonth` between ('2016-10-01') and ('2017-09-30')
+			and `p`.`DateSubmission` between ('2016-10-01') and ('2017-09-30')
 			and `p`.`year` in (2016,2017)";
 			break;
 			
-			case'CPMA Year Six':
+			case trim('CPMA Year Five(Activity close out)'):
 			$reportingYearToPeriod="and `p`.`reportingPeriod` in ('Oct - Mar','Apr - Sep') 
 			and `p`.`reportingMonth` between ('2017-10-01') and ('2018-09-30')
 			and `p`.`year` in (2017,2018)";
@@ -6489,16 +6490,8 @@ $data.="<tr class='evenrow3' height='31'>
 			break;
 		}
 		
-		switch($reporting_period){
-			case'Oct 2012 - Mar 2013':
-			$reportingYearToPeriodCleaned="
-			and `p`.`reportingPeriod` = 'Oct - Mar' 
-			and `p`.`reportingMonth` between ('2012-10-01') and ('2013-03-31')
-			and `p`.`year` in (2012,2013)
-			";
-			break;
-			
-			case'Apr 2013 - Sep 2013':
+		switch(trim($reporting_period)){
+			case trim('Project start up'):
 			$reportingYearToPeriodCleaned="
 			and `p`.`reportingPeriod` = 'Apr - Sep' 
 			and `p`.`reportingMonth` between ('2013-04-01') and ('2013-09-30')
@@ -6506,7 +6499,7 @@ $data.="<tr class='evenrow3' height='31'>
 			";
 			break;
 			
-			case'Oct 2013 - Mar 2014':
+			case trim('Oct 2013 - Mar 2014'):
 			$reportingYearToPeriodCleaned="
 			and `p`.`reportingPeriod` = 'Oct - Mar' 
 			and `p`.`reportingMonth` between ('2013-10-01') and ('2014-03-31')
@@ -6514,7 +6507,7 @@ $data.="<tr class='evenrow3' height='31'>
 			";
 			break;
 			
-			case'Apr 2014 - Sep 2014':
+			case trim('Apr 2014 - Sep 2014'):
 			$reportingYearToPeriodCleaned="
 			and `p`.`reportingPeriod` = 'Apr - Sep' 
 			and `p`.`reportingMonth` between ('2014-04-01') and ('2014-09-30')
@@ -6522,7 +6515,7 @@ $data.="<tr class='evenrow3' height='31'>
 			";
 			break;
 			
-			case'Oct 2014 - Mar 2015':
+			case trim('Oct 2014 - Mar 2015'):
 			$reportingYearToPeriodCleaned="
 			and `p`.`reportingPeriod` = 'Oct - Mar' 
 			and `p`.`reportingMonth` between ('2014-10-01') and ('2015-03-31')
@@ -6530,7 +6523,7 @@ $data.="<tr class='evenrow3' height='31'>
 			";
 			break;
 			
-			case'Apr 2015 - Sep 2015':
+			case trim('Apr 2015 - Sep 2015'):
 			$reportingYearToPeriodCleaned="
 			and `p`.`reportingPeriod` = 'Apr - Sep' 
 			and `p`.`reportingMonth` between ('2015-04-01') and ('2015-09-30')
@@ -6538,7 +6531,7 @@ $data.="<tr class='evenrow3' height='31'>
 			";
 			break;
 			
-			case'Oct 2015 - Mar 2016':
+			case trim('Oct 2015 - Mar 2016'):
 			$reportingYearToPeriodCleaned="
 			and `p`.`reportingPeriod` = 'Oct - Mar' 
 			and `p`.`reportingMonth` between ('2015-10-01') and ('2016-03-31')
@@ -6546,7 +6539,7 @@ $data.="<tr class='evenrow3' height='31'>
 			";
 			break;
 			
-			case'Apr 2016 - Sep 2016':
+			case trim('Apr 2016 - Sep 2016'):
 			$reportingYearToPeriodCleaned="
 			and `p`.`reportingPeriod` = 'Apr - Sep' 
 			and `p`.`reportingMonth` between ('2016-04-01') and ('2016-09-30')
@@ -6554,7 +6547,7 @@ $data.="<tr class='evenrow3' height='31'>
 			";
 			break;
 			
-			case'Oct 2016 - Mar 2017':
+			case trim('Oct 2016 - Mar 2017'):
 			$reportingYearToPeriodCleaned="
 			and `p`.`reportingPeriod` = 'Oct - Mar' 
 			and `p`.`reportingMonth` between ('2016-10-01') and ('2017-03-31')
@@ -6562,7 +6555,7 @@ $data.="<tr class='evenrow3' height='31'>
 			";
 			break;
 			
-			case'Apr 2017 - Sep 2017':
+			case trim('Apr 2017 - Sep 2017'):
 			$reportingYearToPeriodCleaned="
 			and `p`.`reportingPeriod` = 'Apr - Sep' 
 			and `p`.`reportingMonth` between ('2017-04-01') and ('2017-09-30')
@@ -6570,7 +6563,7 @@ $data.="<tr class='evenrow3' height='31'>
 			";
 			break;
 			
-			case'Oct 2017 - Mar 2018':
+			case trim('Oct 2017 – Mar 2018'):
 			$reportingYearToPeriodCleaned="
 			and `p`.`reportingPeriod` = 'Oct - Mar' 
 			and `p`.`reportingMonth` between ('2017-10-01') and ('2018-03-31')
@@ -6578,7 +6571,7 @@ $data.="<tr class='evenrow3' height='31'>
 			";
 			break;
 			
-			case'Apr 2018 - Sep 2018':
+			case trim('Apr 2018 – May 2018'):
 			$reportingYearToPeriodCleaned="
 			and `p`.`reportingPeriod` = 'Apr - Sep' 
 			and `p`.`reportingMonth` between ('2018-04-01') and ('2018-09-30')
@@ -6586,99 +6579,83 @@ $data.="<tr class='evenrow3' height='31'>
 			";
 			break;
 			
-			
-			break;
-			
 			default:
 			break;
 		}
-  
-		$query_string="select 
-		`p`.*,
+		
+		$query_string="select  `p`.*,
 		case
-			when `p`.`reportingPeriod` = 'Oct - Mar' 
-			and `p`.`reportingMonth` 
-			between ('2012-10-01') and ('2013-03-31') 
-			and `p`.`year` in (2012,2013) 
-			then 'Oct 2012 - Mar 2013'
-			
-			when `p`.`reportingPeriod` = 'Apr - Sep' 
-			and `p`.`reportingMonth` 
-			between ('2013-04-01') and ('2013-09-30') 
-			and `p`.`year` in (2013) 
-			then 'Apr 2013 - Sep 2013'
-			
-			when `p`.`reportingPeriod` = 'Oct - Mar' 
-			and `p`.`reportingMonth` 
-			between ('2013-10-01') and ('2014-03-31') 
-			and `p`.`year` in (2013,2014) 
-			then 'Oct 2013 - Mar 2014'
-			
-			when `p`.`reportingPeriod` = 'Apr - Sep' 
-			and `p`.`reportingMonth` 
-			between ('2014-04-01') and ('2014-09-30') 
-			and `p`.`year` in (2014) 
-			then 'Apr 2014 - Sep 2014'
-			
-			when `p`.`reportingPeriod` = 'Oct - Mar' 
-			and `p`.`reportingMonth` 
-			between ('2014-10-01') and ('2015-03-31') 
-			and `p`.`year` in (2014,2015) 
-			then 'Oct 2014 - Mar 2015'
-			
-			when `p`.`reportingPeriod` = 'Apr - Sep' 
-			and `p`.`reportingMonth` 
-			between ('2015-04-01') and ('2015-09-30') 
-			and `p`.`year` in (2015) 
-			then 'Apr 2015 - Sep 2015'
-			
-			when `p`.`reportingPeriod` = 'Oct - Mar' 
-			and `p`.`reportingMonth` 
-			between ('2015-10-01') and ('2016-03-31') 
-			and `p`.`year` in (2015,2016) 
-			then 'Oct 2015 - Mar 2016'
-			
-			when `p`.`reportingPeriod` = 'Apr - Sep' 
-			and `p`.`reportingMonth` 
-			between ('2016-04-01') and ('2016-09-30') 
-			and `p`.`year` in (2016) 
-			then 'Apr 2016 - Sep 2016'
-			
-			when `p`.`reportingPeriod` = 'Oct - Mar' 
-			and `p`.`reportingMonth` 
-			between ('2016-10-01') and ('2017-03-31') 
-			and `p`.`year` in (2016,2017) 
-			then 'Oct 2016 - Mar 2017'
-			
-			when `p`.`reportingPeriod` = 'Apr - Sep' 
-			and `p`.`reportingMonth` 
-			between ('2017-04-01') and ('2017-09-30') 
-			and `p`.`year` in (2017) 
-			then 'Apr 2017 - Sep 2017'
-			
-			when `p`.`reportingPeriod` = 'Oct - Mar' 
-			and `p`.`reportingMonth` 
-			between ('2017-10-01') and ('2018-03-31') 
-			and `p`.`year` in (2017,2018) 
-			then 'Oct 2017 - Mar 2018'
-			
-			when `p`.`reportingPeriod` = 'Apr - Sep' 
-			and `p`.`reportingMonth` 
-			between ('2018-04-01') and ('2018-09-30') 
-			and `p`.`year` in (2017) 
-			then 'Apr 2018 - Sep 2018'
-			
-		else `p`.`reportingPeriod`
-		end 
-		as  `reportingPeriod_cleaned`,
-		`v`.*,
-		`Pj`.`dateOfEngagement` as `dateOfEngagement_Pj`,
-		`Pj`.`nameOfJobHolder` as `nameOfJobHolder_Pj`,
-		`Pj`.`sexOfJobHolder` as `sexOfJobHolder_Pj`, 
-		`Pj`.`timeSpentOnJob` as `timeSpentOnJob_Pj` 
-		from `tbl_public_private_partnership` as `p` 
-		join tbl_partnership_jobHolder as `Pj`
-		on (`p`.`tbl_partnershipId` = `Pj`.`partnership_id`),
+		when `p`.`reportingPeriod` = 'Apr - Sep' 
+		and `p`.`reportingMonth` 
+		between ('2013-04-01') and ('2013-09-30') 
+		and `p`.`year` in (2013) 
+		then 'Apr 2012 - Sep 2013'
+		
+		when `p`.`reportingPeriod` = 'Oct - Mar' 
+		and `p`.`reportingMonth` 
+		between ('2013-10-01') and ('2014-03-31') 
+		and `p`.`year` in (2013,2014) 
+		then 'Oct 2013 - Mar 2014'
+
+		when `p`.`reportingPeriod` = 'Apr - Sep' 
+		and `p`.`reportingMonth` 
+		between ('2014-04-01') and ('2014-09-30') 
+		and `p`.`year` in (2014) 
+		then 'Apr 2014 - Sep 2014'
+
+		when `p`.`reportingPeriod` = 'Oct - Mar' 
+		and `p`.`reportingMonth` 
+		between ('2014-10-01') and ('2015-03-31') 
+		and `p`.`year` in (2014,2015) 
+		then 'Oct 2014 - Mar 2015'
+
+		when `p`.`reportingPeriod` = 'Apr - Sep' 
+		and `p`.`reportingMonth` 
+		between ('2015-04-01') and ('2015-09-30') 
+		and `p`.`year` in (2015) 
+		then 'Apr 2015 - Sep 2015'
+
+		when `p`.`reportingPeriod` = 'Oct - Mar' 
+		and `p`.`reportingMonth` 
+		between ('2015-10-01') and ('2016-03-31') 
+		and `p`.`year` in (2015,2016) 
+		then 'Oct 2015 - Mar 2016'
+
+		when `p`.`reportingPeriod` = 'Apr - Sep' 
+		and `p`.`reportingMonth` 
+		between ('2016-04-01') and ('2016-09-30') 
+		and `p`.`year` in (2016) 
+		then 'Apr 2016 - Sep 2016'
+
+		when `p`.`reportingPeriod` = 'Oct - Mar' 
+		and `p`.`reportingMonth` 
+		between ('2016-10-01') and ('2017-03-31') 
+		and `p`.`year` in (2016,2017) 
+		then 'Oct 2016 - Mar 2017'
+
+		when `p`.`reportingPeriod` = 'Apr - Sep' 
+		and `p`.`reportingMonth` 
+		between ('2017-04-01') and ('2017-09-30') 
+		and `p`.`year` in (2017) 
+		then 'Apr 2017 - Sep 2017'
+
+		when `p`.`reportingPeriod` = 'Oct - Mar' 
+		and `p`.`reportingMonth` 
+		between ('2017-10-01') and ('2018-03-31') 
+		and `p`.`year` in (2017,2018) 
+		then 'Oct 2017 - Mar 2018'
+
+		when `p`.`reportingPeriod` = 'Apr - Sep' 
+		and `p`.`reportingMonth` 
+		between ('2018-04-01') and ('2018-09-30') 
+		and `p`.`year` in (2018) 
+		then 'Apr 2018 - May 2018'
+		
+	else `p`.`reportingPeriod`
+	end 
+	as  `reportingPeriod_cleaned`,
+		`v`.* 
+		from `tbl_public_private_partnership` as `p`,
 		tbl_mainvaluechain as `v`
 		where `p`.valueChain LIKE CONCAT('%', SUBSTRING(`v`.`name`, 3, 20) ,'%') "; 
 		$reporting_period=(!empty($cpma_year))?'':$reporting_period;
@@ -6688,10 +6665,11 @@ $data.="<tr class='evenrow3' height='31'>
 		$valueChain=(!empty($valueChain))?" AND `v`.`tbl_chainId` = '".$valueChain."' ":"";
 		/* $partnerType=(!empty($partnerType) and ($partnerType !=1))?" AND `s`.`msmeType` = '".$partnerType."' ":""; */
 		$query_string.=$reporting_period.$cpma_year.$valueChain;
+		$query_string.=" group by `p`.`tbl_partnershipId`,`p`.`reportingPeriod`,`p`.`year` ";
 		$query_string.=" order by `p`.`tbl_partnershipId` desc";
 
- $x=1;
-	$query_=mysql_query($query_string)or die(http(__line__));
+ $n=1;
+	$query_=mysql_query($query_string)or die(mysql_error());
 	 /**************
 	 *paging parameters
 	 *
@@ -6699,32 +6677,72 @@ $data.="<tr class='evenrow3' height='31'>
 	 $max_records = mysql_num_rows($query_);
 	 $num_pages=ceil($max_records/$records_per_page);
 	 $offset = ($cur_page-1)*$records_per_page;
-	 $x=$offset+1;
-	 $new_query=mysql_query($query_string." limit ".$offset.",".$records_per_page) or die(http(__line__));
+	 $n=$offset+1;
+	 $new_query=mysql_query($query_string." limit ".$offset.",".$records_per_page) or die(mysql_error());
 	
   
-  while($row=mysql_fetch_array($new_query)){
-			$data.="<tr class='alternating_rows'>";
-			$data.="<td>".$x.".</td>";
-			$data.="<td>".retrieve_info_withSpecialCharactersNowordLimit($row['namePartner'])."</td>";
-			$data.="<td>".retrieve_info_withSpecialCharactersNowordLimit($row['reportingPeriod_cleaned'])."</td>";
-			$data.="<td>".$qmobj->cleanValueChainDisplay($row['valueChain'])."</td>";
-			$data.="<td>".retrieve_info_withSpecialCharactersNowordLimit($row['partnershipFocus'])."</td>";
-			$data.="<td align='right'>".number_format(($row['valueActivity']))."</td>";
-			$data.="<td align='right'>".number_format(($row['valuePartner']))."</td>";
-			$data.="<td align='right'>".number_format(($row['valueTotal']))."</td>";
-			$data.="<td>".retrieve_info_withSpecialCharactersNowordLimit($row['nameOfJobHolder_Pj'])."</td>";
-			$data.="<td>".retrieve_info_withSpecialCharactersNowordLimit($row['sexOfJobHolder_Pj'])."</td>";
-			$data.="<td>".$qmobj->cleanDirtyDates($row['dateOfEngagement_Pj'])."</td>";
-			$data.="<td>".retrieve_info_withSpecialCharactersNowordLimit($row['timeSpentOnJob_Pj'])."</td>";
-			$data.="</tr>";
-			$x++;
+  while($row_parent=mysql_fetch_array($new_query)){
+	  //determining the number of child records for each row
+			$s_child="SELECT * FROM `tbl_partnership_jobHolder` WHERE `partnership_id`=".$row_parent['tbl_partnershipId']."";
+			$q_child=Execute($s_child) or die(mysql_error());			
+			$num_child_records=mysql_num_rows($q_child);	
+			//$obj->alert($num_child_records);			
+			$row_span=($num_child_records>1)?"rowspan='".$num_child_records."'":"";
+			$col_span=($num_child_records>1)?"colspan='2'":"";
+			$v=$n+$num_child_records;
+	  
+	  
+			$data.="<tr>";
+			$data.="<td>".$n.". </td>";
+			$data.="<td>".($row_parent['namePartner'])."</td>";
+			$data.="<td>".($row_parent['reportingPeriod_cleaned'])."</td>";
+			$data.="<td>".$qmobj->cleanValueChainDisplay($row_parent['valueChain'])."</td>";
+			$data.="<td>".($row_parent['partnershipFocus'])."</td>";
+			$data.="<td align='right'>".number_format(($row_parent['valueActivity']))."</td>";
+			$data.="<td align='right'>".number_format(($row_parent['valuePartner']))."</td>";
+			$data.="<td align='right'>".number_format(($row_parent['valueTotal']))."</td>";
+			
+			
+			//return first row of child records
+					$s_first_child = mysql_query("SELECT * FROM `tbl_partnership_jobHolder` 
+					WHERE `partnership_id`=".$row_parent['tbl_partnershipId']." limit 0,1")or die(mysql_error());
+					$first_child_row = mysql_fetch_array($s_first_child );
+					$data.="<td>".$first_child_row['nameOfJobHolder']."</td>
+					<td>".$first_child_row['sexOfJobHolder']."</td>";
+					$dateOfEngagement = sanitizeForm2DirtyDate(substr(($first_child_row['dateOfEngagement']), 0, 10));
+					$data.="<td>".$dateOfEngagement."</td>
+					<td>".$first_child_row['timeSpentOnJob']."</td>";
+				$data.="</tr>";
+				
+				switch(true){
+					case $num_child_records>1:
+					//loop thru kid records -1
+					$s_other_children = mysql_query("SELECT * FROM `tbl_partnership_jobHolder` 
+					WHERE `partnership_id`=".$row_parent['tbl_partnershipId']." limit 1,100000")or die(mysql_error());
+					while($other_children_row = mysql_fetch_array($s_other_children )){
+					$data.="<tr>";
+						$data.="<td>".$other_children_row['nameOfJobHolder']."</td>
+					<td>".$other_children_row['sexOfJobHolder']."</td>";
+					$dateOfEngagement = sanitizeForm2DirtyDate(substr(($other_children_row['dateOfEngagement']), 0, 10));
+					$data.="<td>".$dateOfEngagement."</td>
+					<td>".$other_children_row['timeSpentOnJob']."</td>";
+					$data.="</tr>";
+					}
+					
+					break;
+					
+					default:
+					$data.="";
+					break;
+				}
 			$n++;
-			}
+		}
+		$data.="".noRecordsFound($new_query,11)."";
 
 
   
-$data.="</table></form>";
+$data.="</tbobdy>
+</table>";
 
 export($format,$data);
 

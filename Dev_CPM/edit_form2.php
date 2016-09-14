@@ -6807,7 +6807,7 @@ switch(true){
 	`sizeOfStoreRefurbished`='".$qmobj->validateRequiredNumericInput_Form2Edits($sizeOfStoreRefurbished_first_child_row)."', 
 	`storageTypeForColdChain`='".$qmobj->validateRequiredNumericInput_Form2Edits($storageTypeForColdChain_first_child_row)."',
 	`storageTypeForDryGoods`='".$qmobj->validateRequiredNumericInput_Form2Edits($storageTypeForDryGoods_first_child_row)."', 
-	`reportingPeriod`='".$reportinPeriod_first_child_row."',
+	`reportingPeriod`='".$reportingPeriod_first_child_row."',
 	`reviewedBy`='".$CompiledBy_first_child_row."', 
 	`sexOfJobHolder`='".$sexOfJobHolder_first_child_row."', 
 	`submittedBy`='".$CompiledBy_first_child_row."',

@@ -682,26 +682,22 @@ $obj->call('xajax_view_phh','','','',1,20);
 return $obj;
 }
 
-function delete_partnerships($formValues){
+function delete_partnerships($id){
 $obj=new xajaxResponse();
-
-if(count($formValues['tbl_partnershipId'])>0){
-for($x=0;$x<count($formValues['tbl_partnershipId']);$x++){
-	$sql="DELETE  p.* FROM `tbl_public_private_partnership` p  WHERE  p.`tbl_partnershipId`='".$formValues['tbl_partnershipId'][$x]."'";
-	//$obj->alert($sql);
-if($sql<>''){
-
-@mysql_query($sql)or die(QueryManager::http("DEL-249"));
-}
-}
-}
-
-$obj->assign('bodyDisplay','innerHTML',QueryManager::noteMsg("Public Private Partnership record(s) successfully Deleted!"));
-$obj->call('xajax_view_partnerships','','','');
+@mysql_query('SET foreign_key_checks = 0')or die(mysql_error());
+$sql="
+DELETE `p`.*,`pj`.* 
+from `tbl_public_private_partnership` as `p`
+join `tbl_partnership_jobHolder` as `pj` on (`pj`.`partnership_id` = `p`.`tbl_partnershipId`)
+Where  `pj`.`partnership_id`='".$id."'
+";
+@mysql_query($sql)or die(mysql_error());
+@mysql_query('SET foreign_key_checks = 1')or die(mysql_error());
+$obj->assign('bodyDisplay','innerHTML',errorMsg("Public Private Partnership record successfully Deleted!"));
+$obj->call('xajax_view_partnerships','','','','',1,20);
 return $obj;
-}//------------------End of function delete_partnerships-------------------
-//********************************End of Form2 Deletes**********************************
-//-------------- Delete Data Completely--------------------
+}
+
 function ConfirmDeletionCompletely($Keys,$FunctionName,$Tbl_name) {
 $obj=new xajaxResponse();
 	/* if(FunctionName==''){
