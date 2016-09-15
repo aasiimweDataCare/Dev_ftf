@@ -7225,7 +7225,7 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 					</td>";
 					
 					$data.="<td ".$row_span.">";						
-						$data.="<input class='disabled' readonly='readonly' name='namePartner' id='namePartner' value='".$row_parent['namePartner']."' />
+						$data.="<input style='width:200px;' class='disabled' readonly='readonly' name='namePartner' id='namePartner' value='".$row_parent['namePartner']."' />
 						</td>";
 					
 					$data.="<td ".$row_span.">";						
@@ -7290,8 +7290,12 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 					//return first row of child records
 					$s_first_child = mysql_query("SELECT * FROM `tbl_partnership_jobholder` 
 					WHERE `partnership_id`='".$row_parent['partnership_id']."' limit 0,1")or die(http(__line__));
+
+
 					$first_child_row = mysql_fetch_array($s_first_child );
 					$y=1;
+					
+					$obj->alert($first_child_row['nameOfJobHolder']);
 					
 						$data.="<td>
 						<input type='hidden' name='tbl_id_first_row' id='tbl_id_first_row' value='".$first_child_row['tbl_id']."' />
@@ -7300,9 +7304,11 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 						type='text' 
 						name='nameOfJobHolder_first_child_row' 
 						id='nameOfJobHolder_first_child_row'/>
-						</td>
+						</td>";
+
+						//$obj->alert($first_child_row['nameOfJobHolder']);
 						
-						<td>
+						$data.="<td>
 							<select  
 							name='sexOfJobHolder_first_child_row' 
 							id='sexOfJobHolder_first_child_row' 
@@ -7484,12 +7490,16 @@ switch($rp_start_month){
 $reportingMonth=($reportingMonth=='' or $reportingMonth==null)?$reportingMonth_default:$reportingMonth;
 
 $form_namePartnerCorrected=trim($formValues['namePartnerCorrected']);
+list($partnerId,$partnerType)=$qmobj->form2getPartnerTypeAndIdFromString($form_namePartnerCorrected);
+$partnerId=(is_null($partnerId))?'Unknown':$partnerId;
+$partnerType=(is_null($partnerType))?'Unknown':$partnerType;
 $form_namePartner=trim($formValues['namePartner']);
 $namePartner=($form_namePartnerCorrected !=='')?$form_namePartnerCorrected:$form_namePartner;
 $partnershipFocus=$formValues['partnershipFocus'];
 $valueActivity=trim($formValues['valueActivity']);
 $valuePartner=trim($formValues['valuePartner']);
 $valueTotal=trim($formValues['valueTotal']);
+
 
 
 
@@ -7511,7 +7521,9 @@ SET
 `SubmittedBy`='".$CompiledBy."', 
 `DateSubmission`='".date('Y-m-d')."', 
 `updatedby`='".$_SESSION['name']."',
-`reportingMonth`='".$reportingMonth."'
+`reportingMonth`='".$reportingMonth."',
+`msmeId`='".$partnerId."',
+`msmeType`='".$partnerType."'
 WHERE
 `tbl_partnershipId` ='".$tbl_partnershipId."'";
 //$obj->alert($sql_parent_record); 

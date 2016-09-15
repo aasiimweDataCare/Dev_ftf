@@ -1,40 +1,21 @@
 <?php
-$partner_string='Nyakyera - Rukoni ACE |T-287';
+$partnerString='ANKOLE COFFEE PROCESORS |EXP-13';
 
-//check if trader
-
-switch(true){
-	case(strpos($partner_string,'|T-')):
-	$partnerType='Trader';
-	$partner_id=get_string_part($partner_string,'-',' ');
-	break;
-
-	default:
-	$partnerType='Unknown';
-	$partner_id='Unknown';
-	break;
-
-}
-
-function get_string_part($string, $starting_part, $ending_part){
-		$string = " ".$string;
-		$initial = strpos($string,$starting_part);
-		if ($initial == 0) return "";
-		$initial += strlen($starting_part);
-		$length = strpos($string,$ending_part,$initial) - $initial;
-		return substr($string,$initial,$length);
-	}
-
-
-/*switch(true){
-			case(($partnerId !== '') and ($partnerType !== '') and ($nameMiddleChainValueActor !== '')):
-			$partner_id=$partnerId;
-			$partner_type=$partnerType;
+function form2getPartnerTypeAndIdFromString($partner_string){
+		switch(true){
+			case(strpos($partner_string,'|EXP-')):
+			$partnerType='Exporter';
+			$partner_id=trim(substr($partner_string,((strpos($partner_string,'|EXP-'))+(count('|EXP-')*5)),200));
 			break;
 
-			case( (is_null($partnerId)) and ($nameMiddleChainValueActor !=='') and ((strpos($nameMiddleChainValueActor, '(') !== false))):
-			$partner_id=$partnerId;
-			$partner_type=$partnerType;
+			case(strpos($partner_string,'|T-')):
+			$partnerType='Trader';
+			$partner_id=trim(substr($partner_string,((strpos($partner_string,'|T-'))+(count('|T-')*3)),200));
+			break;
+
+			case(strpos($partner_string,'|V.A-')):
+			$partnerType='VillageAgent';
+			$partner_id=trim(substr($partner_string,((strpos($partner_string,'|V.A-'))+(count('|V.A-')*5)),200));
 			break;
 
 			default:
@@ -42,8 +23,10 @@ function get_string_part($string, $starting_part, $ending_part){
 
 		}
 
-$myVarsArray=array($partner_id,$partner_type);
-list($id,$type)=$myVarsArray;*/
+	return array($partner_id,$partnerType);
+}
 
-echo "partnerId=".$partner_id."<br/>";
+list($partnerId,$partnerType)=form2getPartnerTypeAndIdFromString($partnerString);
+
+echo "partnerId=".$partnerId."<br/>";
 echo "partnerType=".$partnerType."<br/>";
