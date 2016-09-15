@@ -522,30 +522,27 @@ $query=@Execute($delFarmersStmnt) or die(http(__line__));
 $obj->assign('bodyDisplay','innerHTML',QueryManager::noteMsg("Trader Profile successfully Deleted!"));
 $obj->call('xajax_setup_trader','','',1,20);
 return $obj;
-}//-----------------------------------------------------------End of function delete_trader-----------------------------------------
-//===============================form2 deletes===========================
-function delete_enterpriseTechAdoption($formValues){
+}
+
+function delete_enterpriseTechAdoption($id){
 $obj=new xajaxResponse();
-		//$obj->alert($formvalues[$unique_column]);
-		//$obj->alert(count($formvalues[$unique_column]));
 
-if(count($formValues['tbl_techadoptionId'])>0){
-for($x=0;$x<count($formValues['tbl_techadoptionId']);$x++){
-	//$code=$formvalues[$unique_column][$x];
-	$sql="DELETE  t.* FROM `tbl_techadoption` t  WHERE  t.`tbl_techadoptionId`='".$formValues['tbl_techadoptionId'][$x]."' ";
-	//$obj->alert($sql);
-if($sql<>''){
+@mysql_query('SET foreign_key_checks = 0')or die(mysql_error());
+$sql="
+DELETE `t`.*,`tj`.* 
+FROM `tbl_techadoption` as `t`
+INNER JOIN `tbl_tech_adoption_jobHolder` as `tj` 
+ON (`tj`.`techAdoption_id`=`t`.`tbl_techadoptionId`)
+Where  `t`.`tbl_techadoptionId`='".$id."'
+";
+@mysql_query($sql)or die(mysql_error());
+@mysql_query('SET foreign_key_checks = 1')or die(mysql_error());
 
-@mysql_query($sql)or die(QueryManager::http("DEL-4347"));
-//$obj->alert("Record successfully Deleted!");
-}
-}
-}
-
-$obj->assign('bodyDisplay','innerHTML',QueryManager::noteMsg("Enterprise Technology Adoption Record successfully Deleted!"));
-$obj->call('xajax_view_enterpriseTechAdoption','','','','');
+$obj->assign('bodyDisplay','innerHTML',errorMsg("TECHNOLOGY ADOPTION totally deleted"));
+$obj->call('xajax_view_enterpriseTechAdoption','','','','','',1,20);
 return $obj;
-}//-----------------------------------------------------------End of function delete Training Form1-----------------------------------------
+}
+
 
 function delete_labourSavingTech($id){
 $obj=new xajaxResponse();

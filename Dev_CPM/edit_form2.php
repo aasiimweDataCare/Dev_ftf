@@ -314,7 +314,7 @@ $query_string.=" order by t.`tbl_techadoptionId` DESC";
 
   
 	$n=1;
-	$query_=mysql_query($query_string)or die(http(__line__));
+	$query_=mysql_query($query_string)or die(mysql_error().' on line:'.(__line__));
 	 /**************
 	 *paging parameters
 	 *
@@ -326,7 +326,7 @@ $query_string.=" order by t.`tbl_techadoptionId` DESC";
 	  //determining the number of child records for each row
 			$s_child="SELECT * FROM `tbl_tech_adoption_jobHolder` 
 			WHERE `techAdoption_id`=".$row_parent['tbl_techadoptionId']."";
-			$q_child=Execute($s_child) or die(http(__line__));			
+			$q_child=Execute($s_child) or die(mysql_error().' on line:'.(__line__));			
 			$num_child_records=mysql_num_rows($q_child);	
 			//$obj->alert($num_child_records);			
 			$row_span=($num_child_records>1)?"rowspan='".$num_child_records."'":"";
@@ -411,7 +411,7 @@ $query_string.=" order by t.`tbl_techadoptionId` DESC";
 			
 			//return first row of child records
 					$s_first_child = mysql_query("SELECT * FROM `tbl_tech_adoption_jobHolder` 
-					WHERE `techAdoption_id`=".$row_parent['tbl_techadoptionId']." limit 0,1")or die(http(__line__));
+					WHERE `techAdoption_id`=".$row_parent['tbl_techadoptionId']." limit 0,1")or die(mysql_error().' on line:'.(__line__));
 					$first_child_row = mysql_fetch_array($s_first_child );
 					$y=1;
 					
@@ -470,7 +470,7 @@ $query_string.=" order by t.`tbl_techadoptionId` DESC";
 					case $num_child_records>1:
 					//loop thru kid records -1
 					$s_other_children = mysql_query("SELECT * FROM `tbl_tech_adoption_jobHolder` 
-					WHERE `techAdoption_id`=".$row_parent['tbl_techadoptionId']." limit 1,100000")or die(http(__line__));
+					WHERE `techAdoption_id`=".$row_parent['tbl_techadoptionId']." limit 1,100000")or die(mysql_error().' on line:'.(__line__));
 					$z=1;
 					while($other_children_row = mysql_fetch_array($s_other_children )){
 					$data.="<tr>";
@@ -606,7 +606,7 @@ $amountInvestedInTechAdoption=$formValues['amountInvestedInTechAdoption'];
 //get valid trader code
 $s_tr = "SELECT `tbl_tradersId`,
 `traderName` FROM `tbl_traders` WHERE `display`='Yes' and tbl_tradersId=".$traderName." order by `traderName` asc";
-$q = Execute($s_tr) or die(http(__line__));
+$q = Execute($s_tr) or die(mysql_error().' on line:'.(__line__));
 $rowd = FetchRecords($q);
 
 $code= $rowd['tbl_tradersId']; 
@@ -637,7 +637,7 @@ SET
 WHERE
 `tbl_techadoptionId` =".$tbl_techadoptionId."";
 //$obj->alert($sql_parent_record); 
-//$query=@mysql_query($sql_parent_record)or die(http(__line__)); 
+//$query=@mysql_query($sql_parent_record)or die(mysql_error().' on line:'.(__line__)); 
 $query=@mysql_query($sql_parent_record)or die(mysql_error().' on line '.(__line__)); 
 
 
@@ -671,7 +671,7 @@ values(
 `techAdoption_id`=".$tbl_techadoptionId."";
 //$obj->alert($sql_first_record); 
 //$query=@mysql_query($sql_first_record)or die(mysql_error().' on line '.(__line__)); 
-$query=@mysql_query($sql_first_record)or die(http(__line__)); 
+$query=@mysql_query($sql_first_record)or die(mysql_error().' on line:'.(__line__)); 
 
 //update  other kids' table records
 	for($i=0;$i<count($formValues['loopkey_edit_other_children']);$i++){
@@ -693,7 +693,7 @@ $query=@mysql_query($sql_first_record)or die(http(__line__));
 		
 		//$obj->alert($sql_other_children); 
 		//$query=@mysql_query($sql_other_children)or die(mysql_error().' on line '.(__line__)); 
-		$query=@mysql_query($sql_other_children)or die(http(__line__)); 
+		$query=@mysql_query($sql_other_children)or die(mysql_error().' on line:'.(__line__)); 
 		
 		}
 
@@ -980,12 +980,12 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 		$query_string.=" order by `l`.`tbl_laboursavingtechId` desc";
 
 				$n=1;
-				$query_=mysql_query($query_string)or die(http(__line__));
+				$query_=mysql_query($query_string)or die(mysql_error().' on line:'.(__line__));
 		
 		while($row_parent=mysql_fetch_array($query_)){
 			//determining the number of child records for each row
 			$s_child="SELECT * FROM `tbl_labourSavingTech_jobHolder` WHERE `labour_saving_tech_id`=".$row_parent['tbl_laboursavingtechId']."";
-			$q_child=Execute($s_child) or die(http(__line__));			
+			$q_child=Execute($s_child) or die(mysql_error().' on line:'.(__line__));			
 			$num_child_records=mysql_num_rows($q_child);	
 			//$obj->alert($num_child_records);			
 			$row_span=($num_child_records>1)?"rowspan='".$num_child_records."'":"";
@@ -1055,7 +1055,7 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 					
 					//return first row of child records
 					$s_first_child = mysql_query("SELECT * FROM `tbl_labourSavingTech_jobHolder` 
-					WHERE `labour_saving_tech_id`=".$row_parent['tbl_laboursavingtechId']." limit 0,1")or die(http(__line__));
+					WHERE `labour_saving_tech_id`=".$row_parent['tbl_laboursavingtechId']." limit 0,1")or die(mysql_error().' on line:'.(__line__));
 					$first_child_row = mysql_fetch_array($s_first_child );
 					$y=1;
 					
@@ -1114,7 +1114,7 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 					case $num_child_records>1:
 					//loop thru kid records -1
 					$s_other_children = mysql_query("SELECT * FROM `tbl_labourSavingTech_jobHolder` 
-					WHERE `labour_saving_tech_id`=".$row_parent['tbl_laboursavingtechId']." limit 1,100000")or die(http(__line__));
+					WHERE `labour_saving_tech_id`=".$row_parent['tbl_laboursavingtechId']." limit 1,100000")or die(mysql_error().' on line:'.(__line__));
 					$z=1;
 					while($other_children_row = mysql_fetch_array($s_other_children )){
 					$data.="<tr>";
@@ -1636,13 +1636,13 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 				$query_string.=" order by `m`.`tbl_mediaprogramsId` desc";
 
 				$n=1;
-				$query_=mysql_query($query_string)or die(http(__line__));
+				$query_=mysql_query($query_string)or die(mysql_error().' on line:'.(__line__));
 		
 		while($row_parent=mysql_fetch_array($query_)){
 			//determining the number of child records for each row
 			$s_child="SELECT * FROM `tbl_mediaprogram_jobholder` 
 			WHERE `media_program_id`=".$row_parent['tbl_mediaprogramsId']."";
-			$q_child=Execute($s_child) or die(http(__line__));			
+			$q_child=Execute($s_child) or die(mysql_error().' on line:'.(__line__));			
 			$num_child_records=mysql_num_rows($q_child);	
 			//$obj->alert($num_child_records);			
 			$row_span=($num_child_records>1)?"rowspan='".$num_child_records."'":"";
@@ -1763,7 +1763,7 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 					
 					//return first row of child records
 					$s_first_child = mysql_query("SELECT * FROM `tbl_mediaprogram_jobholder` 
-					WHERE `media_program_id`=".$row_parent['tbl_mediaprogramsId']." limit 0,1")or die(http(__line__));
+					WHERE `media_program_id`=".$row_parent['tbl_mediaprogramsId']." limit 0,1")or die(mysql_error().' on line:'.(__line__));
 					$first_child_row = mysql_fetch_array($s_first_child );
 					$y=1;
 					
@@ -1822,7 +1822,7 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 					case $num_child_records>1:
 					//loop thru kid records -1
 					$s_other_children = mysql_query("SELECT * FROM `tbl_mediaprogram_jobholder` 
-					WHERE `media_program_id`=".$row_parent['tbl_mediaprogramsId']." limit 1,100000")or die(http(__line__));
+					WHERE `media_program_id`=".$row_parent['tbl_mediaprogramsId']." limit 1,100000")or die(mysql_error().' on line:'.(__line__));
 					$z=1;
 					while($other_children_row = mysql_fetch_array($s_other_children )){
 					$data.="<tr>";
@@ -1991,7 +1991,7 @@ SET
 WHERE
 `tbl_mediaprogramsId` =".$tbl_mediaprogramsId."";
 //$obj->alert($sql_parent_record); 
-$query=@mysql_query($sql_parent_record)or die(http(__line__)); 
+$query=@mysql_query($sql_parent_record)or die(mysql_error().' on line:'.(__line__)); 
 
 
 
@@ -2360,14 +2360,14 @@ switch(trim($cpma_year)){
 					$query_string.=" order BY `y`.`tbl_youthapprenticeId` desc";
 
 			$x=1;
-			$query_=mysql_query($query_string)or die(http(__line__));
+			$query_=mysql_query($query_string)or die(mysql_error().' on line:'.(__line__));
 			
 		  
 		  while($row_parent=mysql_fetch_array($query_)){
 			  
 			  //determining the number of child records for each row
 				$s_child="SELECT * FROM `tbl_apprenticeship_jobHolder` WHERE `apprenticeship_id`=".$row_parent['tbl_youthapprenticeId']."";
-				$q_child=Execute($s_child) or die(http(__line__));			
+				$q_child=Execute($s_child) or die(mysql_error().' on line:'.(__line__));			
 				$num_child_records=mysql_num_rows($q_child);	
 				//$obj->alert($num_child_records);			
 				$row_span=($num_child_records>1)?"rowspan='".$num_child_records."'":"";
@@ -2543,7 +2543,7 @@ switch(trim($cpma_year)){
 					
 					//return first row of child records
 					$s_first_child = mysql_query("SELECT * FROM `tbl_apprenticeship_jobHolder` 
-					WHERE `apprenticeship_id`=".$row_parent['tbl_youthapprenticeId']." limit 0,1")or die(http(__line__));
+					WHERE `apprenticeship_id`=".$row_parent['tbl_youthapprenticeId']." limit 0,1")or die(mysql_error().' on line:'.(__line__));
 					$first_child_row = mysql_fetch_array($s_first_child );
 					$y=1;
 					
@@ -2602,7 +2602,7 @@ switch(trim($cpma_year)){
 					case $num_child_records>1:
 					//loop thru kid records -1
 					$s_other_children = mysql_query("SELECT * FROM `tbl_apprenticeship_jobHolder` 
-					WHERE `apprenticeship_id`=".$row_parent['tbl_youthapprenticeId']." limit 1,100000")or die(http(__line__));
+					WHERE `apprenticeship_id`=".$row_parent['tbl_youthapprenticeId']." limit 1,100000")or die(mysql_error().' on line:'.(__line__));
 					$z=1;
 					while($other_children_row = mysql_fetch_array($s_other_children )){
 					$data.="<tr>";
@@ -2839,7 +2839,7 @@ $query=@mysql_query($sql_first_record)or die(mysql_error().' on line '.(__line__
 		and `apprenticeship_id`=".$tbl_youthapprenticeId."";
 		
 		//$obj->alert($sql_other_children); 
-		$query=@mysql_query($sql_other_children)or die(http(__line__)); 
+		$query=@mysql_query($sql_other_children)or die(mysql_error().' on line:'.(__line__)); 
 		
 		}
 
@@ -3135,12 +3135,12 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 	$query_string.=" order by `v`.`tbl_businessdevId` desc";
 
 				$n=1;
-				$query_=mysql_query($query_string)or die(http(__line__));
+				$query_=mysql_query($query_string)or die(mysql_error().' on line:'.(__line__));
 		
 		while($row_parent=mysql_fetch_array($query_)){
 			//determining the number of child records for each row
 			$s_child="SELECT * FROM `tbl_bds_jobHolder` WHERE `bds_id`=".$row_parent['tbl_businessdevId']."";
-			$q_child=Execute($s_child) or die(http(__line__));			
+			$q_child=Execute($s_child) or die(mysql_error().' on line:'.(__line__));			
 			$num_child_records=mysql_num_rows($q_child);	
 			//$obj->alert($num_child_records);			
 			$row_span=($num_child_records>1)?"rowspan='".$num_child_records."'":"";
@@ -3272,7 +3272,7 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 					
 					//return first row of child records
 					$s_first_child = mysql_query("SELECT * FROM `tbl_bds_jobHolder` 
-					WHERE `bds_id`=".$row_parent['tbl_businessdevId']." limit 0,1")or die(http(__line__));
+					WHERE `bds_id`=".$row_parent['tbl_businessdevId']." limit 0,1")or die(mysql_error().' on line:'.(__line__));
 					$first_child_row = mysql_fetch_array($s_first_child );
 					$y=1;
 					
@@ -3331,7 +3331,7 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 					case $num_child_records>1:
 					//loop thru kid records -1
 					$s_other_children = mysql_query("SELECT * FROM `tbl_bds_jobHolder` 
-					WHERE `bds_id`=".$row_parent['tbl_businessdevId']." limit 1,100000")or die(http(__line__));
+					WHERE `bds_id`=".$row_parent['tbl_businessdevId']." limit 1,100000")or die(mysql_error().' on line:'.(__line__));
 					$z=1;
 					while($other_children_row = mysql_fetch_array($s_other_children )){
 					$data.="<tr>";
@@ -3516,7 +3516,7 @@ SET
 WHERE
 `tbl_businessdevId` =".$tbl_businessdevId."";
 //$obj->alert($sql_parent_record); 
-//$query=@mysql_query($sql_parent_record)or die(http(__line__)); 
+//$query=@mysql_query($sql_parent_record)or die(mysql_error().' on line:'.(__line__)); 
 $query=@mysql_query($sql_parent_record)or die(mysql_error().' on line '.(__line__)); 
 
 
@@ -3558,7 +3558,7 @@ switch(true){
 }
 
 //$obj->alert($sql_first_record); 
-//$query=@mysql_query($sql_first_record)or die(http(__line__)); 
+//$query=@mysql_query($sql_first_record)or die(mysql_error().' on line:'.(__line__)); 
 $query=@mysql_query($sql_first_record)or die(mysql_error().' on line '.(__line__)); 
 
 //update  other kids' table records
@@ -3580,7 +3580,7 @@ $query=@mysql_query($sql_first_record)or die(mysql_error().' on line '.(__line__
 		and `bds_id`=".$tbl_businessdevId."";
 		
 		//$obj->alert($sql_other_children); 
-		//$query=@mysql_query($sql_other_children)or die(http(__line__)); 
+		//$query=@mysql_query($sql_other_children)or die(mysql_error().' on line:'.(__line__)); 
 		$query=@mysql_query($sql_other_children)or die(mysql_error().' on line '.(__line__)); 
 		
 		
@@ -3875,13 +3875,13 @@ $query_string.=" and `b`.`tbl_bankLoanId` = '".$id."'";
 $query_string.=" order by `b`.`tbl_bankLoanId` desc";
 
 				$n=1;
-				//$query_=mysql_query($query_string)or die(http(__line__));
+				//$query_=mysql_query($query_string)or die(mysql_error().' on line:'.(__line__));
 				$query_=mysql_query($query_string)or die(mysql_error().' on line '.(__line__));
 		
 		while($row_parent=mysql_fetch_array($query_)){
 			//determining the number of child records for each row
 			$s_child="SELECT * FROM `tbl_bank_loans_jobHolder` WHERE `bankLoan_id`=".$row_parent['tbl_bankLoanId']."";
-			$q_child=Execute($s_child) or die(http(__line__));			
+			$q_child=Execute($s_child) or die(mysql_error().' on line:'.(__line__));			
 			$num_child_records=mysql_num_rows($q_child);	
 			//$obj->alert($num_child_records);			
 			$row_span=($num_child_records>1)?"rowspan='".$num_child_records."'":"";
@@ -4018,7 +4018,7 @@ $query_string.=" order by `b`.`tbl_bankLoanId` desc";
 					
 					//return first row of child records
 					$s_first_child = mysql_query("SELECT * FROM `tbl_bank_loans_jobHolder` 
-					WHERE `bankLoan_id`=".$row_parent['tbl_bankLoanId']." limit 0,1")or die(http(__line__));
+					WHERE `bankLoan_id`=".$row_parent['tbl_bankLoanId']." limit 0,1")or die(mysql_error().' on line:'.(__line__));
 					$first_child_row = mysql_fetch_array($s_first_child );
 					$y=1;
 					
@@ -4077,7 +4077,7 @@ $query_string.=" order by `b`.`tbl_bankLoanId` desc";
 					case $num_child_records>1:
 					//loop thru kid records -1
 					$s_other_children = mysql_query("SELECT * FROM `tbl_bank_loans_jobHolder` 
-					WHERE `bankLoan_id`=".$row_parent['tbl_bankLoanId']." limit 1,100000")or die(http(__line__));
+					WHERE `bankLoan_id`=".$row_parent['tbl_bankLoanId']." limit 1,100000")or die(mysql_error().' on line:'.(__line__));
 					$z=1;
 					while($other_children_row = mysql_fetch_array($s_other_children )){
 					$data.="<tr>";
@@ -4265,7 +4265,7 @@ SET
 WHERE
 `tbl_bankLoanId` =".$tbl_bankLoanId."";
 //$obj->alert($sql_parent_record); 
-//$query=@mysql_query($sql_parent_record)or die(http(__line__)); 
+//$query=@mysql_query($sql_parent_record)or die(mysql_error().' on line:'.(__line__)); 
 $query=@mysql_query($sql_parent_record)or die(mysql_error().' on line '.(__line__)); 
 
 
@@ -4307,7 +4307,7 @@ switch(true){
 }
 
 //$obj->alert($sql_first_record); 
-//$query=@mysql_query($sql_first_record)or die(http(__line__)); 
+//$query=@mysql_query($sql_first_record)or die(mysql_error().' on line:'.(__line__)); 
 $query=@mysql_query($sql_first_record)or die(mysql_error().' on line '.(__line__)); 
 
 //update  other kids' table records
@@ -4329,7 +4329,7 @@ $query=@mysql_query($sql_first_record)or die(mysql_error().' on line '.(__line__
 		and `bankLoan_id`=".$tbl_bankLoanId."";
 		
 		//$obj->alert($sql_other_children); 
-		//$query=@mysql_query($sql_other_children)or die(http(__line__)); 
+		//$query=@mysql_query($sql_other_children)or die(mysql_error().' on line:'.(__line__)); 
 		$query=@mysql_query($sql_other_children)or die(mysql_error().' on line '.(__line__)); 
 		
 		
@@ -4579,7 +4579,7 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 		$query_string.=" order by `s`.`id` desc";
 
 				$n=1;
-				//$query_=mysql_query($query_string)or die(http(__line__));
+				//$query_=mysql_query($query_string)or die(mysql_error().' on line:'.(__line__));
 				$query_=mysql_query($query_string)or die(mysql_error().' on line '.(__line__));
 		
 		while($row_parent=mysql_fetch_array($query_)){
@@ -4803,7 +4803,7 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 
 		$s_child.=" order by `sm`.`input_sales_id` ";
 		
-			$q_child=Execute($s_child) or die(http(__line__));			
+			$q_child=Execute($s_child) or die(mysql_error().' on line:'.(__line__));			
 			$num_child_records=mysql_num_rows($q_child);	
 			//$obj->alert($num_child_records);			
 			$row_span=($num_child_records>1)?"rowspan='".$num_child_records."'":"";
@@ -4915,7 +4915,7 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 	end 
 	as  `reportingPeriod_cleaned`
 		FROM `tbl_input_sales_meta_data` as `sm`
-		WHERE `sm`.`input_sales_id`='".$row_parent['id']."' limit 0,1")or die(http(__line__));
+		WHERE `sm`.`input_sales_id`='".$row_parent['id']."' limit 0,1")or die(mysql_error().' on line:'.(__line__));
 		$first_child_row = mysql_fetch_array($s_first_child);	
 					
 					$data.="<td>
@@ -5196,7 +5196,7 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 							end 
 							as  `reportingPeriod_cleaned`
 						FROM `tbl_input_sales_meta_data` as `sm`
-						WHERE `sm`.`input_sales_id`='".$row_parent['id']."' limit 1,100000")or die(http(__line__));
+						WHERE `sm`.`input_sales_id`='".$row_parent['id']."' limit 1,100000")or die(mysql_error().' on line:'.(__line__));
 						$y=1;
 					while($other_children_row = mysql_fetch_array($s_other_children )){
 					$data.="<tr>";
@@ -5469,7 +5469,7 @@ SET
 WHERE
 `id` ='".$tbl_inputSales_id."'";
 //$obj->alert($sql_parent_record); 
-//$query=@mysql_query($sql_parent_record)or die(http(__line__)); 
+//$query=@mysql_query($sql_parent_record)or die(mysql_error().' on line:'.(__line__)); 
 $query=@mysql_query($sql_parent_record)or die(mysql_error().' on line '.(__line__)); 
 
 
@@ -5958,7 +5958,7 @@ $data="<form action='".$_SERVER['PHP_SELF']."' name='edit_phh' id='edit_phh' met
 		$query_string.=" order by `p`.`id` desc";
 
 				$n=1;
-				//$query_=mysql_query($query_string)or die(http(__line__));
+				//$query_=mysql_query($query_string)or die(mysql_error().' on line:'.(__line__));
 				$query_=mysql_query($query_string)or die(mysql_error().' on line '.(__line__));
 		
 		while($row_parent=mysql_fetch_array($query_)){
@@ -6182,7 +6182,7 @@ $data="<form action='".$_SERVER['PHP_SELF']."' name='edit_phh' id='edit_phh' met
 
 		$s_child.=" order by `pm`.`phh_id` desc";
 		
-			$q_child=Execute($s_child) or die(http(__line__));			
+			$q_child=Execute($s_child) or die(mysql_error().' on line:'.(__line__));			
 			$num_child_records=mysql_num_rows($q_child);	
 			//$obj->alert($num_child_records);			
 			$row_span=($num_child_records>1)?"rowspan='".$num_child_records."'":"";
@@ -6298,7 +6298,7 @@ $data="<form action='".$_SERVER['PHP_SELF']."' name='edit_phh' id='edit_phh' met
 	end 
 	as  `reportingPeriod_cleaned`
 		FROM `tbl_phh_meta_data` as `pm`
-		WHERE `pm`.`phh_id`='".$row_parent['id']."' limit 0,1")or die(http(__line__));
+		WHERE `pm`.`phh_id`='".$row_parent['id']."' limit 0,1")or die(mysql_error().' on line:'.(__line__));
 		$first_child_row = mysql_fetch_array($s_first_child);	
 					
 					$data.="<td>
@@ -6498,7 +6498,7 @@ $data="<form action='".$_SERVER['PHP_SELF']."' name='edit_phh' id='edit_phh' met
 					end 
 					as  `reportingPeriod_cleaned`
 						FROM `tbl_phh_meta_data` as `pm`
-						WHERE `pm`.`phh_id`='".$row_parent['id']."' limit 1,100000")or die(http(__line__));
+						WHERE `pm`.`phh_id`='".$row_parent['id']."' limit 1,100000")or die(mysql_error().' on line:'.(__line__));
 						$y=1;
 					while($other_children_row = mysql_fetch_array($s_other_children )){
 					$data.="<tr>";
@@ -6690,7 +6690,7 @@ SET
 WHERE
 `id` ='".$tbl_phh_id."'";
 //$obj->alert($sql_parent_record); 
-//$query=@mysql_query($sql_parent_record)or die(http(__line__)); 
+//$query=@mysql_query($sql_parent_record)or die(mysql_error().' on line:'.(__line__)); 
 $query=@mysql_query($sql_parent_record)or die(mysql_error().' on line '.(__line__)); 
 
 
@@ -7200,7 +7200,7 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 	
   
 		$n=1;
-		//$query_=mysql_query($query_string)or die(http(__line__));
+		//$query_=mysql_query($query_string)or die(mysql_error().' on line:'.(__line__));
 		$query_=mysql_query($query_string)or die(mysql_error().' on line '.(__line__));
 
 		while($row_parent=mysql_fetch_array($query_)){
@@ -7225,8 +7225,8 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 					</td>";
 					
 					$data.="<td ".$row_span.">";						
-						$data.="<input style='width:200px;' class='disabled' readonly='readonly' name='namePartner' id='namePartner' value='".$row_parent['namePartner']."' />
-						</td>";
+					$data.="<input style='width:250px;' class='disabled' readonly='readonly' name='namePartner' id='namePartner' value='".$row_parent['namePartner']."' />
+					</td>";
 					
 					$data.="<td ".$row_span.">";						
 						$data.="<select style='width:150px;' name='namePartnerCorrected' id='namePartnerCorrected'>
@@ -7288,15 +7288,17 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 					
 					
 					//return first row of child records
-					$s_first_child = mysql_query("SELECT * FROM `tbl_partnership_jobholder` 
-					WHERE `partnership_id`='".$row_parent['partnership_id']."' limit 0,1")or die(http(__line__));
+					$s_child="SELECT * FROM `tbl_partnership_jobholder` 
+					WHERE `partnership_id`='".$row_parent['tbl_partnershipId']."' limit 0,1";
 
+					//$obj->alert($s_child);
 
-					$first_child_row = mysql_fetch_array($s_first_child );
+					$s_first_child = @mysql_query($s_child)or die(mysql_error().' on line:'.(__line__));
+					$first_child_row = @mysql_fetch_array($s_first_child );
 					$y=1;
 					
-					$obj->alert($first_child_row['nameOfJobHolder']);
 					
+
 						$data.="<td>
 						<input type='hidden' name='tbl_id_first_row' id='tbl_id_first_row' value='".$first_child_row['tbl_id']."' />
 						<input 
@@ -7354,7 +7356,7 @@ $data.="<table class='standard-report-grid' width='100%' border='0' cellspacing=
 					case $num_child_records>1:
 					//loop thru kid records -1
 					$s_other_children = mysql_query("SELECT * FROM `tbl_partnership_jobholder` 
-					WHERE `partnership_id`='".$row_parent['partnership_id']."'  limit 1,100000")or die(http(__line__));
+					WHERE `partnership_id`='".$row_parent['tbl_partnershipId']."'  limit 1,100000")or die(mysql_error().' on line:'.(__line__));
 					$z=1;
 					while($other_children_row = mysql_fetch_array($s_other_children )){
 					$data.="<tr>";
