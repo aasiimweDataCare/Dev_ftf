@@ -12294,6 +12294,80 @@ function get_form2_partner_filter($partnerId,$partnerType)
         return $data;
 
     }
+
+	function get_form2_partner_filterNoPrams($no_value)
+    {
+        $s_exporter = "
+		SELECT `tbl_exportersId`, `exporterName`
+		FROM `tbl_exporters` 
+		WHERE `display`='Yes'
+		order by `exporterName` asc";
+		
+		$s_trader= "
+		SELECT `tbl_tradersId`, `traderName`
+		FROM `tbl_traders` 
+		WHERE `display`='Yes'
+		order by `traderName` asc";
+		
+		$s_vAgent = "
+		SELECT `tbl_villageAgentId`, `vAgentName`
+		FROM `tbl_villageagents` 
+		WHERE `display`='Yes'
+		order by `vAgentName` asc";
+		
+		
+        $q_ex = Execute($s_exporter) or die(http(__line__));
+		$q_tr = Execute($s_trader) or die(http(__line__));
+		$q_va = Execute($s_vAgent) or die(http(__line__));
+		
+        
+           
+		   switch(true){
+				
+				default:
+				while ($row_ex = FetchRecords($q_ex)) {
+					$exporterName=$row_ex['exporterName']." |EXP-".$row_ex['tbl_exportersId']."";
+					$data.= "<option value=\"" . $exporterName . "\">" . $exporterName . "</option>";
+				}
+				while ($row_tr = FetchRecords($q_tr)) {
+					$traderNameString=$row_tr['traderName']." |T-".$row_tr['tbl_tradersId']."";
+					$data.= "<option value=\"" . $traderNameString . "\">" .  $traderNameString . "</option>";
+
+				}				
+				while ($row_va = FetchRecords($q_va)) {
+					$vAgentNameString=$row_va['vAgentName']." |V.A-".$row_va['tbl_villageAgentId']."";            
+					$data.= "<option value=\"" . $vAgentNameString . "\" " . $selected . ">" . $vAgentNameString . "</option>";
+
+				}
+				break;
+			}
+
+        return $data;
+
+    }
+
+
+	function form2PartnershipFocus($selected_focus){
+		$data='';
+		$array_prams_partnership_focus=array('Agricultural production',
+		'Agricultural PH transformation',
+		'Multi-focus',
+		'Input supply',
+		'Supply Chain Management',
+		'Entreprenuership',
+		'Finance',
+		'Market Linkages',
+		);
+
+		foreach ($array_prams_partnership_focus as $focus){
+				$selected=($selected_focus==$focus)?"selected":"";
+                $data.="<option value=\"".$focus."\" ".$selected.">".$focus."</option>";
+		}
+
+		
+		return $data;
+
+	}
 	
 
 

@@ -1,69 +1,18 @@
-INSERT INTO `tbl_training`(`tbl_trainingId`, `district`,
-`subcounty`, `parish`,
-`trainingVillage`,
-
-`pva`,
-`eacmgs`, 
-`eacbgs`,
-`mpe`,
-`cpp`,
-`ai`,
-`lp`,
-`ep`,
-`sc`,
-
-`trainingDate`,
-`mainValueChain`, `trainingFocus`,
-`targetAudience`, `pat_recommendations`)
-VALUES
-('8890', '111',
-'1101104', '110110401',
-'demo data',
-'',
-'', 
-'',
-'',
-'',
-'',
-'',
-'',
-'',
-
-'2016-09-07',
-'', 
-'',
-'2',
-'')
-
-
-
-
-
-INSERT INTO `tbl_trainers`(`trainingId`,
-`trainers_name`, `trainers_title`,
-`trainers_organisation`, `trainers_contact`)
-VALUES
-('8890',
-'rrrrrrr', 'ttttt',
-'tyyyy', 'rrreee')
-
-
-INSERT INTO `tbl_participants`(`trainingId`,
-`name`, `age`,`sex`,
-`status`, `village`,
-`typeOfIndividual`, `telephone`)
-VALUES
-('8890',
-'aaaaa', '23','Male',
-'New', 'eee_village',
-'2', '+25677777777777')
-
-INSERT INTO `tbl_participants`(`trainingId`,
-`name`, `age`,`sex`,
-`status`, `village`,
-`typeOfIndividual`, `telephone`)
-VALUES
-('8890',
-'eeeee', '45','Female',
-'Old', 'eee_village',
-'6', '+25688888888888')
+UPDATE `tbl_public_private_partnership` 
+SET
+`namePartner`='KIGARAMA COMMODITY COOPERATIVE SOCIETY |T-78', 
+`valueChain`='Beans',
+`year`='2016',
+`reportingPeriod`='Apr - Sep', 
+`partnershipFocus`='Market Linkages',
+`valueActivity`='0',
+`valuePartner`='23080000', 
+`valueTotal`='23080000',
+`CompiledBy`='Western',
+`ReviewedBy`='Western', 
+`SubmittedBy`='Western', 
+`DateSubmission`='2016-09-15', 
+`updatedby`='Asiimwe Apollo',
+`reportingMonth`='2016-07-01 00:00:00'
+WHERE
+`tbl_partnershipId` ='165'

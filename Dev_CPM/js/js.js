@@ -98,6 +98,7 @@ function loadingIcon(Keys,Component) {
 	if(Component=='update_phh')xajax_update_phh(Keys,Component);
 	if(Component=='update_mediaPrograms')xajax_update_mediaPrograms(Keys,Component);
 	if(Component=='update_youthApprentice')xajax_update_youthApprentice(Keys,Component);
+	if(Component=='update_partnerships')xajax_update_partnerships(Keys,Component);
 	
     if(Component=='save_form3')xajax_save_form3(Keys,Component);
     if(Component=='save_form4')xajax_save_form4(Keys,Component);
