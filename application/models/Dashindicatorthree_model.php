@@ -65,6 +65,107 @@ class Dashindicatorthree_model extends CI_Model
         }
     }
 
+    function getIndicator3volumesExportedMaize_Frm3()
+{
+    $this->db->select("sum(`volMaizeEx`) as volumesMaizeExported
+                            from `tbl_form3_exporters`
+                            where display='Yes'", FALSE);
+
+
+
+    $db_rows = $this->db->get();
+
+    if ($db_rows->num_rows() > 0) {
+        foreach ($db_rows->result() as $data) {
+            $db_data_fetched_array[] = $data;
+        }
+        return $db_data_fetched_array;
+    }
+}
+
+    function getIndicator3volumesExportedBeans_Frm3()
+    {
+        $this->db->select("sum(`volBeansEx`) as volumesBeansExported
+                            from `tbl_form3_exporters`
+                            where display='Yes'", FALSE);
+
+        $db_rows = $this->db->get();
+
+        if ($db_rows->num_rows() > 0) {
+            foreach ($db_rows->result() as $data) {
+                $db_data_fetched_array[] = $data;
+            }
+            return $db_data_fetched_array;
+        }
+    }
+
+    function getIndicator3volumesExportedCoffee_Frm3()
+    {
+        $this->db->select("sum( `volCoffeeEx`) as volumesCoffeeExported
+                            from `tbl_form3_exporters`
+                            where display='Yes'", FALSE);
+
+        $db_rows = $this->db->get();
+
+        if ($db_rows->num_rows() > 0) {
+            foreach ($db_rows->result() as $data) {
+                $db_data_fetched_array[] = $data;
+            }
+            return $db_data_fetched_array;
+        }
+    }
+
+    function getIndicator3volumesExportedMaize_Frm4()
+    {
+        $this->db->select("sum(`volMaizeEx`) as volumesMaizeExported
+                            from `tbl_form4_traders`
+                            where display='Yes'", FALSE);
+
+
+
+        $db_rows = $this->db->get();
+
+        if ($db_rows->num_rows() > 0) {
+            foreach ($db_rows->result() as $data) {
+                $db_data_fetched_array[] = $data;
+            }
+            return $db_data_fetched_array;
+        }
+    }
+
+    function getIndicator3volumesExportedBeans_Frm4()
+    {
+        $this->db->select("sum(`volBeansEx`) as volumesBeansExported
+                            from `tbl_form4_traders`
+                            where display='Yes'", FALSE);
+
+        $db_rows = $this->db->get();
+
+        if ($db_rows->num_rows() > 0) {
+            foreach ($db_rows->result() as $data) {
+                $db_data_fetched_array[] = $data;
+            }
+            return $db_data_fetched_array;
+        }
+    }
+
+    function getIndicator3volumesExportedCoffee_Frm4()
+    {
+        $this->db->select("sum( `volCoffeeEx`) as volumesCoffeeExported
+                            from `tbl_form4_traders`
+                            where display='Yes'", FALSE);
+
+        $db_rows = $this->db->get();
+
+        if ($db_rows->num_rows() > 0) {
+            foreach ($db_rows->result() as $data) {
+                $db_data_fetched_array[] = $data;
+            }
+            return $db_data_fetched_array;
+        }
+    }
+
+
 
 
 

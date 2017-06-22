@@ -1,11 +1,11 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: shaffic
  * Date: 1/13/2016
  * Time: 11:33 AM
  */
-
 class Dashindicatorthirteen_model extends CI_Model
 {
 
@@ -16,7 +16,38 @@ class Dashindicatorthirteen_model extends CI_Model
 
     function getIndicator13farmers()
     {
-        $this->db->select("DISTINCT COUNT(*) as numFarmers FROM `tbl_farmers` where display='Yes' ", FALSE);
+        $this->db->select("DISTINCT COUNT(*) as numFarmers FROM `tbl_farmers` where display='Yes'", FALSE);
+
+        $db_rows = $this->db->get();
+
+        if ($db_rows->num_rows() > 0) {
+            foreach ($db_rows->result() as $data) {
+                $db_data_fetched_array[] = $data;
+            }
+            return $db_data_fetched_array;
+        }
+    }
+
+
+    function getIndicator13farmersMale()
+    {
+        $this->db->select("DISTINCT COUNT(*) as numFarmersMale FROM `tbl_farmers`
+        where farmersSex like 'M%' and display='Yes'", FALSE);
+
+        $db_rows = $this->db->get();
+
+        if ($db_rows->num_rows() > 0) {
+            foreach ($db_rows->result() as $data) {
+                $db_data_fetched_array[] = $data;
+            }
+            return $db_data_fetched_array;
+        }
+    }
+
+    function getIndicator13farmersFemale()
+    {
+        $this->db->select("DISTINCT COUNT(*) as numFarmersFemale FROM `tbl_farmers`
+        where farmersSex like 'F%' and display='Yes'", FALSE);
 
         $db_rows = $this->db->get();
 
@@ -34,7 +65,9 @@ class Dashindicatorthirteen_model extends CI_Model
                 from `tbl_farmers` as `f`
                     join `tbl_district` as `d` on (`d`.`districtCode` = `f`.`farmersDistrict`)
                     join `tbl_zone` as `z` on (`z`.`zoneCode` = `d`.`zone`)
-                where `z`.`zoneCode` = ".$region."", FALSE);
+                where `z`.`zoneCode` = " . $region . "
+                and `f`.`display`='Yes' "
+            , FALSE);
 
         $db_rows = $this->db->get();
 
@@ -46,6 +79,5 @@ class Dashindicatorthirteen_model extends CI_Model
         }
     }
 
-    
 
-    }
+}

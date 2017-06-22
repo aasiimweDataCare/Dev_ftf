@@ -86,8 +86,8 @@ define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
 
 
 //customized constants
-/*define('oldsite_url','http://mis.ftfcpm.com:9000/Old_Sys/');*/
-define('oldsite_url','http://localhost:82/Dev_ftf/Dev_CPM/');
+define('oldsite_url','http://localhost:82/dev_ftf/Old_Sys/');
+/*define('oldsite_url','http://localhost:82/dev_ftf/DEV_CPM/');*/
 /*define('oldsite_url','http://196.10.119.130:83/fsduganda/old/');*/
 
 define('cpma_dollar_rate',2500);

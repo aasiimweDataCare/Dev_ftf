@@ -5,27 +5,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="msapplication-config" content="<?php echo base_url() ?>assets/xml/browserconfig.xml"/>
-
-
     <link rel="shortcut icon" href="<?php echo base_url() ?>assets/icons/favicon.ico">
     <link rel="icon" href="<?php echo base_url() ?>assets/images/favicon.png">
-
     <link href="<?php echo base_url() ?>css/nta.css" media="all" rel="stylesheet" type="text/css">
     <link href="<?php echo base_url() ?>css/slide.css" media="all" rel="stylesheet" type="text/css">
     <title>CPMA:MIS</title>
-
     <!-- Bootstrap -->
     <link href="<?php echo base_url() ?>bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet">
-
     <link href="<?php echo base_url() ?>assets/jquery.ui.1.9.2.theme/ui/1.9.2/themes/base/jquery-ui.css"
           type="text/html">
     <link href="<?php echo base_url() ?>assets/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" type="text/html">
     <link href="<?php echo base_url() ?>font-awesome-4.4.0/css/font-awesome.min.css" rel="stylesheet"
           type="text/css">
-
     <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>css/login.css">
-
-
 </head>
 <body>
 
@@ -48,7 +40,6 @@
                             <li data-target="#myCarouselOne" data-slide-to="3"></li>
                             <li data-target="#myCarouselOne" data-slide-to="4"></li>
                         </ol>
-
                         <!-- Wrapper for slides -->
                         <div class="carousel-inner" role="listbox">
                             <div class="item active">
@@ -112,7 +103,6 @@
                                 </div>-->
                             </div>
                         </div>
-
                         <!-- Left and right controls -->
                         <a class="left carousel-control" href="#myCarouselOne" role="button" data-slide="prev">
                             <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>

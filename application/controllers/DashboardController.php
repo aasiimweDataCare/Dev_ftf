@@ -19,7 +19,7 @@ class DashboardController extends CI_Controller
         $this->load->helper('url');
         $this->load->helper('html');
         $this->load->library('form_validation');
-       // $this->load->library('email');
+        // $this->load->library('email');
 
         $this->load->model('Dashindicatordetails_model');
 
@@ -123,28 +123,52 @@ class DashboardController extends CI_Controller
         $data['data_get_i27_DS'] = $this->Dashindicatordetails_model->getIndicatorDataSourceLinks(7);
         $data['data_get_i27M_RP'] = $this->Dashindicatordetails_model->getIndicatorReportLinks(2);
 
-        
+
         /*end of indicator details*/
 
+        $data['data_get_i13_FarmersMale'] = $this->Dashindicatorthirteen_model->getIndicator13farmersMale();
+        $data['data_get_i13_FarmersFemale'] = $this->Dashindicatorthirteen_model->getIndicator13farmersFemale();
         $data['data_get_i13_Farmers'] = $this->Dashindicatorthirteen_model->getIndicator13farmers();
+        $data['data_get_i13_Farmers_loa'] = $this->Dashindicatorone_model->getIndicatorActivityLifeTime(12);
 
+        $data['data_get_14ActivityLifeTime'] = $this->Dashindicatorone_model->getIndicatorActivityLifeTime(14);
         $data['data_get_i1_Traders'] = $this->Dashindicatorone_model->getIndicator1traders();
         $data['data_get_i1_Exporters'] = $this->Dashindicatorone_model->getIndicator1exporters();
-        $data['data_get_i1_Households'] = $this->Dashindicatorone_model->getIndicator16Ruralhouseholds();
-        $data['data_get_i1_MSMEs'] = $this->Dashindicatorone_model->getIndicator24MSMEs();
-        $data['data_get_i1_Epayments'] = $this->Dashindicatorone_model->getIndicator23Epayments();
+        $data['data_get_i1_Partners_loa'] = $this->Dashindicatorone_model->getIndicatorActivityLifeTime(31);
+
+
+        $data['data_get_i6_Households'] = $this->Dashindicatorone_model->getIndicator16Ruralhouseholds();
+        $data['data_get_i6_Households_loa'] = $this->Dashindicatorone_model->getIndicatorActivityLifeTime(27);
+
+        $data['data_get_i24_MSMEs'] = $this->Dashindicatorone_model->getIndicator24MSMEs();
+        $data['data_get_i24_MSMEs_loa'] = $this->Dashindicatorone_model->getIndicatorActivityLifeTime(35);
+
+        $data['data_get_i23_Epayments'] = $this->Dashindicatorone_model->getIndicator23Epayments();
+        $data['data_get_i23_Epayments_loa'] = $this->Dashindicatorone_model->getIndicatorActivityLifeTime(34);
+
         $data['data_get_i1_EpaymentsT'] = $this->Dashindicatorone_model->getIndicator23EpaymentsT();
         $data['data_get_i1_EpaymentsE'] = $this->Dashindicatorone_model->getIndicator23EpaymentsE();
-        
 
-        
+
         $data['data_get_i2_Partnerships'] = $this->Dashindicatortwo_model->getIndicator2valuePartnerships();
         $data['data_get_i2_Partnerships_C'] = $this->Dashindicatortwo_model->getIndicator2valuePartnershipsRegion(1);
         $data['data_get_i2_Partnerships_N'] = $this->Dashindicatortwo_model->getIndicator2valuePartnershipsRegion(2);
         $data['data_get_i2_Partnerships_E'] = $this->Dashindicatortwo_model->getIndicator2valuePartnershipsRegion(3);
         $data['data_get_i2_Partnerships_W'] = $this->Dashindicatortwo_model->getIndicator2valuePartnershipsRegion(4);
-        
+        $data['data_get_i2_Partnerships_loa'] = $this->Dashindicatorone_model->getIndicatorActivityLifeTime(32);
+
         $data['data_get_i3_VolumesPurchased'] = $this->Dashindicatorthree_model->getIndicator3volumesPurchased();
+
+        $data['data_get_i3_VolumesExportedBeans_Frm3'] = $this->Dashindicatorthree_model->getIndicator3volumesExportedBeans_Frm3();
+        $data['data_get_i3_VolumesExportedCoffee_Frm3'] = $this->Dashindicatorthree_model->getIndicator3volumesExportedCoffee_Frm3();
+        $data['data_get_i3_VolumesExportedMaize_Frm3'] = $this->Dashindicatorthree_model->getIndicator3volumesExportedMaize_Frm3();
+        $data['data_get_i3_VolumesExportedBeans_Frm4'] = $this->Dashindicatorthree_model->getIndicator3volumesExportedBeans_Frm4();
+        $data['data_get_i3_VolumesExportedCoffee_Frm4'] = $this->Dashindicatorthree_model->getIndicator3volumesExportedCoffee_Frm4();
+        $data['data_get_i3_VolumesExportedMaize_Frm4'] = $this->Dashindicatorthree_model->getIndicator3volumesExportedMaize_Frm4();
+
+
+
+
         $data['data_get_i3_VolumesPurchased_ValueCentral'] = $this->Dashindicatorthree_model->getIndicator3volumesPurchasedValueChain(1);
         $data['data_get_i3_VolumesPurchased_ValueNorth'] = $this->Dashindicatorthree_model->getIndicator3volumesPurchasedValueChain(2);
         $data['data_get_i3_VolumesPurchased_ValueWest'] = $this->Dashindicatorthree_model->getIndicator3volumesPurchasedValueChain(4);
@@ -152,11 +176,12 @@ class DashboardController extends CI_Controller
 
 
 
+
         $data['data_get_i3_VolumesPurchased_Central'] = $this->Dashindicatorthree_model->getIndicator3volumesPurchasedRegion(1);
         $data['data_get_i3_VolumesPurchased_North'] = $this->Dashindicatorthree_model->getIndicator3volumesPurchasedRegion(2);
         $data['data_get_i3_VolumesPurchased_West'] = $this->Dashindicatorthree_model->getIndicator3volumesPurchasedRegion(4);
         $data['data_get_i3_VolumesPurchased_East'] = $this->Dashindicatorthree_model->getIndicator3volumesPurchasedRegion(3);
-        
+
 
         $data['data_get_i4_VolumesSold_M_C'] = $this->Dashindicatorfour_model->getIndicator4volumesSold_Maize(1);
         $data['data_get_i4_VolumesSold_B_C'] = $this->Dashindicatorfour_model->getIndicator4volumesSold_Beans(1);
@@ -171,6 +196,13 @@ class DashboardController extends CI_Controller
         $data['data_get_i4_VolumesSold_B_W'] = $this->Dashindicatorfour_model->getIndicator4volumesSold_Beans(4);
         $data['data_get_i4_VolumesSold_C_W'] = $this->Dashindicatorfour_model->getIndicator4volumesSold_Coffee(4);
 
+        $data['data_get_i4_Increment_yr1'] = $this->Dashindicatorincreamental_model->getIndicator14farmersSales('notrainedYr1');
+        $data['data_get_i4_Increment_yr2'] = $this->Dashindicatorincreamental_model->getIndicator14farmersSales('notrainedYr2');
+        $data['data_get_i4_Increment_yr3'] = $this->Dashindicatorincreamental_model->getIndicator14farmersSales('notrainedYr3');
+        $data['data_get_i4_Increment_yr4'] = $this->Dashindicatorincreamental_model->getIndicator14farmersSales('notrainedYr4');
+        $data['data_get_i4_Increment_yr5'] = $this->Dashindicatorincreamental_model->getIndicator14farmersSales('notrainedYr5');
+        $data['data_get_i4_Increment_yr6'] = $this->Dashindicatorincreamental_model->getIndicator14farmersSales('notrainedYr6');
+
 
 
 
@@ -179,6 +211,15 @@ class DashboardController extends CI_Controller
         $data['data_get_i5_W'] = $this->Dashindicatorfive_model->indicator5_West();
         $data['data_get_i5_E'] = $this->Dashindicatorfive_model->indicator5_East();
         $data['data_get_i5_C'] = $this->Dashindicatorfive_model->indicator5_Central();
+
+        $data['data_get_i5_RegionC'] = $this->Dashindicatorfive_model->indicator5_Regionform8(1);
+        $data['data_get_i5_RegionN'] = $this->Dashindicatorfive_model->indicator5_Regionform8(2);
+        $data['data_get_i5_RegionE'] = $this->Dashindicatorfive_model->indicator5_Regionform8(3);
+        $data['data_get_i5_RegionW'] = $this->Dashindicatorfive_model->indicator5_Regionform8(4);
+
+
+
+
 
         $data['data_get_i5_FemaleC'] = $this->Dashindicatorfive_model->getindicator5_Female(1);
         $data['data_get_i5_FemaleN'] = $this->Dashindicatorfive_model->getindicator5_Female(2);
@@ -189,12 +230,18 @@ class DashboardController extends CI_Controller
         $data['data_get_i5_MaleN'] = $this->Dashindicatorfive_model->getindicator5_Male(2);
         $data['data_get_i5_MaleE'] = $this->Dashindicatorfive_model->getindicator5_Male(3);
         $data['data_get_i5_MaleW'] = $this->Dashindicatorfive_model->getindicator5_Male(4);
-        
 
 
         $data['data_get_i6_Coffee'] = $this->Dashindicatorsix_model->getIndicator6acreageCoffee();
+        $data['data_get_i6_Coffee_2016_onwards'] = $this->Dashindicatorsix_model->getIndicator6acreageCoffeeFY2016Onwards();
+
         $data['data_get_i6_Maize'] = $this->Dashindicatorsix_model->getIndicator6acreageMaize();
+        $data['data_get_i6_Maize_2016_onwards'] = $this->Dashindicatorsix_model->getIndicator6acreageMaizeFY2016Onwards();
+
         $data['data_get_i6_Beans'] = $this->Dashindicatorsix_model->getIndicator6acreageBeans();
+        $data['data_get_i6_Beans_2016_onwards'] = $this->Dashindicatorsix_model->getIndicator6acreageBeansFY2016Onwards();
+
+
         $data['data_get_i7_ImprovedSeed_N'] = $this->Dashindicatorseven_model->getIndicator7ImprovedSeed(2);
         $data['data_get_i7_ImprovedSeed_W'] = $this->Dashindicatorseven_model->getIndicator7ImprovedSeed(4);
         $data['data_get_i7_ImprovedSeed_E'] = $this->Dashindicatorseven_model->getIndicator7ImprovedSeed(3);
@@ -222,6 +269,13 @@ class DashboardController extends CI_Controller
         $data['data_indicator9_Central'] = $this->Dashindicatornine_model->Indicator9central();
         $data['data_indicator9_East'] = $this->Dashindicatornine_model->Indicator9east();
         $data['data_indicator9_West'] = $this->Dashindicatornine_model->Indicator9west();
+        $data['data_indicator9_N_notrainedYr1'] = $this->Dashindicatornine_model->Indicator9byregion('notrainedYr1');
+        $data['data_indicator9_N_notrainedYr2'] = $this->Dashindicatornine_model->Indicator9byregion('notrainedYr2');
+        $data['data_indicator9_N_notrainedYr3'] = $this->Dashindicatornine_model->Indicator9byregion('notrainedYr3');
+        $data['data_indicator9_N_notrainedYr4'] = $this->Dashindicatornine_model->Indicator9byregion('notrainedYr4');
+        $data['data_indicator9_N_notrainedYr5'] = $this->Dashindicatornine_model->Indicator9byregion('notrainedYr5');
+        $data['data_indicator9_N_notrainedYr6'] = $this->Dashindicatornine_model->Indicator9byregion('notrainedYr6');
+
 
         $data['data_get_i13_Farmers_N'] = $this->Dashindicatorthirteen_model->getIndicator13farmersByRegion(2);
         $data['data_get_i13_Farmers_C'] = $this->Dashindicatorthirteen_model->getIndicator13farmersByRegion(1);
@@ -304,8 +358,36 @@ class DashboardController extends CI_Controller
 
         $data['market_prices'] = $this->Dashindicatorone_model->getIndicator12MarketPrices();
 
-        
-        
+        $data['data_get_i2_jobs_attributedyr1'] = $this->Dashindicatortwo_model->jobsAttributedToFtFImplementation('notrainedYr1');
+        $data['data_get_i2_jobs_attributedyr2'] = $this->Dashindicatortwo_model->jobsAttributedToFtFImplementation('notrainedYr2');
+        $data['data_get_i2_jobs_attributedyr3'] = $this->Dashindicatortwo_model->jobsAttributedToFtFImplementation('notrainedYr3');
+        $data['data_get_i2_jobs_attributedyr4'] = $this->Dashindicatortwo_model->jobsAttributedToFtFImplementation('notrainedYr4');
+        $data['data_get_i2_jobs_attributedyr5'] = $this->Dashindicatortwo_model->jobsAttributedToFtFImplementation('notrainedYr5');
+        $data['data_get_i2_jobs_attributedyr6'] = $this->Dashindicatortwo_model->jobsAttributedToFtFImplementation('notrainedYr6');
+        $data['data_get_i2_value_of_partnership'] = $this->Dashindicatortwo_model->getIndicator2valuePartnershipsAll();
+
+
+        $data['data_get_i2_jobs_ActivityLifeTime'] = $this->Dashindicatorone_model->getIndicatorActivityLifeTime(28);
+        $data['data_get_i4_jobs_ActivityLifeTime'] = $this->Dashindicatorone_model->getIndicatorActivityLifeTime(33);
+        $data['data_get_i13_jobs_ActivityLifeTime'] = $this->Dashindicatorone_model->getIndicatorActivityLifeTime(12);
+        $data['data_get_i15_jobs_ActivityLifeTime'] = $this->Dashindicatorone_model->getIndicatorActivityLifeTime(15);
+        $data['data_get_i8_jobs_ActivityLifeTime'] = $this->Dashindicatorone_model->getIndicatorActivityLifeTime(29);
+        $data['data_get_i6_jobs_ActivityLifeTime'] = $this->Dashindicatorone_model->getIndicatorActivityLifeTime(20);
+        $data['data_get_i10_jobs_ActivityLifeTime'] = $this->Dashindicatorone_model->getIndicatorActivityLifeTime(22);
+        $data['data_get_i3_jobs_ActivityLifeTime'] = $this->Dashindicatorone_model->getIndicatorActivityLifeTime(33);
+
+        $data['data_get_i26_jobs_ActivityLifeTime'] = $this->Dashindicatorone_model->getIndicatorActivityLifeTime(13);
+        $data['data_get_i27_jobs_ActivityLifeTime'] = $this->Dashindicatorone_model->getIndicatorActivityLifeTime(40);
+        $data['data_get_i15_youth'] = $this->Dashindicatorone_model->getIndicator15Youth();
+        $data['data_get_i28_jobs_ActivityLifeTime'] = $this->Dashindicatorone_model->getIndicatorActivityLifeTime(26);
+
+
+
+
+
+
+
+
 
 
 

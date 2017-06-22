@@ -63,10 +63,7 @@ if (empty($user_name)) {
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-
             <img src="<?= base_url() ?>assets/images/header2.gif">
-
-
         </div>
 
         <!-- /.navbar-header -->

@@ -45,152 +45,42 @@
 <!--indicator four_graph-->
 <script type="text/javascript">
     <?php
-
-
-    $reg_N = 'N';
-    $reg_W = 'W';
-    $reg_E = 'E';
-    $reg_C = 'C';
-
-    $crop_C = 'Coffee';
+     $crop_C = 'Coffee';
     $crop_M = 'Maize';
     $crop_B = 'Beans';
 
-    $arr_reg_All = " '".$reg_N."', '".$reg_W."', '".$reg_E."', '".$reg_C."' ";
 
-    foreach ($data_get_i4_VolumesSold_B_N as $row) {
-        $b_N =( $row->volumesSold);
+    foreach ($data_get_i3_VolumesExportedBeans_Frm3 as $rows) {
+    $val_graph_VolumesExportedBeans_Frm3 = ($rows->volumesBeansExported / 1000);
     }
-    foreach ($data_get_i4_VolumesSold_B_C as $row) {
-        $b_C =( $row->volumesSold);
+    foreach ($data_get_i3_VolumesExportedMaize_Frm3 as $rows) {
+    $val_graph_VolumesExportedMaize_Frm3 = ($rows->volumesMaizeExported / 1000);
     }
-    foreach ($data_get_i4_VolumesSold_B_E as $row) {
-        $b_E =( $row->volumesSold );
-    }
-    foreach ($data_get_i4_VolumesSold_B_W as $row) {
-        $b_W =( $row->volumesSold );
-    }
+    foreach ($data_get_i3_VolumesExportedCoffee_Frm3 as $rows) {
+    $val_graph_VolumesExportedCoffee_Frm3 = ($rows->volumesCoffeeExported / 1000);
+       }
 
-
-    foreach ($data_get_i4_VolumesSold_M_N as $row) {
-        $m_N =( $row->volumesSold);
+   foreach ($data_get_i3_VolumesExportedBeans_Frm4 as $rows) {
+    $val_graph_VolumesExportedBeans_Frm4 = ($rows->volumesBeansExported / 1000);
     }
-    foreach ($data_get_i4_VolumesSold_M_C as $row) {
-        $m_C =( $row->volumesSold);
+    foreach ($data_get_i3_VolumesExportedMaize_Frm4 as $rows) {
+    $val_graph_VolumesExportedMaize_Frm4 = ($rows->volumesMaizeExported / 1000);
     }
-    foreach ($data_get_i4_VolumesSold_M_E as $row) {
-        $m_E =( $row->volumesSold );
+    foreach ($data_get_i3_VolumesExportedCoffee_Frm4 as $rows) {
+    $val_graph_VolumesExportedCoffee_Frm4 = ($rows->volumesCoffeeExported / 1000);
     }
-    foreach ($data_get_i4_VolumesSold_M_W as $row) {
-        $m_W =( $row->volumesSold );
-    }
+    $tot_Mt_coffee_all =($val_graph_VolumesExportedCoffee_Frm3 +$val_graph_VolumesExportedCoffee_Frm4);
+    $tot_Mt_maize_all =($val_graph_VolumesExportedMaize_Frm3+$val_graph_VolumesExportedMaize_Frm4);
+    $tot_Mt_beans_all =($val_graph_VolumesExportedBeans_Frm3+$val_graph_VolumesExportedBeans_Frm4);
+    $tot_Mt_all =($tot_Mt_coffee_all+$tot_Mt_maize_all+$tot_Mt_beans_all);
 
-    foreach ($data_get_i4_VolumesSold_C_N as $row) {
-        $c_N =( $row->volumesSold);
-    }
-    foreach ($data_get_i4_VolumesSold_C_C as $row) {
-        $c_C =( $row->volumesSold);
-    }
-    foreach ($data_get_i4_VolumesSold_C_E as $row) {
-        $c_E =( $row->volumesSold );
-    }
-    foreach ($data_get_i4_VolumesSold_C_W as $row) {
-        $c_W =( $row->volumesSold );
-    }
-         $tot_Mt_all =($c_N + $c_W + $c_E + $c_C + $m_N + $m_W + $m_E + $m_C + $b_N + $b_W + $b_E + $b_C);
-
-         $tot_Mt_coffee_all =($c_N + $c_W + $c_E + $c_C );
-         $tot_Mt_maize_all =($m_N + $m_W + $m_E + $m_C);
-         $tot_Mt_beans_all =($b_N + $b_W + $b_E + $b_C);
-
-
-        $percent_Mt_coffee = (($tot_Mt_coffee_all/$tot_Mt_all)*100);
-        $percent_i4_coffee_N = (($c_N/$tot_Mt_all)*100);
-        $percent_i4_coffee_W = (($c_W/$tot_Mt_all)*100);
-        $percent_i4_coffee_E = (($c_E/$tot_Mt_all)*100);
-        $percent_i4_coffee_C = (($c_C/$tot_Mt_all)*100);
-
-        $percent_Mt_maize = (($tot_Mt_maize_all/$tot_Mt_all)*100);
-        $percent_i4_maize_N = (($m_N/$tot_Mt_all)*100);
-        $percent_i4_maize_W = (($m_W/$tot_Mt_all)*100);
-        $percent_i4_maize_E = (($m_E/$tot_Mt_all)*100);
-        $percent_i4_maize_C = (($m_C/$tot_Mt_all)*100);
-
-        $percent_Mt_beans = (($tot_Mt_beans_all/$tot_Mt_all)*100);
-        $percent_i4_beans_N = (($b_N/$tot_Mt_all)*100);
-        $percent_i4_beans_W = (($b_W/$tot_Mt_all)*100);
-        $percent_i4_beans_E = (($b_E/$tot_Mt_all)*100);
-        $percent_i4_beans_C = (($b_C/$tot_Mt_all)*100);
-
-        $arr_coffee_all = ''.$percent_i4_coffee_N.','.$percent_i4_coffee_W.','.$percent_i4_coffee_E.','.$percent_i4_coffee_C.'';
-        $arr_maize_all = ''.$percent_i4_maize_N.','.$percent_i4_maize_W.','.$percent_i4_maize_E.','.$percent_i4_maize_C.'';
-        $arr_beans_all = ''.$percent_i4_beans_N.','.$percent_i4_beans_W.','.$percent_i4_beans_E.','.$percent_i4_beans_C.'';
-
-        $percent_i4_coffee_All = $percent_Mt_coffee;
-        $percent_i4_maize_All = $percent_Mt_maize;
-        $percent_i4_beans_All = $percent_Mt_beans;
-
+    $percentage_coffee_exported=((($tot_Mt_coffee_all)/($tot_Mt_all))*100);
+    $percentage_maize_exported=((($tot_Mt_maize_all)/($tot_Mt_all))*100);
+    $percentage_beans_exported=((($tot_Mt_beans_all)/($tot_Mt_all))*100);
     ?>
 
     $(function () {
-
-        var colors = Highcharts.getOptions().colors,
-            categories = ['<?=$crop_C; ?>', '<?=$crop_M; ?>', '<?=$crop_B; ?>'],
-            name = 'Volumes Exported',
-            data = [{
-                y: <?=$percent_i4_coffee_All; ?>,
-                color: colors[6],
-                drilldown: {
-                    name: '<?=$crop_C; ?>',
-                    categories: ['<?=$crop_C.'-'.$reg_N; ?>', '<?=$crop_C.'-'.$reg_W; ?>', '<?=$crop_C.'-'.$reg_E; ?>', '<?=$crop_C.'-'.$reg_C; ?>'],
-                    data: [<?=$arr_coffee_all; ?>],
-                    color: colors[6]
-                }
-            }, {
-                y: <?=$percent_i4_maize_All; ?>,
-                color: colors[7],
-                drilldown: {
-                    name: '<?=$crop_M; ?>',
-                    categories: ['<?=$crop_M.'-'.$reg_N; ?>', '<?=$crop_M.'-'.$reg_W; ?>', '<?=$crop_M.'-'.$reg_E; ?>', '<?=$crop_M.'-'.$reg_C; ?>'],
-                    data: [<?=$arr_maize_all; ?>],
-                    color: colors[7]
-                }
-            }, {
-                y: <?=$percent_i4_beans_All; ?>,
-                color: colors[8],
-                drilldown: {
-                    name: '<?=$crop_B; ?>',
-                    categories: ['<?=$crop_B.'-'.$reg_N; ?>', '<?=$crop_B.'-'.$reg_W; ?>', '<?=$crop_B.'-'.$reg_E; ?>', '<?=$crop_B.'-'.$reg_C; ?>'],
-                    data: [<?=$arr_beans_all; ?>],
-                    color: colors[8]
-                }
-            }];
-
-
-        // Build the data arrays
-        var hectaresData = [];
-        var regionalData = [];
-        for (var i = 0; i < data.length; i++) {
-
-            // add browser data
-            hectaresData.push({
-                name: categories[i],
-                y: data[i].y,
-                color: data[i].color
-            });
-
-            // add version data
-            for (var j = 0; j < data[i].drilldown.data.length; j++) {
-                var brightness = 0.2 - (j / data[i].drilldown.data.length) / 5;
-                regionalData.push({
-                    name: data[i].drilldown.categories[j],
-                    y: data[i].drilldown.data[j],
-                    color: Highcharts.Color(data[i].color).brighten(brightness).get()
-                });
-            }
-        }
-
-        // Create the chart
+        var colors = Highcharts.getOptions().colors;
         $('#indicator_four').highcharts({
             chart: {
                 type: 'pie',
@@ -200,7 +90,7 @@
                 }
             },
             title: {
-                text: '<?=number_format($tot_Mt_all);?> MT',
+                text: '',
                 align: 'center',
                 margin: 50,
                 floating: false,
@@ -208,17 +98,6 @@
                     color: '#FF00FF',
                     fontWeight: 'bold'
                 }
-            },
-
-
-            plotOptions: {
-                pie: {
-                    shadow: false,
-                    center: ['50%', '50%'],
-                    depth: 30
-                }
-
-
             },
             tooltip: {
 
@@ -228,40 +107,94 @@
             credits: {
                 enabled: false
             },
-            series: [{
-                name: 'volumes Exported in Metric Tonnes',
-                data: hectaresData,
-                size: '65%',
-                dataLabels: {
-                    formatter: function () {
-                        return this.y > 5 ? this.point.name : null;
-                    },
-                    color: '#00215A',
-                    distance: -30
+            plotOptions: {
+                pie: {
+                    shadow: false,
+                    center: ['50%', '50%'],
+                    depth: 30
                 }
-            }, {
-                name: '%ge MT volumes Exported By Region',
-                data: regionalData,
-                size: '85%',
-                innerSize: '65%',
 
+
+            },
+            series: [{
+                name: 'Crops',
+                colorByPoint: true,
+                data: [{
+                    name: '<?=$crop_C.": ".number_format($tot_Mt_coffee_all)." MT"; ;?>',
+                    y: <?=$percentage_coffee_exported;?>,
+                    color: colors[6]
+                }, {
+                    name: '<?=$crop_M.": ".number_format($tot_Mt_maize_all)." MT"?>',
+                    y: <?=$percentage_maize_exported;?>,
+                    color: colors[7],
+                    sliced: true,
+                    selected: true
+                }, {
+                    name: '<?=$crop_B.": ".number_format($tot_Mt_beans_all)." MT"?>',
+                    y: <?=$percentage_beans_exported;?>,
+                    color: colors[8]
+                }]
+            }, {
+                size: '85%',
                 dataLabels: {
                     formatter: function () {
                         // display only if larger than 1
 
-                        return this.y > 1 ? '<b>' + this.point.name + ':</b> ' + Highcharts.numberFormat(this.y,0) + '%' : null;
+                        return this.y > 1 ? '<b>' + this.point.name + ':</b> ' + Highcharts.numberFormat(this.y, 0) + '%' : null;
                     }
                 }
             }]
         });
     });
-
-
 </script>
-
 <!--indicator five_graph-->
 <script type="text/javascript">
     <?php
+
+    /*start form 8*/
+
+    foreach ($data_get_i5_RegionN as $row) {
+            $val_form8_Yr1_N = $row->notrainedDemoYr1;
+            $val_form8_Yr2_N = $row->notrainedDemoYr2;
+            $val_form8_Yr3_N = $row->notrainedDemoYr3;
+            $val_form8_Yr4_N = $row->notrainedDemoYr4;
+            $val_form8_Yr5_N = $row->notrainedDemoYr5;
+            $val_form8_Yr6_N = $row->notrainedDemoYr6;
+        }
+
+
+    foreach ($data_get_i5_RegionW as $row) {
+            $val_form8_Yr1_W = $row->notrainedDemoYr1;
+            $val_form8_Yr2_W = $row->notrainedDemoYr2;
+            $val_form8_Yr3_W = $row->notrainedDemoYr3;
+            $val_form8_Yr4_W = $row->notrainedDemoYr4;
+            $val_form8_Yr5_W = $row->notrainedDemoYr5;
+            $val_form8_Yr6_W = $row->notrainedDemoYr6;
+        }
+
+    foreach ($data_get_i5_RegionE as $row) {
+            $val_form8_Yr1_E = $row->notrainedDemoYr1;
+            $val_form8_Yr2_E = $row->notrainedDemoYr2;
+            $val_form8_Yr3_E = $row->notrainedDemoYr3;
+            $val_form8_Yr4_E = $row->notrainedDemoYr4;
+            $val_form8_Yr5_E = $row->notrainedDemoYr5;
+            $val_form8_Yr6_E = $row->notrainedDemoYr6;
+        }
+
+    foreach ($data_get_i5_RegionC as $row) {
+            $val_form8_Yr1_C = $row->notrainedDemoYr1;
+            $val_form8_Yr2_C = $row->notrainedDemoYr2;
+            $val_form8_Yr3_C = $row->notrainedDemoYr3;
+            $val_form8_Yr4_C = $row->notrainedDemoYr4;
+            $val_form8_Yr5_C = $row->notrainedDemoYr5;
+            $val_form8_Yr6_C = $row->notrainedDemoYr6;
+        }
+
+    /*end form 8*/
+
+
+
+
     foreach ($data_get_i5_N as $row) {
             $val_Ind5_Yr1_N = $row->Ind5_N_Yr1;
             $val_Ind5_Yr2_N = $row->Ind5_N_Yr2;
@@ -272,7 +205,7 @@
         }
 
 
-        foreach ($data_get_i5_W as $row) {
+    foreach ($data_get_i5_W as $row) {
             $val_Ind5_Yr1_W = $row->Ind5_W_Yr1;
             $val_Ind5_Yr2_W = $row->Ind5_W_Yr2;
             $val_Ind5_Yr3_W = $row->Ind5_W_Yr3;
@@ -303,13 +236,15 @@
         
         
 
-        $val_Ind5_Yr1_All = "" . $val_Ind5_Yr1_N . "," . $val_Ind5_Yr1_W . "," . $val_Ind5_Yr1_E . "," . $val_Ind5_Yr1_C . "";
-        $val_Ind5_Yr2_All = "" . $val_Ind5_Yr2_N . "," . $val_Ind5_Yr2_W . "," . $val_Ind5_Yr2_E . "," . $val_Ind5_Yr2_C . "";
-        $val_Ind5_Yr3_All = "" . $val_Ind5_Yr3_N . "," . $val_Ind5_Yr3_W . "," . $val_Ind5_Yr3_E . "," . $val_Ind5_Yr3_C . "";
-        $val_Ind5_Yr4_All = "" . $val_Ind5_Yr4_N . "," . $val_Ind5_Yr4_W . "," . $val_Ind5_Yr4_E . "," . $val_Ind5_Yr4_C . "";
-        $val_Ind5_Yr5_All = "" . $val_Ind5_Yr5_N . "," . $val_Ind5_Yr5_W . "," . $val_Ind5_Yr5_E . "," . $val_Ind5_Yr5_C . "";
-        $val_Ind5_Yr6_All = "" . $val_Ind5_Yr6_N . "," . $val_Ind5_Yr6_W . "," . $val_Ind5_Yr6_E . "," . $val_Ind5_Yr6_C . "";
+        $val_Ind5_Yr1_All = "" . ($val_Ind5_Yr1_N+$val_form8_Yr1_N) . "," . ($val_Ind5_Yr1_W+$val_form8_Yr1_W) . "," . ($val_Ind5_Yr1_E+$val_form8_Yr1_E) . "," . ($val_Ind5_Yr1_C+$val_form8_Yr1_C) . "";
+        $val_Ind5_Yr2_All = "" . ($val_Ind5_Yr2_N+$val_form8_Yr2_N) . "," . ($val_Ind5_Yr2_W+$val_form8_Yr2_W) . "," . ($val_Ind5_Yr2_E+$val_form8_Yr2_E) . "," . ($val_Ind5_Yr2_C+$val_form8_Yr2_C) . "";
+        $val_Ind5_Yr3_All = "" . ($val_Ind5_Yr3_N+$val_form8_Yr3_N) . "," . ($val_Ind5_Yr3_W+$val_form8_Yr3_W) . "," . ($val_Ind5_Yr3_E+$val_form8_Yr3_E) . "," . ($val_Ind5_Yr3_C+$val_form8_Yr3_C) . "";
+        $val_Ind5_Yr4_All = "" . ($val_Ind5_Yr4_N+$val_form8_Yr4_N) . "," . ($val_Ind5_Yr4_W+$val_form8_Yr4_W) . "," . ($val_Ind5_Yr4_E+$val_form8_Yr4_E) . "," . ($val_Ind5_Yr4_C+$val_form8_Yr4_C) . "";
+        $val_Ind5_Yr5_All = "" . ($val_Ind5_Yr5_N+$val_form8_Yr5_N) . "," . ($val_Ind5_Yr5_W+$val_form8_Yr5_W) . "," . ($val_Ind5_Yr5_E+$val_form8_Yr5_E) . "," . ($val_Ind5_Yr5_C+$val_form8_Yr5_C) . "";
+        $val_Ind5_Yr6_All = "" . ($val_Ind5_Yr6_N+$val_form8_Yr6_N) . "," . ($val_Ind5_Yr6_W+$val_form8_Yr6_W) . "," . ($val_Ind5_Yr6_E+$val_form8_Yr6_E) . "," . ($val_Ind5_Yr6_C+$val_form8_Yr6_C) . "";
      ?>
+
+
     $(function () {
         Highcharts.setOptions({
             lang: {
@@ -318,7 +253,7 @@
         });
         $('#indicator_five').highcharts({
             chart: {
-                type: 'column'
+                type: 'bar'
             },
             title: {
                 text: ''
@@ -352,296 +287,148 @@
                     }
                 }
             },
-            tooltip: {
-                formatter: function () {
-                    var point = this.point,
-                        s = Highcharts.numberFormat(this.y, 0, '.') +'<br/>';
-                    if (point.drilldown) {
-                        s += 'Click to view more By Value Chain';
-                    }
-                    return s;
-                }
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'top',
+                x: -40,
+                y: 80,
+                floating: true,
+                borderWidth: 1,
+                backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+                shadow: true
             },
-            
             credits: {
                 enabled: false
             },
             series: [{
                 name: 'Year 2013',
-                data: [ {y:<?=$val_Ind5_Yr1_N;?>,drilldown: 'north-2013'},
-                        {y:<?=$val_Ind5_Yr1_W;?>,drilldown: 'west-2013'},
-                        {y:<?=$val_Ind5_Yr1_E;?>,drilldown: 'east-2013'},
-                        {y:<?=$val_Ind5_Yr1_C;?>,drilldown: 'central-2013'}
+                data: [
+                    <?=($val_Ind5_Yr1_N+$val_form8_Yr1_N);?>,
+                    <?=($val_Ind5_Yr1_W+$val_form8_Yr1_W);?>,
+                    <?=($val_Ind5_Yr1_E+$val_form8_Yr1_E);?>,
+                    <?=($val_Ind5_Yr1_C+$val_form8_Yr1_C);?>
                 ]
             }, {
                 name: 'Year 2014',
-                data: [{y:<?=$val_Ind5_Yr2_N;?>,drilldown: 'north-2014'},
-                        {y:<?=$val_Ind5_Yr2_W;?>,drilldown: 'west-2014'},
-                        {y:<?=$val_Ind5_Yr2_E;?>,drilldown: 'east-2014'},
-                        {y:<?=$val_Ind5_Yr2_C;?>,drilldown: 'central-2014'}
+                data: [
+                    <?=($val_Ind5_Yr2_N+$val_form8_Yr2_N);?>,
+                    <?=($val_Ind5_Yr2_W+$val_form8_Yr2_W);?>,
+                    <?=($val_Ind5_Yr2_E+$val_form8_Yr2_E);?>,
+                    <?=($val_Ind5_Yr2_C+$val_form8_Yr2_C);?>
                 ]
             }, {
                 name: 'Year 2015',
-                data: [{y:<?=$val_Ind5_Yr3_N;?>,drilldown: 'north-2015'},
-                        {y:<?=$val_Ind5_Yr3_W;?>,drilldown: 'west-2015'},
-                        {y:<?=$val_Ind5_Yr3_E;?>,drilldown: 'east-2015'},
-                        {y:<?=$val_Ind5_Yr3_C;?>,drilldown: 'central-2015'}
+                data: [
+                    <?=($val_Ind5_Yr3_N+$val_form8_Yr3_N);?>,
+                    <?=($val_Ind5_Yr3_W+$val_form8_Yr3_W);?>,
+                    <?=($val_Ind5_Yr3_E+$val_form8_Yr3_E);?>,
+                    <?=($val_Ind5_Yr3_C+$val_form8_Yr3_C);?>
                 ]
             }, {
                 name: 'Year 2016',
-                data: [{y:<?=$val_Ind5_Yr4_N;?>,drilldown: 'north-2016'},
-                        {y:<?=$val_Ind5_Yr4_W;?>,drilldown: 'west-2016'},
-                        {y:<?=$val_Ind5_Yr4_E;?>,drilldown: 'east-2016'},
-                        {y:<?=$val_Ind5_Yr4_C;?>,drilldown: 'central-2016'}
+                data: [
+                    <?=($val_Ind5_Yr4_N+$val_form8_Yr4_N);?>,
+                    <?=($val_Ind5_Yr4_W+$val_form8_Yr4_W);?>,
+                    <?=($val_Ind5_Yr4_E+$val_form8_Yr4_E);?>,
+                    <?=($val_Ind5_Yr4_C+$val_form8_Yr4_C);?>
                 ]
+
             }, {
                 name: 'Year 2017',
-                data: [{y:<?=$val_Ind5_Yr5_N;?>,drilldown: 'north-2017'},
-                        {y:<?=$val_Ind5_Yr5_W;?>,drilldown: 'west-2017'},
-                        {y:<?=$val_Ind5_Yr5_E;?>,drilldown: 'east-2017'},
-                        {y:<?=$val_Ind5_Yr5_C;?>,drilldown: 'central-2017'}
+                data: [
+                    <?=($val_Ind5_Yr5_N+$val_form8_Yr5_N);?>,
+                    <?=($val_Ind5_Yr5_W+$val_form8_Yr5_W);?>,
+                    <?=($val_Ind5_Yr5_E+$val_form8_Yr5_E);?>,
+                    <?=($val_Ind5_Yr5_C+$val_form8_Yr5_C);?>
                 ]
             }, {
                 name: 'Year 2018',
-                data: [{y:<?=$val_Ind5_Yr6_N;?>,drilldown: 'north-2018'},
-                        {y:<?=$val_Ind5_Yr6_W;?>,drilldown: 'west-2018'},
-                        {y:<?=$val_Ind5_Yr6_E;?>,drilldown: 'east-2018'},
-                        {y:<?=$val_Ind5_Yr6_C;?>,drilldown: 'central-2018'}
+                data: [
+                    <?=($val_Ind5_Yr6_N+$val_form8_Yr6_N);?>,
+                    <?=($val_Ind5_Yr6_W+$val_form8_Yr6_W);?>,
+                    <?=($val_Ind5_Yr6_E+$val_form8_Yr6_E);?>,
+                    <?=($val_Ind5_Yr6_C+$val_form8_Yr6_C);?>
                 ]
-            }],
 
-            drilldown: {
-                _animation: {
-                    duration: 2000
-                },
-
-                //Start of drill down
-                series: [
-                {
-                    id: 'north-2013',
-                    name: '2013',
-                    data: [
-                        ['Male', <?=$data_get_i5_MaleN['Ind5_C_Yr1'];?>],
-                        ['Female', <?=$data_get_i5_FemaleN['Ind5_C_Yr1'];?>]
-                        
-                    ]
-                }, {
-                    id: 'west-2013',
-                    name: '2013',
-                   data: [
-                        ['Male', <?=$data_get_i5_MaleW['Ind5_C_Yr1'];?>],
-                        ['Female', <?=$data_get_i5_FemaleW['Ind5_C_Yr1'];?>]
-                    ]
-                }, {
-                    id: 'east-2013',
-                    name: '2013',
-                    data: [
-                       ['Male', <?=$data_get_i5_MaleE['Ind5_C_Yr1'];?>],
-                        ['Female', <?=$data_get_i5_FemaleE['Ind5_C_Yr1'];?>]
-                    ]
-                }, {
-                    id: 'central-2013',
-                    name: '2013',
-                    data: [
-                        ['Male', <?=$data_get_i5_MaleC['Ind5_C_Yr1'];?>],
-                        ['Female', <?=$data_get_i5_FemaleC['Ind5_C_Yr1'];?>]
-                    ]
-                }, {
-                    id: 'north-2014',
-                    name: '2014',
-                    data: [
-                        ['Male', <?=$data_get_i5_MaleN['Ind5_C_Yr2'];?>],
-                        ['Female', <?=$data_get_i5_FemaleN['Ind5_C_Yr2'];?>]
-                    ]
-                }, {
-                    id: 'west-2014',
-                    name: '2014',
-                    data: [
-                        ['Male', <?=$data_get_i5_MaleW['Ind5_C_Yr2'];?>],
-                        ['Female', <?=$data_get_i5_FemaleW['Ind5_C_Yr2'];?>]
-                    ]
-                }, {
-                    id: 'east-2014',
-                    name: '2014',
-                    data: [
-                        ['Male', <?=$data_get_i5_MaleE['Ind5_C_Yr2'];?>],
-                        ['Female', <?=$data_get_i5_FemaleE['Ind5_C_Yr2'];?>]
-                    ]
-                }, {
-                    id: 'central-2014',
-                    name: '2014',
-                    data: [
-                        ['Male', <?=$data_get_i5_MaleC['Ind5_C_Yr2'];?>],
-                        ['Female', <?=$data_get_i5_FemaleC['Ind5_C_Yr2'];?>]
-                    ]
-                },{
-                        id: 'north-2015',
-                        name: '2015',
-                   data: [
-                        ['Male', <?=$data_get_i5_MaleN['Ind5_C_Yr3'];?>],
-                        ['Female', <?=$data_get_i5_FemaleN['Ind5_C_Yr3'];?>]
-                    ]
-                    }, {
-                        id: 'west-2015',
-                        name: '2015',
-                        data: [
-                        ['Male', <?=$data_get_i5_MaleW['Ind5_C_Yr3'];?>],
-                        ['Female', <?=$data_get_i5_FemaleW['Ind5_C_Yr3'];?>]
-                    ]
-                    }, {
-                        id: 'east-2015',
-                        name: '2015',
-                        data: [
-                        ['Male', <?=$data_get_i5_MaleE['Ind5_C_Yr3'];?>],
-                        ['Female', <?=$data_get_i5_FemaleE['Ind5_C_Yr3'];?>]
-                    ]
-                    }, {
-                        id: 'central-2015',
-                        name: '2015',
-                        data: [
-                        ['Male', <?=$data_get_i5_MaleC['Ind5_C_Yr3'];?>],
-                        ['Female', <?=$data_get_i5_FemaleC['Ind5_C_Yr3'];?>]
-                    ]
-                    },
-
-
-                    {
-                        id: 'north-2016',
-                        name: '2016',
-                        data: [
-                            ['Male', <?=$data_get_i5_MaleN['Ind5_C_Yr4'];?>],
-                            ['Female', <?=$data_get_i5_FemaleN['Ind5_C_Yr4'];?>]
-                        ]
-                    }, {
-                        id: 'west-2016',
-                        name: '2016',
-                        data: [
-                            ['Male', <?=$data_get_i5_MaleW['Ind5_C_Yr4'];?>],
-                            ['Female', <?=$data_get_i5_FemaleW['Ind5_C_Yr4'];?>]
-                        ]
-                    }, {
-                        id: 'east-2016',
-                        name: '2016',
-                        data: [
-                            ['Male', <?=$data_get_i5_MaleE['Ind5_C_Yr4'];?>],
-                            ['Female', <?=$data_get_i5_FemaleE['Ind5_C_Yr4'];?>]
-                        ]
-                    }, {
-                        id: 'central-2016',
-                        name: '2016',
-                        data: [
-                            ['Male', <?=$data_get_i5_MaleC['Ind5_C_Yr4'];?>],
-                            ['Female', <?=$data_get_i5_FemaleC['Ind5_C_Yr4'];?>]
-                        ]
-                    },
-
-
-                    {
-                        id: 'north-2017',
-                        name: '2017',
-                        data: [
-                            ['Male', <?=$data_get_i5_MaleN['Ind5_C_Yr5'];?>],
-                            ['Female', <?=$data_get_i5_FemaleN['Ind5_C_Yr5'];?>]
-                        ]
-                    }, {
-                        id: 'west-2017',
-                        name: '2017',
-                        data: [
-                           ['Male', <?=$data_get_i5_MaleW['Ind5_C_Yr5'];?>],
-                           ['Female', <?=$data_get_i5_FemaleW['Ind5_C_Yr5'];?>]
-                        ]
-                    }, {
-                        id: 'east-2017',
-                        name: '2017',
-                        data: [
-                            ['Male', <?=$data_get_i5_MaleE['Ind5_C_Yr5'];?>],
-                           ['Female', <?=$data_get_i5_FemaleE['Ind5_C_Yr5'];?>]
-                        ]
-                    }, {
-                        id: 'central-2017',
-                        name: '2017',
-                        data: [
-                           ['Male', <?=$data_get_i5_MaleC['Ind5_C_Yr5'];?>],
-                           ['Female', <?=$data_get_i5_FemaleC['Ind5_C_Yr5'];?>]
-                        ]
-                    },
-
-
-                    {
-                        id: 'north-2018',
-                        name: '2018',
-                        data: [
-                            ['Male', <?=$data_get_i5_MaleN['Ind5_C_Yr6'];?>],
-                           ['Female', <?=$data_get_i5_FemaleN['Ind5_C_Yr6'];?>]
-                        ]
-                    }, {
-                        id: 'west-2018',
-                        name: '2018',
-                        data: [
-                            ['Male', <?=$data_get_i5_MaleW['Ind5_C_Yr6'];?>],
-                           ['Female', <?=$data_get_i5_FemaleW['Ind5_C_Yr6'];?>]
-                        ]
-                    }, {
-                        id: 'east-2018',
-                        name: '2018',
-                        data: [
-                            ['Male', <?=$data_get_i5_MaleE['Ind5_C_Yr6'];?>],
-                           ['Female', <?=$data_get_i5_FemaleE['Ind5_C_Yr6'];?>]
-                        ]
-                    }, {
-                        id: 'central-2018',
-                        name: '2018',
-                        data: [
-                            ['Male', <?=$data_get_i5_MaleC['Ind5_C_Yr6'];?>],
-                           ['Female', <?=$data_get_i5_FemaleC['Ind5_C_Yr6'];?>]
-                        ]
-                    }]
-                }
-
-
+            }]
         });
     });
 
-
 </script>
-
 <!--indicator six_graph Hectares under production-->
 <script type="text/javascript">
     <?php
 
+   
+        $reg_N = 'N';
+        $reg_W = 'W';
+        $reg_E = 'E';
+        $reg_C = 'C';
 
-    $reg_N = 'N';
-    $reg_W = 'W';
-    $reg_E = 'E';
-    $reg_C = 'C';
+        /*Start the 2016 onwards figures*/
+        //Coffee
+        foreach ($data_get_i6_Coffee_2016_onwards as $row) {
+        $c_N_Yr6_plus =( ($row->Coffee_N_Yr1 * Ha)+($row->Coffee_N_Yr2 * Ha)+($row->Coffee_N_Yr3 * Ha)+($row->Coffee_N_Yr4 * Ha));
+        $c_W_Yr6_plus =( ($row->Coffee_W_Yr1 * Ha)+($row->Coffee_W_Yr2 * Ha)+($row->Coffee_W_Yr3 * Ha)+($row->Coffee_W_Yr4 * Ha) );
+        $c_E_Yr6_plus =( ($row->Coffee_E_Yr1 * Ha) +($row->Coffee_E_Yr2 * Ha)+($row->Coffee_E_Yr3 * Ha)+($row->Coffee_E_Yr4 * Ha));
+        $c_C_Yr6_plus =( ($row->Coffee_C_Yr1 * Ha) +($row->Coffee_C_Yr2 * Ha)+($row->Coffee_C_Yr3 * Ha)+($row->Coffee_C_Yr4 * Ha));
+         }
 
-    $crop_C = 'Coffee';
-    $crop_M = 'Maize';
-    $crop_B = 'Beans';
+         //Maize
+        foreach ($data_get_i6_Maize_2016_onwards as $row) {
+        $m_N_Yr6_plus =( ($row->Maize_N_Yr1 * Ha)+($row->Maize_N_Yr2 * Ha)+($row->Maize_N_Yr3 * Ha)+($row->Maize_N_Yr4 * Ha) );
+        $m_W_Yr6_plus =( ($row->Maize_W_Yr1 * Ha)+($row->Maize_W_Yr2 * Ha)+($row->Maize_W_Yr3 * Ha)+($row->Maize_W_Yr4 * Ha) );
+        $m_E_Yr6_plus =( ($row->Maize_E_Yr1 * Ha)+($row->Maize_E_Yr2 * Ha)+($row->Maize_E_Yr3 * Ha)+($row->Maize_E_Yr4 * Ha) );
+        $m_C_Yr6_plus =( ($row->Maize_C_Yr1 * Ha)+($row->Maize_C_Yr2 * Ha)+($row->Maize_C_Yr3 * Ha)+($row->Maize_C_Yr4 * Ha) );
+        }
+
+         //Beans
+        foreach ($data_get_i6_Beans_2016_onwards as $row) {
+        $b_N_Yr6_plus =( ($row->Beans_N_Yr1 * Ha)+($row->Beans_N_Yr2 * Ha)+($row->Beans_N_Yr3 * Ha)+($row->Beans_N_Yr4 * Ha) );
+        $b_W_Yr6_plus =( ($row->Beans_W_Yr1 * Ha)+($row->Beans_W_Yr2 * Ha)+($row->Beans_W_Yr3 * Ha)+($row->Beans_W_Yr4 * Ha) );
+        $b_E_Yr6_plus =( ($row->Beans_E_Yr1 * Ha)+($row->Beans_E_Yr2 * Ha)+($row->Beans_E_Yr3 * Ha)+($row->Beans_E_Yr4 * Ha) );
+        $b_C_Yr6_plus =( ($row->Beans_C_Yr1 * Ha)+($row->Beans_C_Yr2 * Ha)+($row->Beans_C_Yr3 * Ha)+($row->Beans_C_Yr4 * Ha) );
+         }
+
+
+        /*Ends the 2016 onwards figures*/
+    
 
     $arr_reg_All = " '".$reg_N."', '".$reg_W."', '".$reg_E."', '".$reg_C."' ";
     foreach ($data_get_i6_Coffee as $row) {
-        $c_N =( $row->Coffee_N * Ha );
-        $c_W =( $row->Coffee_W * Ha );
-        $c_E =( $row->Coffee_E * Ha );
-        $c_C =( $row->Coffee_C * Ha );
+        $c_N =( $c_N_Yr6_plus+($row->Coffee_N_Yr1 * Ha)+($row->Coffee_N_Yr2 * Ha)+($row->Coffee_N_Yr3 * Ha)+($row->Coffee_N_Yr4 * Ha));
+        $c_W =( $c_W_Yr6_plus+($row->Coffee_W_Yr1 * Ha)+($row->Coffee_W_Yr2 * Ha)+($row->Coffee_W_Yr3 * Ha)+($row->Coffee_W_Yr4 * Ha) );
+        $c_E =( $c_E_Yr6_plus+($row->Coffee_E_Yr1 * Ha) +($row->Coffee_E_Yr2 * Ha)+($row->Coffee_E_Yr3 * Ha)+($row->Coffee_E_Yr4 * Ha));
+        $c_C =( $c_C_Yr6_plus+($row->Coffee_C_Yr1 * Ha) +($row->Coffee_C_Yr2 * Ha)+($row->Coffee_C_Yr3 * Ha)+($row->Coffee_C_Yr4 * Ha));
          }
 
     foreach ($data_get_i6_Maize as $row) {
-        $m_N =( $row->Maize_N * Ha );
-        $m_W =( $row->Maize_W * Ha );
-        $m_E =( $row->Maize_E * Ha );
-        $m_C =( $row->Maize_C * Ha );
+        $m_N =( $m_N_Yr6_plus+($row->Maize_N_Yr1 * Ha)+($row->Maize_N_Yr2 * Ha)+($row->Maize_N_Yr3 * Ha)+($row->Maize_N_Yr4 * Ha) );
+        $m_W =( $m_W_Yr6_plus+($row->Maize_W_Yr1 * Ha)+($row->Maize_W_Yr2 * Ha)+($row->Maize_W_Yr3 * Ha)+($row->Maize_W_Yr4 * Ha) );
+        $m_E =( $m_E_Yr6_plus+($row->Maize_E_Yr1 * Ha)+($row->Maize_E_Yr2 * Ha)+($row->Maize_E_Yr3 * Ha)+($row->Maize_E_Yr4 * Ha) );
+        $m_C =( $m_C_Yr6_plus+($row->Maize_C_Yr1 * Ha)+($row->Maize_C_Yr2 * Ha)+($row->Maize_C_Yr3 * Ha)+($row->Maize_C_Yr4 * Ha) );
         }
 
     foreach ($data_get_i6_Beans as $row) {
-        $b_N =( $row->Beans_N * Ha );
-        $b_W =( $row->Beans_W * Ha );
-        $b_E =( $row->Beans_E * Ha );
-        $b_C =( $row->Beans_C * Ha );
+        $b_N =( $b_N_Yr6_plus+($row->Beans_N_Yr1 * Ha)+($row->Beans_N_Yr2 * Ha)+($row->Beans_N_Yr3 * Ha)+($row->Beans_N_Yr4 * Ha) );
+        $b_W =( $b_W_Yr6_plus+($row->Beans_W_Yr1 * Ha)+($row->Beans_W_Yr2 * Ha)+($row->Beans_W_Yr3 * Ha)+($row->Beans_W_Yr4 * Ha) );
+        $b_E =( $b_E_Yr6_plus+($row->Beans_E_Yr1 * Ha)+($row->Beans_E_Yr2 * Ha)+($row->Beans_E_Yr3 * Ha)+($row->Beans_E_Yr4 * Ha) );
+        $b_C =( $b_C_Yr6_plus+($row->Beans_C_Yr1 * Ha)+($row->Beans_C_Yr2 * Ha)+($row->Beans_C_Yr3 * Ha)+($row->Beans_C_Yr4 * Ha) );
          }
 
-         $tot_Ha_all =($c_N + $c_W + $c_E + $c_C + $m_N + $m_W + $m_E + $m_C + $b_N + $b_W + $b_E + $b_C);
+         $tot_Ha_all =($c_N +
+         $c_W +
+         $c_E +
+         $c_C +
+         $m_N +
+         $m_W +
+         $m_E +
+         $m_C +
+         $b_N +
+         $b_W +
+         $b_E +
+         $b_C);
 
          $tot_Ha_coffee_all =($c_N + $c_W + $c_E + $c_C );
          $tot_Ha_maize_all =($m_N + $m_W + $m_E + $m_C);
@@ -674,6 +461,12 @@
         $percent_i6_maize_All = $percent_Ha_maize;
         $percent_i6_beans_All = $percent_Ha_beans;
 
+        
+
+        $crop_C = 'Coffee'.'-'.number_format($tot_Ha_coffee_all,1).'Ha';
+        $crop_M = 'Maize'.'-'.number_format($tot_Ha_maize_all,1).'Ha';
+        $crop_B = 'Beans'.'-'.number_format($tot_Ha_beans_all,1).'Ha';
+
     ?>
     $(function () {
 
@@ -685,7 +478,7 @@
                 color: colors[3],
                 drilldown: {
                     name: '<?=$crop_C; ?>',
-                    categories: ['<?=$crop_C.'-'.$reg_N; ?>', '<?=$crop_C.'-'.$reg_W; ?>', '<?=$crop_C.'-'.$reg_E; ?>', '<?=$crop_C.'-'.$reg_C; ?>'],
+                    categories: ['<?=strstr($crop_C, '-', true).'-'.$reg_N; ?>', '<?=strstr($crop_C, '-', true).'-'.$reg_W; ?>', '<?=strstr($crop_C, '-', true).'-'.$reg_E; ?>', '<?=strstr($crop_C, '-', true).'-'.$reg_C; ?>'],
                     data: [<?=$arr_coffee_all; ?>],
                     color: colors[3]
                 }
@@ -694,7 +487,7 @@
                 color: colors[4],
                 drilldown: {
                     name: '<?=$crop_M; ?>',
-                    categories: ['<?=$crop_M.'-'.$reg_N; ?>', '<?=$crop_M.'-'.$reg_W; ?>', '<?=$crop_M.'-'.$reg_E; ?>', '<?=$crop_M.'-'.$reg_C; ?>'],
+                    categories: ['<?=strstr($crop_M, '-', true).'-'.$reg_N; ?>', '<?=strstr($crop_M, '-', true).'-'.$reg_W; ?>', '<?=strstr($crop_M, '-', true).'-'.$reg_E; ?>', '<?=strstr($crop_M, '-', true).'-'.$reg_C; ?>'],
                     data: [<?=$arr_maize_all; ?>],
                     color: colors[4]
                 }
@@ -703,7 +496,7 @@
                 color: colors[5],
                 drilldown: {
                     name: '<?=$crop_B; ?>',
-                    categories: ['<?=$crop_B.'-'.$reg_N; ?>', '<?=$crop_B.'-'.$reg_W; ?>', '<?=$crop_B.'-'.$reg_E; ?>', '<?=$crop_B.'-'.$reg_C; ?>'],
+                    categories: ['<?=strstr($crop_B, '-', true).'-'.$reg_N; ?>', '<?=strstr($crop_B, '-', true).'-'.$reg_W; ?>', '<?=strstr($crop_B, '-', true).'-'.$reg_E; ?>', '<?=strstr($crop_B, '-', true).'-'.$reg_C; ?>'],
                     data: [<?=$arr_beans_all; ?>],
                     color: colors[5]
                 }
@@ -776,7 +569,8 @@
                         return this.y > 5 ? this.point.name : null;
                     },
                     color: '#00215A',
-                    distance: -30
+                    distance: -20,
+                    rotation: 15
                 }
             }, {
                 name: '%ge Ha under production By Region',
@@ -788,7 +582,7 @@
                     formatter: function () {
                         // display only if larger than 1
 
-                        return this.y > 1 ? '<b>' + this.point.name + ':</b> ' + Highcharts.numberFormat(this.y,0) + '%' : null;
+                        return this.y > 1 ? '<b>' + this.point.name + ':</b> ' + Highcharts.numberFormat(this.y, 0) + '%' : null;
                     }
                 }
             }]
@@ -797,106 +591,102 @@
 
 
 </script>
-
 <!--indicator seven_graph Technologies Adopted
 <script type="text/javascript">
     <?php
-        $reg_N = 'North';
-        $reg_W = 'West';
-        $reg_E = 'East';
-        $reg_C = 'Central';
-        $arr_reg_All = " '".$reg_N."', '".$reg_W."', '".$reg_E."', '".$reg_C."' ";
-        foreach ($data_get_i7_ImprovedSeed_N as $row) {
-            $i7_ImprovedSeed_N = ( $row->improvedSeed );
-        }
-        foreach ($data_get_i7_ImprovedSeed_W as $row) {
-            $i7_ImprovedSeed_W = ( $row->improvedSeed );
-        }
-        foreach ($data_get_i7_ImprovedSeed_E as $row) {
-            $i7_ImprovedSeed_E = ( $row->improvedSeed );
-        }
+$reg_N = 'North';
+$reg_W = 'West';
+$reg_E = 'East';
+$reg_C = 'Central';
+$arr_reg_All = " '" . $reg_N . "', '" . $reg_W . "', '" . $reg_E . "', '" . $reg_C . "' ";
+foreach ($data_get_i7_ImprovedSeed_N as $row) {
+    $i7_ImprovedSeed_N = ($row->improvedSeed);
+}
+foreach ($data_get_i7_ImprovedSeed_W as $row) {
+    $i7_ImprovedSeed_W = ($row->improvedSeed);
+}
+foreach ($data_get_i7_ImprovedSeed_E as $row) {
+    $i7_ImprovedSeed_E = ($row->improvedSeed);
+}
 
-        foreach ($data_get_i7_ImprovedSeed_C as $row) {
-            $i7_ImprovedSeed_C = ( $row->improvedSeed );
-        }
-
-
-        foreach ($data_get_i7_Fertilizer_N as $row) {
-            $i7_Fertilizer_N = ( $row->Fertilizer );
-        }
-        foreach ($data_get_i7_Fertilizer_W as $row) {
-            $i7_Fertilizer_W = ( $row->Fertilizer );
-        }
-        foreach ($data_get_i7_Fertilizer_E as $row) {
-            $i7_Fertilizer_E = ( $row->Fertilizer );
-        }
-
-        foreach ($data_get_i7_Fertilizer_C as $row) {
-            $i7_Fertilizer_C = ( $row->Fertilizer );
-        }
+foreach ($data_get_i7_ImprovedSeed_C as $row) {
+    $i7_ImprovedSeed_C = ($row->improvedSeed);
+}
 
 
-        foreach ($data_get_i7_Chemical_N as $row) {
-            $i7_Chemical_N = ( $row->Chemical );
-        }
-        foreach ($data_get_i7_Chemical_W as $row) {
-            $i7_Chemical_W = ( $row->Chemical );
-        }
-        foreach ($data_get_i7_Chemical_E as $row) {
-            $i7_Chemical_E = ( $row->Chemical );
-        }
+foreach ($data_get_i7_Fertilizer_N as $row) {
+    $i7_Fertilizer_N = ($row->Fertilizer);
+}
+foreach ($data_get_i7_Fertilizer_W as $row) {
+    $i7_Fertilizer_W = ($row->Fertilizer);
+}
+foreach ($data_get_i7_Fertilizer_E as $row) {
+    $i7_Fertilizer_E = ($row->Fertilizer);
+}
 
-        foreach ($data_get_i7_Chemical_C as $row) {
-            $i7_Chemical_C = ( $row->Chemical );
-        }
-
-
-        foreach ($data_get_i7_ManagementPractices_N as $row) {
-            $i7_ManagementPractices_N = ( $row->ManagementPractices );
-        }
-        foreach ($data_get_i7_ManagementPractices_W as $row) {
-            $i7_ManagementPractices_W = ( $row->ManagementPractices );
-        }
-        foreach ($data_get_i7_ManagementPractices_E as $row) {
-            $i7_ManagementPractices_E = ( $row->ManagementPractices );
-        }
-
-        foreach ($data_get_i7_ManagementPractices_C as $row) {
-            $i7_ManagementPractices_C = ( $row->ManagementPractices );
-        }
-
-        foreach ($data_get_i7_Machinery_N as $row) {
-            $i7_Machinery_N = ( $row->Machinery );
-        }
-        foreach ($data_get_i7_Machinery_W as $row) {
-            $i7_Machinery_W = ( $row->Machinery );
-        }
-        foreach ($data_get_i7_Machinery_E as $row) {
-            $i7_Machinery_E = ( $row->Machinery );
-        }
-
-        foreach ($data_get_i7_Machinery_C as $row) {
-            $i7_Machinery_C = ( $row->Machinery );
-        }
+foreach ($data_get_i7_Fertilizer_C as $row) {
+    $i7_Fertilizer_C = ($row->Fertilizer);
+}
 
 
+foreach ($data_get_i7_Chemical_N as $row) {
+    $i7_Chemical_N = ($row->Chemical);
+}
+foreach ($data_get_i7_Chemical_W as $row) {
+    $i7_Chemical_W = ($row->Chemical);
+}
+foreach ($data_get_i7_Chemical_E as $row) {
+    $i7_Chemical_E = ($row->Chemical);
+}
+
+foreach ($data_get_i7_Chemical_C as $row) {
+    $i7_Chemical_C = ($row->Chemical);
+}
 
 
-        $arr_ImprovedSeed_All = ''.$i7_ImprovedSeed_N.','.$i7_ImprovedSeed_W.','.$i7_ImprovedSeed_E.','.$i7_ImprovedSeed_C.'';
-        $arr_Fertilizer_All = ''.$i7_Fertilizer_N.','.$i7_Fertilizer_W.','.$i7_Fertilizer_E.','.$i7_Fertilizer_C.'';
-        $arr_Chemical_All = ''.$i7_Chemical_N.','.$i7_Chemical_W.','.$i7_Chemical_E.','.$i7_Chemical_C.'';
-        $arr_ManagementPractices_All = ''.$i7_ManagementPractices_N.','.$i7_ManagementPractices_W.','.$i7_ManagementPractices_E.','.$i7_ManagementPractices_C.'';
-        $arr_Machinery_All = ''.$i7_Machinery_N.','.$i7_Machinery_W.','.$i7_Machinery_E.','.$i7_Machinery_C.'';
+foreach ($data_get_i7_ManagementPractices_N as $row) {
+    $i7_ManagementPractices_N = ($row->ManagementPractices);
+}
+foreach ($data_get_i7_ManagementPractices_W as $row) {
+    $i7_ManagementPractices_W = ($row->ManagementPractices);
+}
+foreach ($data_get_i7_ManagementPractices_E as $row) {
+    $i7_ManagementPractices_E = ($row->ManagementPractices);
+}
 
-        $i7_ImprovedSeed_sum = ($i7_ImprovedSeed_N + $i7_ImprovedSeed_W + $i7_ImprovedSeed_E + $i7_ImprovedSeed_C);
-        $i7_Fertilizer_sum = ($i7_Fertilizer_N + $i7_Fertilizer_W + $i7_Fertilizer_E + $i7_Fertilizer_C);
-        $i7_Chemical_sum = ($i7_Chemical_N + $i7_Chemical_W + $i7_Chemical_E + $i7_Chemical_C);
-        $i7_ManagementPractices_sum = ($i7_ManagementPractices_N + $i7_ManagementPractices_W + $i7_ManagementPractices_E + $i7_ManagementPractices_C);
-        $i7_Machinery_sum = ($i7_Machinery_N + $i7_Machinery_W + $i7_Machinery_E + $i7_Machinery_C);
+foreach ($data_get_i7_ManagementPractices_C as $row) {
+    $i7_ManagementPractices_C = ($row->ManagementPractices);
+}
+
+foreach ($data_get_i7_Machinery_N as $row) {
+    $i7_Machinery_N = ($row->Machinery);
+}
+foreach ($data_get_i7_Machinery_W as $row) {
+    $i7_Machinery_W = ($row->Machinery);
+}
+foreach ($data_get_i7_Machinery_E as $row) {
+    $i7_Machinery_E = ($row->Machinery);
+}
+
+foreach ($data_get_i7_Machinery_C as $row) {
+    $i7_Machinery_C = ($row->Machinery);
+}
 
 
+$arr_ImprovedSeed_All = '' . $i7_ImprovedSeed_N . ',' . $i7_ImprovedSeed_W . ',' . $i7_ImprovedSeed_E . ',' . $i7_ImprovedSeed_C . '';
+$arr_Fertilizer_All = '' . $i7_Fertilizer_N . ',' . $i7_Fertilizer_W . ',' . $i7_Fertilizer_E . ',' . $i7_Fertilizer_C . '';
+$arr_Chemical_All = '' . $i7_Chemical_N . ',' . $i7_Chemical_W . ',' . $i7_Chemical_E . ',' . $i7_Chemical_C . '';
+$arr_ManagementPractices_All = '' . $i7_ManagementPractices_N . ',' . $i7_ManagementPractices_W . ',' . $i7_ManagementPractices_E . ',' . $i7_ManagementPractices_C . '';
+$arr_Machinery_All = '' . $i7_Machinery_N . ',' . $i7_Machinery_W . ',' . $i7_Machinery_E . ',' . $i7_Machinery_C . '';
 
-     ?>
+$i7_ImprovedSeed_sum = ($i7_ImprovedSeed_N + $i7_ImprovedSeed_W + $i7_ImprovedSeed_E + $i7_ImprovedSeed_C);
+$i7_Fertilizer_sum = ($i7_Fertilizer_N + $i7_Fertilizer_W + $i7_Fertilizer_E + $i7_Fertilizer_C);
+$i7_Chemical_sum = ($i7_Chemical_N + $i7_Chemical_W + $i7_Chemical_E + $i7_Chemical_C);
+$i7_ManagementPractices_sum = ($i7_ManagementPractices_N + $i7_ManagementPractices_W + $i7_ManagementPractices_E + $i7_ManagementPractices_C);
+$i7_Machinery_sum = ($i7_Machinery_N + $i7_Machinery_W + $i7_Machinery_E + $i7_Machinery_C);
+
+
+?>
     $(function () {
         Highcharts.setOptions({
             lang: {
@@ -908,49 +698,49 @@
             categories = ['Improved seed','Fertilizer', 'Chemical Use', 'Management Practices', 'Machinery Use'],
         name = 'Technologies adopted',
             data = [{
-                y: <?=$i7_ImprovedSeed_sum; ?>,
+                y: <?= $i7_ImprovedSeed_sum; ?>,
                 color: colors[0],
                 drilldown: {
                     name: 'Improved seed By Region',
-                    categories: [<?=$arr_reg_All; ?>],
-                    data: [<?=$arr_ImprovedSeed_All; ?>],
+                    categories: [<?= $arr_reg_All; ?>],
+                    data: [<?= $arr_ImprovedSeed_All; ?>],
                     color: colors[0]
                 }
             }, {
-                y: <?=$i7_Fertilizer_sum; ?>,
+                y: <?= $i7_Fertilizer_sum; ?>,
                 color: colors[1],
                 drilldown: {
                     name: 'Fertilizer By Region',
-                    categories: [<?=$arr_reg_All; ?>],
-                    data: [<?=$arr_Fertilizer_All; ?>],
+                    categories: [<?= $arr_reg_All; ?>],
+                    data: [<?= $arr_Fertilizer_All; ?>],
                     color: colors[1]
                 }
             }, {
-                y: <?=$i7_Chemical_sum; ?>,
+                y: <?= $i7_Chemical_sum; ?>,
                 color: colors[2],
                 drilldown: {
                     name: 'Chemical Use By Region',
-                    categories: [<?=$arr_reg_All; ?>],
-                    data: [<?=$arr_Chemical_All; ?>],
+                    categories: [<?= $arr_reg_All; ?>],
+                    data: [<?= $arr_Chemical_All; ?>],
                     color: colors[2]
                 }
             },
                 {
-                    y: <?=$i7_ManagementPractices_sum; ?>,
+                    y: <?= $i7_ManagementPractices_sum; ?>,
                     color: colors[3],
                     drilldown: {
                         name: 'Management Practices By Region',
-                        categories: [<?=$arr_reg_All; ?>],
-                        data: [<?=$arr_ManagementPractices_All; ?>],
+                        categories: [<?= $arr_reg_All; ?>],
+                        data: [<?= $arr_ManagementPractices_All; ?>],
                         color: colors[3]
                     }
                 },{
-                    y: <?=$i7_Machinery_sum; ?>,
+                    y: <?= $i7_Machinery_sum; ?>,
                     color: colors[4],
                     drilldown: {
                         name: 'Machinery Use By Region',
-                        categories: [<?=$arr_reg_All; ?>],
-                        data: [<?=$arr_Machinery_All; ?>],
+                        categories: [<?= $arr_reg_All; ?>],
+                        data: [<?= $arr_Machinery_All; ?>],
                         color: colors[4]
                     }
                 }];
@@ -1040,43 +830,42 @@
 
 
 </script>-->
-
 <!--indicator eight_graph-->
 <script type="text/javascript">
     $(function () {
         <?php
             foreach ($data_indicator8_Micro as $row) {
 
-                $Micro2013 = $row->numYr1;
-                $Micro2014 = $row->numYr2;
-                $Micro2015 = $row->numYr3;
-                $Micro2016 = $row->numYr4;
-                $Micro2017 = $row->numYr5;
-                $Micro2018 = $row->numYr6;
+                $Micro2013 = (($row->numYr1)/(cpma_dollar_rate));
+                $Micro2014 = (($row->numYr2)/(cpma_dollar_rate));
+                $Micro2015 = (($row->numYr3)/(cpma_dollar_rate));
+                $Micro2016 = (($row->numYr4)/(cpma_dollar_rate));
+                $Micro2017 = (($row->numYr5)/(cpma_dollar_rate));
+                $Micro2018 = (($row->numYr6)/(cpma_dollar_rate));
             }
         ?>
 
         <?php
             foreach ($data_indicator8_Small as $row) {
 
-                $Small2013 = $row->numYr1;
-                $Small2014 = $row->numYr2;
-                $Small2015 = $row->numYr3;
-                $Small2016 = $row->numYr4;
-                $Small2017 = $row->numYr5;
-                $Small2018 = $row->numYr6;
+                $Small2013 = (($row->numYr1)/(cpma_dollar_rate));
+                $Small2014 = (($row->numYr2)/(cpma_dollar_rate));
+                $Small2015 = (($row->numYr3)/(cpma_dollar_rate));
+                $Small2016 = (($row->numYr4)/(cpma_dollar_rate));
+                $Small2017 = (($row->numYr5)/(cpma_dollar_rate));
+                $Small2018 = (($row->numYr6)/(cpma_dollar_rate));
             }
         ?>
 
         <?php
             foreach ($data_indicator8_Medium as $row) {
 
-                $Medium2013 = $row->numYr1;
-                $Medium2014 = $row->numYr2;
-                $Medium2015 = $row->numYr3;
-                $Medium2016 = $row->numYr4;
-                $Medium2017 = $row->numYr5;
-                $Medium2018 = $row->numYr6;
+                $Medium2013 = (($row->numYr1)/(cpma_dollar_rate));
+                $Medium2014 = (($row->numYr2)/(cpma_dollar_rate));
+                $Medium2015 = (($row->numYr3)/(cpma_dollar_rate));
+                $Medium2016 = (($row->numYr4)/(cpma_dollar_rate));
+                $Medium2017 = (($row->numYr5)/(cpma_dollar_rate));
+                $Medium2018 = (($row->numYr6)/(cpma_dollar_rate));
             }
         ?>
         // Create the chart
@@ -1091,6 +880,12 @@
                 type: 'category'
             },
 
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Loan Values (USD)'
+                }
+            },
             legend: {
                 enabled: true
             },
@@ -1421,21 +1216,18 @@
     });
 
 </script>
-
 <!--indicator nine_graph-->
 <script type="text/javascript">
 
     $(function () {
         <?php
-            foreach ($data_indicator9_North as $row) {
-
-                $North2013 = $row->North2013;
-                $North2014 = $row->North2014;
-                $North2015 = $row->North2015;
-                $North2016 = $row->North2016;
-                $North2017 = $row->North2017;
-                $North2018 = $row->North2018;
-            }
+            
+            $North2013 = round($data_indicator9_N_notrainedYr1);
+                $North2014 = round($data_indicator9_N_notrainedYr2);
+                $North2015 = round($data_indicator9_N_notrainedYr3);
+                $North2016 = round($data_indicator9_N_notrainedYr4);
+                $North2017 = round($data_indicator9_N_notrainedYr5);
+                $North2018 = round($data_indicator9_N_notrainedYr6);
         ?>
         <?php
             foreach ($data_indicator9_Central as $row) {
@@ -1472,10 +1264,19 @@
         ?>
         $('#indicator_nine').highcharts({
             title: {
-                text: 'Value Of Investment'
+                text: ''
+            },
+            chart: {
+                type: 'column'
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Values(USD)'
+                }
             },
             xAxis: {
-                categories: ['North', 'Central', 'East', 'West']
+                categories: ['2013', '2014', '2015', '2016', '2017', '2018']
             },
             labels: {
                 items: [{
@@ -1490,62 +1291,17 @@
             credits: {
                 enabled: false
             },
-            series: [{
-                type: 'column',
-                name: '2013',
-                data: [<?=$North2013; ?>, <?=$Central2013; ?>, <?=$East2013; ?>, <?=$West2013; ?>]
-            }, {
-                type: 'column',
-                name: '2014',
-                data: [<?=$North2014; ?>, <?=$Central2014; ?>, <?=$East2014; ?>, <?=$West2014; ?>]
-            }, {
-                type: 'column',
-                name: '2015',
-                data: [<?=$North2015; ?>, <?=$Central2015; ?>, <?=$East2015; ?>, <?=$West2015; ?>]
-            }, {
-                type: 'column',
-                name: '2016',
-                data: [<?=$North2016; ?>, <?=$Central2016; ?>, <?=$East2016; ?>, <?=$West2016; ?>]
-            }, {
-                type: 'column',
-                name: '2017',
-                data: [<?=$North2017; ?>, <?=$Central2017; ?>, <?=$East2017; ?>, <?=$West2017; ?>]
-            }, {
-                type: 'column',
-                name: '2018',
-                data: [<?=$North2018; ?>, <?=$Central2018; ?>, <?=$East2018; ?>, <?=$West2018; ?>]
-            }, {
-                type: 'pie',
-                name: 'Total Illegal Earnings ',
-                data: [{
-                    name: 'Kampala',
-                    y: 97847.27,
-                    color: Highcharts.getOptions().colors[0] // Kampala's color
-                }, {
-                    name: 'Nairobi',
-                    y: 5655.52556,
-                    color: Highcharts.getOptions().colors[1] // Nairobi's color
-                }, {
-                    name: 'Dar es Salaam',
-                    y: 19009.72,
-                    color: Highcharts.getOptions().colors[1] // Dar es Salaam's color
-                }, {
-                    name: 'Kigali',
-                    y: 18490.14,
-                    color: Highcharts.getOptions().colors[2] // Kigali's color
-                }],
-                center: [1000, 80],
-                size: 100,
-                showInLegend: false,
-                dataLabels: {
-                    enabled: true,
+            series: [
+                {
+                    name: 'Year',
+                    data: [<?=$North2013; ?>, <?=$North2014; ?>, <?=$North2015; ?>, <?=$North2016; ?>, <?=$North2017; ?>, <?=$North2018; ?>]
                 }
-            }]
+
+            ]
+
         });
     });
 </script>
-
-
 <!--indicator ten_graph input sales-->
 <script type="text/javascript">
     $(function () {
@@ -1553,44 +1309,44 @@
         //---------region data set-------------
             foreach ($data_IndicatorTenRegionCentral as $row) {
 
-                $inputsSoldByChemicalsCentral = $row->inputsSoldByChemicals;
-                $inputsSoldByFarmImplementsCentral = $row->inputsSoldByFarmImplements;
-                $inputsSoldByFertilizersCentral = $row->inputsSoldByFertilizers;
-                $inputsSoldByHerbicidesCentral = $row->inputsSoldByHerbicides;
-                $inputsSoldByOthersCentral = $row->inputsSoldByOthers;
-                $inputsSoldBySeedsCentral = $row->inputsSoldBySeeds;
+                $inputsSoldByChemicalsCentral = (($row->inputsSoldByChemicals)/(cpma_dollar_rate));
+                $inputsSoldByFarmImplementsCentral = (($row->inputsSoldByFarmImplements)/(cpma_dollar_rate));
+                $inputsSoldByFertilizersCentral = (($row->inputsSoldByFertilizers)/(cpma_dollar_rate));
+                $inputsSoldByHerbicidesCentral = (($row->inputsSoldByHerbicides)/(cpma_dollar_rate));
+                $inputsSoldByOthersCentral = (($row->inputsSoldByOthers)/(cpma_dollar_rate));
+                $inputsSoldBySeedsCentral = (($row->inputsSoldBySeeds)/(cpma_dollar_rate));
             }
 
 
 
              foreach ($data_IndicatorTenRegionNorth as $row) {
 
-                $inputsSoldByChemicalsNorth = $row->inputsSoldByChemicals;
-                $inputsSoldByFarmImplementsNorth = $row->inputsSoldByFarmImplements;
-                $inputsSoldByFertilizersNorth = $row->inputsSoldByFertilizers;
-                $inputsSoldByHerbicidesNorth = $row->inputsSoldByHerbicides;
-                $inputsSoldByOthersNorth = $row->inputsSoldByOthers;
-                $inputsSoldBySeedsNorth = $row->inputsSoldBySeeds;
+                $inputsSoldByChemicalsNorth = (($row->inputsSoldByChemicals)/(cpma_dollar_rate));
+                $inputsSoldByFarmImplementsNorth = (($row->inputsSoldByFarmImplements)/(cpma_dollar_rate));
+                $inputsSoldByFertilizersNorth = (($row->inputsSoldByFertilizers)/(cpma_dollar_rate));
+                $inputsSoldByHerbicidesNorth = (($row->inputsSoldByHerbicides)/(cpma_dollar_rate));
+                $inputsSoldByOthersNorth = (($row->inputsSoldByOthers)/(cpma_dollar_rate));
+                $inputsSoldBySeedsNorth = (($row->inputsSoldBySeeds)/(cpma_dollar_rate));
             }
 
              foreach ($data_IndicatorTenRegionEast as $row) {
 
-                $inputsSoldByChemicalsEast = $row->inputsSoldByChemicals;
-                $inputsSoldByFarmImplementsEast = $row->inputsSoldByFarmImplements;
-                $inputsSoldByFertilizersEast = $row->inputsSoldByFertilizers;
-                $inputsSoldByHerbicidesEast = $row->inputsSoldByHerbicides;
-                $inputsSoldByOthersEast = $row->inputsSoldByOthers;
-                $inputsSoldBySeedsEast = $row->inputsSoldBySeeds;
+                $inputsSoldByChemicalsEast = (($row->inputsSoldByChemicals)/(cpma_dollar_rate));
+                $inputsSoldByFarmImplementsEast = (($row->inputsSoldByFarmImplements)/(cpma_dollar_rate));
+                $inputsSoldByFertilizersEast = (($row->inputsSoldByFertilizers)/(cpma_dollar_rate));
+                $inputsSoldByHerbicidesEast = (($row->inputsSoldByHerbicides)/(cpma_dollar_rate));
+                $inputsSoldByOthersEast = (($row->inputsSoldByOthers)/(cpma_dollar_rate));
+                $inputsSoldBySeedsEast = (($row->inputsSoldBySeeds)/(cpma_dollar_rate));
             }
 
              foreach ($data_IndicatorTenRegionWest as $row) {
 
-                $inputsSoldByChemicalsWest = $row->inputsSoldByChemicals;
-                $inputsSoldByFarmImplementsWest = $row->inputsSoldByFarmImplements;
-                $inputsSoldByFertilizersWest = $row->inputsSoldByFertilizers;
-                $inputsSoldByHerbicidesWest = $row->inputsSoldByHerbicides;
-                $inputsSoldByOthersWest = $row->inputsSoldByOthers;
-                $inputsSoldBySeedsWest = $row->inputsSoldBySeeds;
+                $inputsSoldByChemicalsWest = (($row->inputsSoldByChemicals)/(cpma_dollar_rate));
+                $inputsSoldByFarmImplementsWest = (($row->inputsSoldByFarmImplements)/(cpma_dollar_rate));
+                $inputsSoldByFertilizersWest = (($row->inputsSoldByFertilizers)/(cpma_dollar_rate));
+                $inputsSoldByHerbicidesWest = (($row->inputsSoldByHerbicides)/(cpma_dollar_rate));
+                $inputsSoldByOthersWest = (($row->inputsSoldByOthers)/(cpma_dollar_rate));
+                $inputsSoldBySeedsWest = (($row->inputsSoldBySeeds)/(cpma_dollar_rate));
             }
 
         ?>
@@ -1599,12 +1355,12 @@
         //--------------district data sets--------
             foreach ($data_IndicatorTenDistrict as $row) {
 
-                   $districtInputsSoldByChemicals = $row->inputsSoldByChemicals;
-                $districtInputsSoldByFarmImplements = $row->inputsSoldByFarmImplements;
-                $districtInputsSoldByFertilizers = $row->inputsSoldByFertilizers;
-                $districtInputsSoldByHerbicides = $row->inputsSoldByHerbicides;
-                $districtInputsSoldByOthers = $row->inputsSoldByOthers;
-                $districtInputsSoldBySeeds = $row->inputsSoldBySeeds;
+                   $districtInputsSoldByChemicals = (($row->inputsSoldByChemicals)/(cpma_dollar_rate));
+                $districtInputsSoldByFarmImplements = (($row->inputsSoldByFarmImplements)/(cpma_dollar_rate));
+                $districtInputsSoldByFertilizers = (($row->inputsSoldByFertilizers)/(cpma_dollar_rate));
+                $districtInputsSoldByHerbicides = (($row->inputsSoldByHerbicides)/(cpma_dollar_rate));
+                $districtInputsSoldByOthers = (($row->inputsSoldByOthers)/(cpma_dollar_rate));
+                $districtInputsSoldBySeeds = (($row->inputsSoldBySeeds)/(cpma_dollar_rate));
             }
         ?>
 
@@ -1615,10 +1371,16 @@
                 type: 'column'
             },
             title: {
-                text: 'Input Sales'
+                text: ''
             },
             xAxis: {
                 type: 'category'
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Input Sales Values(USD)'
+                }
             },
 
             legend: {
@@ -1985,10 +1747,7 @@
     });
 
 </script>
-
 <!--indicator eleven_graph-->
-
-
 <!--indicator twelve_graph market prices-->
 <script type="text/javascript">
     $(function () {
@@ -2035,18 +1794,18 @@
         ?>
     });
 
-        <?php
-        //--------------district data sets--------
-            /* foreach ($data_IndicatorTenDistrict as $row) {
+    <?php
+    //--------------district data sets--------
+        /* foreach ($data_IndicatorTenDistrict as $row) {
 
-                   $districtInputsSoldByChemicals = $row->inputsSoldByChemicals;
-                $districtInputsSoldByFarmImplements = $row->inputsSoldByFarmImplements;
-                $districtInputsSoldByFertilizers = $row->inputsSoldByFertilizers;
-                $districtInputsSoldByHerbicides = $row->inputsSoldByHerbicides;
-                $districtInputsSoldByOthers = $row->inputsSoldByOthers;
-                $districtInputsSoldBySeeds = $row->inputsSoldBySeeds;
-            } */
-        ?>
+               $districtInputsSoldByChemicals = $row->inputsSoldByChemicals;
+            $districtInputsSoldByFarmImplements = $row->inputsSoldByFarmImplements;
+            $districtInputsSoldByFertilizers = $row->inputsSoldByFertilizers;
+            $districtInputsSoldByHerbicides = $row->inputsSoldByHerbicides;
+            $districtInputsSoldByOthers = $row->inputsSoldByOthers;
+            $districtInputsSoldBySeeds = $row->inputsSoldBySeeds;
+        } */
+    ?>
 
 
     //     // Create the chart
@@ -2403,8 +2162,6 @@
     // });
 
 </script>
-
-
 <!--indicator thirteen_graph Farmers by region-->
 <script type="text/javascript">
 
@@ -2439,25 +2196,25 @@
         ?>
         $('#indicator_thirteen').highcharts({
             title: {
-                text: 'Number of Farmers By Region'
+                text: ''
             },
             chart: {
                 type: 'column'
             },
             xAxis: {
-                 categories: [
-                 'North',
-                 'Central',
-                 'East',
-                 'West'
+                categories: [
+                    'North',
+                    'Central',
+                    'East',
+                    'West'
 
-                 ]
+                ]
             },
             yAxis: {
-            min: 0,
-            title: {
-                text: 'Number of Farmers'
-            }
+                min: 0,
+                title: {
+                    text: 'Number of Farmers'
+                }
             },
             legend: {
                 enabled: true
@@ -2478,12 +2235,11 @@
             },
             series: [{
                 name: 'Region',
-                data: [<?=$North; ?>,<?=$Central; ?>,<?=$East; ?>,<?=$West; ?>]
+                data: [<?=$North; ?>, <?=$Central; ?>, <?=$East; ?>, <?=$West; ?>]
             }]
         });
     });
 </script>
-
 <!--indicator volume sold by region-->
 <script type="text/javascript">
 
@@ -2548,19 +2304,19 @@
         ?>
         $('#indicator_three_sold').highcharts({
             title: {
-                text: 'Volumes Purchased by Traders'
+                text: ''
             },
             chart: {
                 type: 'column'
             },
             xAxis: {
-                 type: 'category'
+                type: 'category'
             },
             yAxis: {
-            min: 0,
-            title: {
-                text: 'Volumes Purchased (MT)'
-            }
+                min: 0,
+                title: {
+                    text: 'Volumes Purchased (MT)'
+                }
             },
             legend: {
                 enabled: true
@@ -2579,7 +2335,7 @@
             tooltip: {
                 formatter: function () {
                     var point = this.point,
-                        s = Highcharts.numberFormat(this.y, 0, '.') +'<br/>';
+                        s = Highcharts.numberFormat(this.y, 0, '.') + '<br/>';
                     if (point.drilldown) {
                         s += 'Click to view more By Value Chain';
                     }
@@ -2590,48 +2346,48 @@
                 enabled: false
             },
             series: [
-            {
-                name: 'North',
-                data:[{
+                {
                     name: 'North',
-                    y: <?=$North; ?>,
-                    drilldown: 'north-value'
-                }
-                 ]
-                
-            },
+                    data: [{
+                        name: 'North',
+                        y: <?=$North; ?>,
+                        drilldown: 'north-value'
+                    }
+                    ]
 
-            {
-                name: 'Central',
-                data:[{
+                },
+
+                {
                     name: 'Central',
-                    y: <?=$Central; ?>,
-                    drilldown: 'central-value'
-                }
-                 ]
-                
-            },
+                    data: [{
+                        name: 'Central',
+                        y: <?=$Central; ?>,
+                        drilldown: 'central-value'
+                    }
+                    ]
 
-            {
-                name: 'East',
-                data:[{
-                    name: 'Region',
-                    y: <?=$East; ?>,
-                    drilldown: 'east-value'
-                }
-                 ]
-            },
+                },
 
-            {
-                name: 'West',
-                data:[{
-                    name: 'Region',
-                    y: <?=$West; ?>,
-                    drilldown: 'west-value'
-                }
-                 ]
-                
-            },
+                {
+                    name: 'East',
+                    data: [{
+                        name: 'Region',
+                        y: <?=$East; ?>,
+                        drilldown: 'east-value'
+                    }
+                    ]
+                },
+
+                {
+                    name: 'West',
+                    data: [{
+                        name: 'Region',
+                        y: <?=$West; ?>,
+                        drilldown: 'west-value'
+                    }
+                    ]
+
+                },
 
             ],
 
@@ -2642,52 +2398,50 @@
 
                 //Start of drill down
                 series: [
-                {
-                    id: 'north-value',
-                    name: 'North',
-                    data: [
-                        ['Maize', <?=$North_Maize;?>],
-                        ['Beans', <?=$North_Beans;?>],
-                        ['Coffee', <?=$North_Coffee;?>]
-                    ]
-                },
+                    {
+                        id: 'north-value',
+                        name: 'North',
+                        data: [
+                            ['Maize', <?=$North_Maize;?>],
+                            ['Beans', <?=$North_Beans;?>],
+                            ['Coffee', <?=$North_Coffee;?>]
+                        ]
+                    },
 
-                {
-                    id: 'central-value',
-                    name: 'Central',
-                    data: [
-                        ['Maize', <?=$Central_Maize;?>],
-                        ['Beans', <?=$Central_Beans;?>],
-                        ['Coffee', <?=$Central_Coffee;?>]
-                    ]
-                },
+                    {
+                        id: 'central-value',
+                        name: 'Central',
+                        data: [
+                            ['Maize', <?=$Central_Maize;?>],
+                            ['Beans', <?=$Central_Beans;?>],
+                            ['Coffee', <?=$Central_Coffee;?>]
+                        ]
+                    },
 
-                {
-                    id: 'east-value',
-                    name: 'East',
-                    data: [
-                        ['Maize', <?=$East_Maize;?>],
-                        ['Beans', <?=$East_Beans;?>],
-                        ['Coffee', <?=$East_Coffee;?>]
-                    ]
-                },
+                    {
+                        id: 'east-value',
+                        name: 'East',
+                        data: [
+                            ['Maize', <?=$East_Maize;?>],
+                            ['Beans', <?=$East_Beans;?>],
+                            ['Coffee', <?=$East_Coffee;?>]
+                        ]
+                    },
 
-                {
-                    id: 'west-value',
-                    name: 'West',
-                    data: [
-                        ['Maize', <?=$West_Maize;?>],
-                        ['Beans', <?=$West_Beans;?>],
-                        ['Coffee', <?=$West_Coffee;?>]
-                    ]
-                }
+                    {
+                        id: 'west-value',
+                        name: 'West',
+                        data: [
+                            ['Maize', <?=$West_Maize;?>],
+                            ['Beans', <?=$West_Beans;?>],
+                            ['Coffee', <?=$West_Coffee;?>]
+                        ]
+                    }
                 ]
             }
         });
     });
 </script>
-
-
 <!--indicator value of partnership by region-->
 <script type="text/javascript">
 
@@ -2728,19 +2482,19 @@
                 type: 'column'
             },
             xAxis: {
-                 categories: [
-                 'North',
-                 'Central',
-                 'East',
-                 'West'
+                categories: [
+                    'North',
+                    'Central',
+                    'East',
+                    'West'
 
-                 ]
+                ]
             },
             yAxis: {
-            min: 0,
-            title: {
-                text: 'Value of Partnerships'
-            }
+                min: 0,
+                title: {
+                    text: 'Value of Partnerships'
+                }
             },
             legend: {
                 enabled: true
@@ -2761,17 +2515,15 @@
             },
             series: [{
                 name: 'Region',
-                data: [<?=$North; ?>,<?=$Central; ?>,<?=$East; ?>,<?=$West; ?>]
+                data: [<?=$North; ?>, <?=$Central; ?>, <?=$East; ?>, <?=$West; ?>]
             }]
         });
     });
 </script>
-
-
 <script type="text/javascript">
 
     $(function () {
-        
+
 
         <?php
         define("usd","2500");
@@ -2964,11 +2716,11 @@
             chart: {
                 type: 'column',
                 options3d: {
-                enabled: true,
-                alpha: 10,
-                beta: 25,
-                depth: 70
-            }
+                    enabled: true,
+                    alpha: 10,
+                    beta: 25,
+                    depth: 70
+                }
 
 
             },
@@ -2976,17 +2728,17 @@
                 type: 'category'
             },
             yAxis: {
-            title: {
-                text: 'Sales'
-            }
+                title: {
+                    text: 'Sales'
+                }
             },
             legend: {
                 enabled: true
             },
             plotOptions: {
                 column: {
-                depth: 25
-            },
+                    depth: 25
+                },
                 series: {
                     borderWidth: 0,
                     dataLabels: {
@@ -3013,7 +2765,7 @@
             tooltip: {
                 formatter: function () {
                     var point = this.point,
-                        s = Highcharts.numberFormat(this.y, 0, '.') +'<br/>';
+                        s = Highcharts.numberFormat(this.y, 0, '.') + '<br/>';
                     if (point.drilldown) {
                         s += 'Click to view more By Value Chain';
                     }
@@ -3052,91 +2804,91 @@
                     drilldown: 'north-2018'
                 }]
             },
-            {
-                name: 'Central',
-                data: [{
-                    name: '2013',
-                    y: <?=$CentYr1; ?>,
-                    color: '#9E0825',
-                    drilldown: 'central-2013'
+                {
+                    name: 'Central',
+                    data: [{
+                        name: '2013',
+                        y: <?=$CentYr1; ?>,
+                        color: '#9E0825',
+                        drilldown: 'central-2013'
+                    }, {
+                        name: '2014',
+                        y: <?=$CentYr2; ?>,
+                        drilldown: 'central-2014'
+                    }, {
+                        name: '2015',
+                        y: <?=$CentYr3; ?>,
+                        drilldown: 'central-2015'
+                    }, {
+                        name: '2016',
+                        y: <?=$CentYr4; ?>,
+                        drilldown: 'central-2016'
+                    }, {
+                        name: '2017',
+                        y: <?=$CentYr5; ?>,
+                        drilldown: 'central-2017'
+                    }, {
+                        name: '2018',
+                        y: <?=$CentYr6; ?>,
+                        drilldown: 'central-2018'
+                    }]
                 }, {
-                    name: '2014',
-                    y: <?=$CentYr2; ?>,
-                    drilldown: 'central-2014'
+                    name: 'East',
+                    data: [{
+                        name: '2013',
+                        y: <?=$eastYr1; ?>,
+                        color: '#9E0825',
+                        drilldown: 'east-2013'
+                    }, {
+                        name: '2014',
+                        y: <?=$eastYr2; ?>,
+                        drilldown: 'east-2014'
+                    }, {
+                        name: '2015',
+                        y: <?=$eastYr3; ?>,
+                        drilldown: 'east-2015'
+                    }, {
+                        name: '2016',
+                        y: <?=$eastYr4; ?>,
+                        drilldown: 'east-2016'
+                    }, {
+                        name: '2017',
+                        y: <?=$eastYr5; ?>,
+                        drilldown: 'east-2017'
+                    }, {
+                        name: '2018',
+                        y: <?=$eastYr6; ?>,
+                        drilldown: 'east-2018'
+                    }]
                 }, {
-                    name: '2015',
-                    y: <?=$CentYr3; ?>,
-                    drilldown: 'central-2015'
-                }, {
-                    name: '2016',
-                    y: <?=$CentYr4; ?>,
-                    drilldown: 'central-2016'
-                }, {
-                    name: '2017',
-                    y: <?=$CentYr5; ?>,
-                    drilldown: 'central-2017'
-                }, {
-                    name: '2018',
-                    y: <?=$CentYr6; ?>,
-                    drilldown: 'central-2018'
-                }]
-            },{
-                name: 'East',
-                data: [{
-                    name: '2013',
-                    y: <?=$eastYr1; ?>,
-                    color: '#9E0825',
-                    drilldown: 'east-2013'
-                }, {
-                    name: '2014',
-                    y: <?=$eastYr2; ?>,
-                    drilldown: 'east-2014'
-                }, {
-                    name: '2015',
-                    y: <?=$eastYr3; ?>,
-                    drilldown: 'east-2015'
-                }, {
-                    name: '2016',
-                    y: <?=$eastYr4; ?>,
-                    drilldown: 'east-2016'
-                }, {
-                    name: '2017',
-                    y: <?=$eastYr5; ?>,
-                    drilldown: 'east-2017'
-                }, {
-                    name: '2018',
-                    y: <?=$eastYr6; ?>,
-                    drilldown: 'east-2018'
-                }]
-            },{
-                name: 'West',
-                data: [{
-                    name: '2013',
-                    y: <?=$westYr1; ?>,
-                    color: '#9E0825',
-                    drilldown: 'west-2013'
-                }, {
-                    name: '2014',
-                    y: <?=$westYr2; ?>,
-                    drilldown: 'west-2014'
-                }, {
-                    name: '2015',
-                    y: <?=$westYr3; ?>,
-                    drilldown: 'west-2015'
-                }, {
-                    name: '2016',
-                    y: <?=$westYr4; ?>,
-                    drilldown: 'west-2016'
-                }, {
-                    name: '2017',
-                    y: <?=$westYr5; ?>,
-                    drilldown: 'west-2017'
-                }, {
-                    name: '2018',
-                    y: <?=$westYr6; ?>,
-                    drilldown: 'west-2018'
-                }]
-            }],
+                    name: 'West',
+                    data: [{
+                        name: '2013',
+                        y: <?=$westYr1; ?>,
+                        color: '#9E0825',
+                        drilldown: 'west-2013'
+                    }, {
+                        name: '2014',
+                        y: <?=$westYr2; ?>,
+                        drilldown: 'west-2014'
+                    }, {
+                        name: '2015',
+                        y: <?=$westYr3; ?>,
+                        drilldown: 'west-2015'
+                    }, {
+                        name: '2016',
+                        y: <?=$westYr4; ?>,
+                        drilldown: 'west-2016'
+                    }, {
+                        name: '2017',
+                        y: <?=$westYr5; ?>,
+                        drilldown: 'west-2017'
+                    }, {
+                        name: '2018',
+                        y: <?=$westYr6; ?>,
+                        drilldown: 'west-2018'
+                    }]
+                }],
             drilldown: {
                 _animation: {
                     duration: 2000
@@ -3144,71 +2896,71 @@
 
                 //Start of drill down
                 series: [
-                {
-                    id: 'north-2013',
-                    name: '2013',
-                    data: [
-                        ['Maize', <?=$NorthincrementalSalesMaizeYr1;?>],
-                        ['Beans', <?=$NorthincrementalSalesBeansYr1;?>],
-                        ['Coffee', <?=$NorthincrementalSalesCoffeeYr1;?>]
-                    ]
-                }, {
-                    id: 'west-2013',
-                    name: '2013',
-                    data: [
-                        ['Maize', <?=$WestincrementalSalesMaizeYr1;?>],
-                        ['Beans', <?=$WestincrementalSalesBeansYr1;?>],
-                        ['Coffee', <?=$WestincrementalSalesCoffeeYr1;?>]
-                    ]
-                }, {
-                    id: 'east-2013',
-                    name: '2013',
-                    data: [
-                        ['Maize', <?=$EastincrementalSalesMaizeYr1;?>],
-                        ['Beans', <?=$EastincrementalSalesBeansYr1;?>],
-                        ['Coffee', <?=$EastincrementalSalesCoffeeYr1;?>]
-                    ]
-                }, {
-                    id: 'central-2013',
-                    name: '2013',
-                    data: [
-                        ['Maize', <?=$CentralincrementalSalesMaizeYr1;?>],
-                        ['Beans', <?=$CentralincrementalSalesBeansYr1;?>],
-                        ['Coffee', <?=$CentralincrementalSalesCoffeeYr1;?>]
-                    ]
-                }, {
-                    id: 'north-2014',
-                    name: '2014',
-                    data: [
-                        ['Maize', <?=$NorthincrementalSalesMaizeYr2;?>],
-                        ['Beans', <?=$NorthincrementalSalesBeansYr2;?>],
-                        ['Coffee', <?=$NorthincrementalSalesCoffeeYr2;?>]
-                    ]
-                }, {
-                    id: 'west-2014',
-                    name: '2014',
-                    data: [
-                        ['Maize', <?=$WestincrementalSalesMaizeYr2;?>],
-                        ['Beans', <?=$WestincrementalSalesBeansYr2;?>],
-                        ['Coffee', <?=$WestincrementalSalesCoffeeYr2;?>]
-                    ]
-                }, {
-                    id: 'east-2014',
-                    name: '2014',
-                    data: [
-                        ['Maize', <?=$EastincrementalSalesMaizeYr2;?>],
-                        ['Beans', <?=$EastincrementalSalesBeansYr2;?>],
-                        ['Coffee', <?=$EastincrementalSalesCoffeeYr2;?>]
-                    ]
-                }, {
-                    id: 'central-2014',
-                    name: '2014',
-                    data: [
-                        ['Maize', <?=$CentralincrementalSalesMaizeYr2;?>],
-                        ['Beans', <?=$CentralincrementalSalesBeansYr2;?>],
-                        ['Coffee', <?=$CentralincrementalSalesCoffeeYr2;?>]
-                    ]
-                },{
+                    {
+                        id: 'north-2013',
+                        name: '2013',
+                        data: [
+                            ['Maize', <?=$NorthincrementalSalesMaizeYr1;?>],
+                            ['Beans', <?=$NorthincrementalSalesBeansYr1;?>],
+                            ['Coffee', <?=$NorthincrementalSalesCoffeeYr1;?>]
+                        ]
+                    }, {
+                        id: 'west-2013',
+                        name: '2013',
+                        data: [
+                            ['Maize', <?=$WestincrementalSalesMaizeYr1;?>],
+                            ['Beans', <?=$WestincrementalSalesBeansYr1;?>],
+                            ['Coffee', <?=$WestincrementalSalesCoffeeYr1;?>]
+                        ]
+                    }, {
+                        id: 'east-2013',
+                        name: '2013',
+                        data: [
+                            ['Maize', <?=$EastincrementalSalesMaizeYr1;?>],
+                            ['Beans', <?=$EastincrementalSalesBeansYr1;?>],
+                            ['Coffee', <?=$EastincrementalSalesCoffeeYr1;?>]
+                        ]
+                    }, {
+                        id: 'central-2013',
+                        name: '2013',
+                        data: [
+                            ['Maize', <?=$CentralincrementalSalesMaizeYr1;?>],
+                            ['Beans', <?=$CentralincrementalSalesBeansYr1;?>],
+                            ['Coffee', <?=$CentralincrementalSalesCoffeeYr1;?>]
+                        ]
+                    }, {
+                        id: 'north-2014',
+                        name: '2014',
+                        data: [
+                            ['Maize', <?=$NorthincrementalSalesMaizeYr2;?>],
+                            ['Beans', <?=$NorthincrementalSalesBeansYr2;?>],
+                            ['Coffee', <?=$NorthincrementalSalesCoffeeYr2;?>]
+                        ]
+                    }, {
+                        id: 'west-2014',
+                        name: '2014',
+                        data: [
+                            ['Maize', <?=$WestincrementalSalesMaizeYr2;?>],
+                            ['Beans', <?=$WestincrementalSalesBeansYr2;?>],
+                            ['Coffee', <?=$WestincrementalSalesCoffeeYr2;?>]
+                        ]
+                    }, {
+                        id: 'east-2014',
+                        name: '2014',
+                        data: [
+                            ['Maize', <?=$EastincrementalSalesMaizeYr2;?>],
+                            ['Beans', <?=$EastincrementalSalesBeansYr2;?>],
+                            ['Coffee', <?=$EastincrementalSalesCoffeeYr2;?>]
+                        ]
+                    }, {
+                        id: 'central-2014',
+                        name: '2014',
+                        data: [
+                            ['Maize', <?=$CentralincrementalSalesMaizeYr2;?>],
+                            ['Beans', <?=$CentralincrementalSalesBeansYr2;?>],
+                            ['Coffee', <?=$CentralincrementalSalesCoffeeYr2;?>]
+                        ]
+                    }, {
                         id: 'north-2015',
                         name: '2015',
                         data: [
@@ -3346,17 +3098,15 @@
                             ['Coffee', <?=$CentralincrementalSalesCoffeeYr6;?>]
                         ]
                     }]
-                }
+            }
 
         });
     });
 </script>
-
-
 <script type="text/javascript">
 
     $(function () {
-        
+
 
         <?php
                 
@@ -3386,24 +3136,24 @@
             
 
         ?>
-        
+
 
         $('#indicator_dashindicatorGrossmargin').highcharts({
             title: {
-                text: 'Gross Margin'
+                text: ''
             },
             chart: {
                 type: 'column',
             },
-             xAxis: {
-                 type: 'category'
+            xAxis: {
+                type: 'category'
             },
             yAxis: {
-            min:0,
-            
-            title: {
-                text: 'Sales'
-            }
+                min: 0,
+
+                title: {
+                    text: 'Gross Margin in USD per Hectare'
+                }
             },
             legend: {
                 enabled: true
@@ -3415,7 +3165,7 @@
                         enabled: true,
                         style: {
                             fontWeight: 'bold',
-                            color: (Highcharts.theme && Highcharts.theme.textColor) || 'blue'
+                            color: (Highcharts.theme && Highcharts.theme.textColor) || 'green'
                         }
 
                     }
@@ -3436,67 +3186,40 @@
                 enabled: false
             },
             series: [{
-                name: '2013',
-               data: [
-                            ['Maize', <?=$notrainedMaizeYr1;?>],
-                            ['Beans', <?=$notrainedBeansYr1;?>],
-                            ['Coffee', <?=$notrainedCoffeeYr1;?>]
-                        ]
+                name: 'Baseline',
+                data: [
+                    ['Maize', 495],
+                    ['Beans', 263],
+                    ['Coffee', 222]
+                ]
+            }, {
+                name: 'Target',
+                data: [
+                    ['Maize', 620],
+                    ['Beans', 330],
+                    ['Coffee', 450]
+                ]
             },
-            {
-                name: '2014',
-                data: [
-                            ['Maize', <?=$notrainedMaizeYr2;?>],
-                            ['Beans', <?=$notrainedBeansYr2;?>],
-                            ['Coffee', <?=$notrainedCoffeeYr2;?>]
-                        ]
-            },
-            {
-                name: '2015',
-                data: [
-                            ['Maize', <?=$notrainedMaizeYr3;?>],
-                            ['Beans', <?=$notrainedBeansYr3;?>],
-                            ['Coffee', <?=$notrainedCoffeeYr3;?>]
-                        ]
-            },
-            {
-                name: '2016',
-                data: [
-                            ['Maize', <?=$notrainedMaizeYr4;?>],
-                            ['Beans', <?=$notrainedBeansYr4;?>],
-                            ['Coffee', <?=$notrainedCoffeeYr4;?>]
-                        ]
-            },
-            {
-                name: '2017',
-                data: [
-                            ['Maize', <?=$notrainedMaizeYr5;?>],
-                            ['Beans', <?=$notrainedBeansYr5;?>],
-                            ['Coffee', <?=$notrainedCoffeeYr5;?>]
-                        ]
-            },{
-                name: '2018',
-                data: [
-                            ['Maize', <?=$notrainedMaizeYr6;?>],
-                            ['Beans', <?=$notrainedBeansYr6;?>],
-                            ['Coffee', <?=$notrainedCoffeeYr6;?>]
-                        ]
-            }
+                {
+                    name: 'Actual',
+                    data: [
+                        ['Maize', 648],
+                        ['Beans', 381],
+                        ['Coffee', 1757]
+                    ]
+                }
 
 
             ]
-            
-        
+
 
         });
     });
 </script>
-
-
 <script type="text/javascript">
 
     $(function () {
-        
+
 
         <?php
                 
@@ -3505,24 +3228,24 @@
             
 
         ?>
-        
+
 
         $('#indicator_risk_management').highcharts({
             title: {
-                text: 'Number of farmers implementing risk-reducing practices/actions'
+                text: ''
             },
             chart: {
                 type: 'column',
             },
-             xAxis: {
-                 type: 'category'
+            xAxis: {
+                type: 'category'
             },
             yAxis: {
-            min:0,
-            
-            title: {
-                text: 'Number of stakeholders'
-            }
+                min: 0,
+
+                title: {
+                    text: 'Number of stakeholders'
+                }
             },
             legend: {
                 enabled: true
@@ -3554,7 +3277,7 @@
             tooltip: {
                 formatter: function () {
                     var point = this.point,
-                        s = Highcharts.numberFormat(this.y, 0, '.') +'<br/>';
+                        s = Highcharts.numberFormat(this.y, 0, '.') + '<br/>';
                     if (point.drilldown) {
                         s += 'Click to view more By Value Chain';
                     }
@@ -3566,50 +3289,49 @@
             },
             series: [{
                 name: 'North',
-               data: [
-                            {name:'2013', y:<?=$riskReducingPracticeN['notrainedYr1'];?>,drilldown: 'north-2013'},
-                            {name:'2014', y:<?=$riskReducingPracticeN['notrainedYr2'];?>,drilldown: 'north-2014'},
-                            {name:'2015', y:<?=$riskReducingPracticeN['notrainedYr3'];?>,drilldown: 'north-2015'},
-                            {name:'2016', y:<?=$riskReducingPracticeN['notrainedYr4'];?>,drilldown: 'north-2016'},
-                            {name:'2017', y:<?=$riskReducingPracticeN['notrainedYr5'];?>,drilldown: 'north-2017'},
-                            {name:'2018', y:<?=$riskReducingPracticeN['notrainedYr6'];?>,drilldown: 'north-2018'}
-                        ]
-                
-            },
-            {
-                name: 'Central',
                 data: [
-                           {name:'2013', y:<?=$riskReducingPracticeC['notrainedYr1'];?>,drilldown: 'central-2013'},
-                            {name:'2014', y:<?=$riskReducingPracticeC['notrainedYr2'];?>,drilldown: 'central-2014'},
-                            {name:'2015', y:<?=$riskReducingPracticeC['notrainedYr3'];?>,drilldown: 'central-2015'},
-                           {name:'2016', y:<?=$riskReducingPracticeC['notrainedYr4'];?>,drilldown: 'central-2016'},
-                           {name:'2017', y:<?=$riskReducingPracticeC['notrainedYr5'];?>,drilldown: 'central-2017'},
-                           {name:'2018', y: <?=$riskReducingPracticeC['notrainedYr6'];?>,drilldown: 'central-2018'}
-                        ]
+                    {name: '2013', y:<?=$riskReducingPracticeN['notrainedYr1'];?>, drilldown: 'north-2013'},
+                    {name: '2014', y:<?=$riskReducingPracticeN['notrainedYr2'];?>, drilldown: 'north-2014'},
+                    {name: '2015', y:<?=$riskReducingPracticeN['notrainedYr3'];?>, drilldown: 'north-2015'},
+                    {name: '2016', y:<?=$riskReducingPracticeN['notrainedYr4'];?>, drilldown: 'north-2016'},
+                    {name: '2017', y:<?=$riskReducingPracticeN['notrainedYr5'];?>, drilldown: 'north-2017'},
+                    {name: '2018', y:<?=$riskReducingPracticeN['notrainedYr6'];?>, drilldown: 'north-2018'}
+                ]
+
             },
-            {
-                name: 'East',
-                data: [
-                            {name:'2013', y:<?=$riskReducingPracticeE['notrainedYr1'];?>,drilldown: 'east-2013'},
-                            {name:'2014', y:<?=$riskReducingPracticeE['notrainedYr2'];?>,drilldown: 'east-2014'},
-                            {name:'2015', y:<?=$riskReducingPracticeE['notrainedYr3'];?>,drilldown: 'east-2015'},
-                            {name:'2016', y:<?=$riskReducingPracticeE['notrainedYr4'];?>,drilldown: 'east-2016'},
-                            {name:'2017', y:<?=$riskReducingPracticeE['notrainedYr5'];?>,drilldown: 'east-2017'},
-                            {name:'2018', y:<?=$riskReducingPracticeE['notrainedYr6'];?>,drilldown: 'east-2018'}
-                        ]
-            },
-            {
-                name: 'West',
-                data: [
-                            {name:'2013', y:<?=$riskReducingPracticeW['notrainedYr1'];?>,drilldown: 'west-2013'},
-                            {name:'2014', y:<?=$riskReducingPracticeW['notrainedYr2'];?>,drilldown: 'west-2014'},
-                            {name:'2015', y:<?=$riskReducingPracticeW['notrainedYr3'];?>,drilldown: 'west-2015'},
-                            {name:'2016', y:<?=$riskReducingPracticeW['notrainedYr4'];?>,drilldown: 'west-2016'},
-                            {name:'2017', y:<?=$riskReducingPracticeW['notrainedYr5'];?>,drilldown: 'west-2017'},
-                            {name:'2018', y:<?=$riskReducingPracticeW['notrainedYr6'];?>,drilldown: 'west-2018'}
-                        ]
-            }
-            
+                {
+                    name: 'Central',
+                    data: [
+                        {name: '2013', y:<?=$riskReducingPracticeC['notrainedYr1'];?>, drilldown: 'central-2013'},
+                        {name: '2014', y:<?=$riskReducingPracticeC['notrainedYr2'];?>, drilldown: 'central-2014'},
+                        {name: '2015', y:<?=$riskReducingPracticeC['notrainedYr3'];?>, drilldown: 'central-2015'},
+                        {name: '2016', y:<?=$riskReducingPracticeC['notrainedYr4'];?>, drilldown: 'central-2016'},
+                        {name: '2017', y:<?=$riskReducingPracticeC['notrainedYr5'];?>, drilldown: 'central-2017'},
+                        {name: '2018', y: <?=$riskReducingPracticeC['notrainedYr6'];?>, drilldown: 'central-2018'}
+                    ]
+                },
+                {
+                    name: 'East',
+                    data: [
+                        {name: '2013', y:<?=$riskReducingPracticeE['notrainedYr1'];?>, drilldown: 'east-2013'},
+                        {name: '2014', y:<?=$riskReducingPracticeE['notrainedYr2'];?>, drilldown: 'east-2014'},
+                        {name: '2015', y:<?=$riskReducingPracticeE['notrainedYr3'];?>, drilldown: 'east-2015'},
+                        {name: '2016', y:<?=$riskReducingPracticeE['notrainedYr4'];?>, drilldown: 'east-2016'},
+                        {name: '2017', y:<?=$riskReducingPracticeE['notrainedYr5'];?>, drilldown: 'east-2017'},
+                        {name: '2018', y:<?=$riskReducingPracticeE['notrainedYr6'];?>, drilldown: 'east-2018'}
+                    ]
+                },
+                {
+                    name: 'West',
+                    data: [
+                        {name: '2013', y:<?=$riskReducingPracticeW['notrainedYr1'];?>, drilldown: 'west-2013'},
+                        {name: '2014', y:<?=$riskReducingPracticeW['notrainedYr2'];?>, drilldown: 'west-2014'},
+                        {name: '2015', y:<?=$riskReducingPracticeW['notrainedYr3'];?>, drilldown: 'west-2015'},
+                        {name: '2016', y:<?=$riskReducingPracticeW['notrainedYr4'];?>, drilldown: 'west-2016'},
+                        {name: '2017', y:<?=$riskReducingPracticeW['notrainedYr5'];?>, drilldown: 'west-2017'},
+                        {name: '2018', y:<?=$riskReducingPracticeW['notrainedYr6'];?>, drilldown: 'west-2018'}
+                    ]
+                }
 
 
             ],
@@ -3620,102 +3342,102 @@
 
                 //Start of drill down
                 series: [
-                {
-                    id: 'north-2013',
-                    name: '2013',
-                    data: [
-                        ['Maize', <?=$riskReducingPracticeMaizeN['notrainedYr1'];?>],
-                        ['Beans', <?=$riskReducingPracticeBeansN['notrainedYr1'];?>],
-                        ['Coffee', <?=$riskReducingPracticeCoffeeN['notrainedYr1'];?>]
-                    ]
-                }, {
-                    id: 'west-2013',
-                    name: '2013',
-                   data: [
-                        ['Maize', <?=$riskReducingPracticeMaizeW['notrainedYr1'];?>],
-                        ['Beans', <?=$riskReducingPracticeBeansW['notrainedYr1'];?>],
-                        ['Coffee', <?=$riskReducingPracticeCoffeeW['notrainedYr1'];?>]
-                    ]
-                }, {
-                    id: 'east-2013',
-                    name: '2013',
-                    data: [
-                        ['Maize', <?=$riskReducingPracticeMaizeE['notrainedYr1'];?>],
-                        ['Beans', <?=$riskReducingPracticeBeansE['notrainedYr1'];?>],
-                        ['Coffee', <?=$riskReducingPracticeCoffeeE['notrainedYr1'];?>]
-                    ]
-                }, {
-                    id: 'central-2013',
-                    name: '2013',
-                    data: [
-                        ['Maize', <?=$riskReducingPracticeMaizeC['notrainedYr1'];?>],
-                        ['Beans', <?=$riskReducingPracticeBeansC['notrainedYr1'];?>],
-                        ['Coffee', <?=$riskReducingPracticeCoffeeC['notrainedYr1'];?>]
-                    ]
-                }, {
-                    id: 'north-2014',
-                    name: '2014',
-                    data: [
-                        ['Maize', <?=$riskReducingPracticeMaizeN['notrainedYr2'];?>],
-                        ['Beans', <?=$riskReducingPracticeBeansN['notrainedYr2'];?>],
-                        ['Coffee', <?=$riskReducingPracticeCoffeeN['notrainedYr2'];?>]
-                    ]
-                }, {
-                    id: 'west-2014',
-                    name: '2014',
-                    data: [
-                        ['Maize', <?=$riskReducingPracticeMaizeW['notrainedYr2'];?>],
-                        ['Beans', <?=$riskReducingPracticeBeansW['notrainedYr2'];?>],
-                        ['Coffee', <?=$riskReducingPracticeCoffeeW['notrainedYr2'];?>]
-                    ]
-                }, {
-                    id: 'east-2014',
-                    name: '2014',
-                    data: [
-                        ['Maize', <?=$riskReducingPracticeMaizeE['notrainedYr2'];?>],
-                        ['Beans', <?=$riskReducingPracticeBeansE['notrainedYr2'];?>],
-                        ['Coffee', <?=$riskReducingPracticeCoffeeE['notrainedYr2'];?>]
-                    ]
-                }, {
-                    id: 'central-2014',
-                    name: '2014',
-                    data: [
-                        ['Maize', <?=$riskReducingPracticeMaizeC['notrainedYr2'];?>],
-                        ['Beans', <?=$riskReducingPracticeBeansC['notrainedYr2'];?>],
-                        ['Coffee', <?=$riskReducingPracticeCoffeeC['notrainedYr2'];?>]
-                    ]
-                },{
+                    {
+                        id: 'north-2013',
+                        name: '2013',
+                        data: [
+                            ['Maize', <?=$riskReducingPracticeMaizeN['notrainedYr1'];?>],
+                            ['Beans', <?=$riskReducingPracticeBeansN['notrainedYr1'];?>],
+                            ['Coffee', <?=$riskReducingPracticeCoffeeN['notrainedYr1'];?>]
+                        ]
+                    }, {
+                        id: 'west-2013',
+                        name: '2013',
+                        data: [
+                            ['Maize', <?=$riskReducingPracticeMaizeW['notrainedYr1'];?>],
+                            ['Beans', <?=$riskReducingPracticeBeansW['notrainedYr1'];?>],
+                            ['Coffee', <?=$riskReducingPracticeCoffeeW['notrainedYr1'];?>]
+                        ]
+                    }, {
+                        id: 'east-2013',
+                        name: '2013',
+                        data: [
+                            ['Maize', <?=$riskReducingPracticeMaizeE['notrainedYr1'];?>],
+                            ['Beans', <?=$riskReducingPracticeBeansE['notrainedYr1'];?>],
+                            ['Coffee', <?=$riskReducingPracticeCoffeeE['notrainedYr1'];?>]
+                        ]
+                    }, {
+                        id: 'central-2013',
+                        name: '2013',
+                        data: [
+                            ['Maize', <?=$riskReducingPracticeMaizeC['notrainedYr1'];?>],
+                            ['Beans', <?=$riskReducingPracticeBeansC['notrainedYr1'];?>],
+                            ['Coffee', <?=$riskReducingPracticeCoffeeC['notrainedYr1'];?>]
+                        ]
+                    }, {
+                        id: 'north-2014',
+                        name: '2014',
+                        data: [
+                            ['Maize', <?=$riskReducingPracticeMaizeN['notrainedYr2'];?>],
+                            ['Beans', <?=$riskReducingPracticeBeansN['notrainedYr2'];?>],
+                            ['Coffee', <?=$riskReducingPracticeCoffeeN['notrainedYr2'];?>]
+                        ]
+                    }, {
+                        id: 'west-2014',
+                        name: '2014',
+                        data: [
+                            ['Maize', <?=$riskReducingPracticeMaizeW['notrainedYr2'];?>],
+                            ['Beans', <?=$riskReducingPracticeBeansW['notrainedYr2'];?>],
+                            ['Coffee', <?=$riskReducingPracticeCoffeeW['notrainedYr2'];?>]
+                        ]
+                    }, {
+                        id: 'east-2014',
+                        name: '2014',
+                        data: [
+                            ['Maize', <?=$riskReducingPracticeMaizeE['notrainedYr2'];?>],
+                            ['Beans', <?=$riskReducingPracticeBeansE['notrainedYr2'];?>],
+                            ['Coffee', <?=$riskReducingPracticeCoffeeE['notrainedYr2'];?>]
+                        ]
+                    }, {
+                        id: 'central-2014',
+                        name: '2014',
+                        data: [
+                            ['Maize', <?=$riskReducingPracticeMaizeC['notrainedYr2'];?>],
+                            ['Beans', <?=$riskReducingPracticeBeansC['notrainedYr2'];?>],
+                            ['Coffee', <?=$riskReducingPracticeCoffeeC['notrainedYr2'];?>]
+                        ]
+                    }, {
                         id: 'north-2015',
                         name: '2015',
-                   data: [
-                        ['Maize', <?=$riskReducingPracticeMaizeN['notrainedYr3'];?>],
-                        ['Beans', <?=$riskReducingPracticeBeansN['notrainedYr3'];?>],
-                        ['Coffee', <?=$riskReducingPracticeCoffeeN['notrainedYr3'];?>]
-                    ]
+                        data: [
+                            ['Maize', <?=$riskReducingPracticeMaizeN['notrainedYr3'];?>],
+                            ['Beans', <?=$riskReducingPracticeBeansN['notrainedYr3'];?>],
+                            ['Coffee', <?=$riskReducingPracticeCoffeeN['notrainedYr3'];?>]
+                        ]
                     }, {
                         id: 'west-2015',
                         name: '2015',
                         data: [
-                        ['Maize', <?=$riskReducingPracticeMaizeW['notrainedYr3'];?>],
-                        ['Beans', <?=$riskReducingPracticeBeansW['notrainedYr3'];?>],
-                        ['Coffee', <?=$riskReducingPracticeCoffeeW['notrainedYr3'];?>]
-                    ]
+                            ['Maize', <?=$riskReducingPracticeMaizeW['notrainedYr3'];?>],
+                            ['Beans', <?=$riskReducingPracticeBeansW['notrainedYr3'];?>],
+                            ['Coffee', <?=$riskReducingPracticeCoffeeW['notrainedYr3'];?>]
+                        ]
                     }, {
                         id: 'east-2015',
                         name: '2015',
                         data: [
-                        ['Maize', <?=$riskReducingPracticeMaizeE['notrainedYr3'];?>],
-                        ['Beans', <?=$riskReducingPracticeBeansE['notrainedYr3'];?>],
-                        ['Coffee', <?=$riskReducingPracticeCoffeeE['notrainedYr3'];?>]
-                    ]
+                            ['Maize', <?=$riskReducingPracticeMaizeE['notrainedYr3'];?>],
+                            ['Beans', <?=$riskReducingPracticeBeansE['notrainedYr3'];?>],
+                            ['Coffee', <?=$riskReducingPracticeCoffeeE['notrainedYr3'];?>]
+                        ]
                     }, {
                         id: 'central-2015',
                         name: '2015',
                         data: [
-                        ['Maize', <?=$riskReducingPracticeMaizeC['notrainedYr3'];?>],
-                        ['Beans', <?=$riskReducingPracticeBeansC['notrainedYr3'];?>],
-                        ['Coffee', <?=$riskReducingPracticeCoffeeC['notrainedYr3'];?>]
-                    ]
+                            ['Maize', <?=$riskReducingPracticeMaizeC['notrainedYr3'];?>],
+                            ['Beans', <?=$riskReducingPracticeBeansC['notrainedYr3'];?>],
+                            ['Coffee', <?=$riskReducingPracticeCoffeeC['notrainedYr3'];?>]
+                        ]
                     },
 
 
@@ -3822,16 +3544,68 @@
                             ['Coffee', <?=$riskReducingPracticeCoffeeC['notrainedYr6'];?>]
                         ]
                     }]
-                }
-            
-        
+            }
+
 
         });
     });
 </script>
+<script type="text/javascript">
 
+    $(function () {
 
+        <?php
+       $notrainedYr1 =round($data_get_i2_jobs_attributedyr1);
+        $notrainedYr2 =round($data_get_i2_jobs_attributedyr2);
+        $notrainedYr3 =round($data_get_i2_jobs_attributedyr3);
+        $notrainedYr4 =round($data_get_i2_jobs_attributedyr4);
+        $notrainedYr5 =round($data_get_i2_jobs_attributedyr5);
+        $notrainedYr6 =round($data_get_i2_jobs_attributedyr6);
 
+        
+         ?>
+
+        $('#indicator_jobs_attributed').highcharts({
+            title: {
+                text: ''
+            },
+            xAxis: {
+                categories: ['2013', '2014', '2015', '2016', '2017', '2018']
+            },
+            chart: {
+                type: 'column',
+
+            },
+            yAxis: {
+                min: 20,
+                max: 450,
+                startOnTick: false,
+                endOnTick: false,
+                title: {
+                    text: 'Number of jobs'
+                }
+            },
+            labels: {
+                items: [{
+                    html: '',
+                    style: {
+                        right: '10px',
+                        top: '18px',
+                        color: (Highcharts.theme && Highcharts.theme.textColor) || 'black'
+                    }
+                }]
+            },
+            credits: {
+                enabled: false
+            },
+            series: [{
+                name: 'Jobs',
+                data: [<?=$notrainedYr1; ?>, <?=$notrainedYr2; ?>, <?=$notrainedYr3; ?>, <?=$notrainedYr4; ?>, <?=$notrainedYr5; ?>, <?=$notrainedYr6; ?>]
+            }]
+
+        });
+    });
+</script>
 
 </body>
 
